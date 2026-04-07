@@ -1016,7 +1016,7 @@
 
                 const token = localStorage.getItem("inulab_token"); // ← correcto
 
-                const res = await fetch("http://localhost:7237/api/Facturas", {
+                const res = await fetch(`${API_BASE}/Facturas`, {
                     headers: {
                         "Authorization": `Bearer ${token}`
                     }
@@ -1814,7 +1814,7 @@
                     console.log("CART COMPLETO:", JSON.stringify(cart[0]?.address));
                     console.log("ADDRESS ID:", addressId);
 
-                    const response = await fetch("http://localhost:7237/api/Orders", {
+                    const response = await fetch(`${API_BASE}/Orders`, {
                         method: "POST",
                         headers: {
                             ...api._headers(),
