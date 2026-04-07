@@ -986,6 +986,11 @@
             const [showTomaMuestraStep, setShowTomaMuestraStep] = useState(false);
             const [pendingOrderAddress, setPendingOrderAddress] = useState(null);
             const [facturas, setFacturas] = useState([]);
+            const [authMode, setAuthMode] = useState('login');
+            const [regData, setRegData] = useState({ username: '', email: '', phone: '', password: '', confirmPassword: '', type: 'dueño' });
+            const [regError, setRegError] = useState('');
+            const [regLoading, setRegLoading] = useState(false);
+            const [regSuccess, setRegSuccess] = useState('');
 
             useEffect(() => {
                 if (showAddressSelection) {
@@ -1952,82 +1957,136 @@
 
             // LOGIN PRIMERO
             if (!isAuthenticated) {
+                
+                const handleRegister = async (e) => {
+                    e.preventDefault();
+                    setRegError('');
+                    if (regData.password !== regData.confirmPassword) {
+                        setRegError('Las contraseñas no coinciden');
+                        return;
+                    }
+                    if (regData.password.length < 6) {
+                        setRegError('La contraseña debe tener al menos 6 caracteres');
+                        return;
+                    }
+                    setRegLoading(true);
+                    try {
+                        const response = await fetch(API_BASE + "/Auth/registrarse", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                username: regData.username,
+                                email: regData.email,
+                                phone: regData.phone,
+                                password: regData.password,
+                                type: regData.type
+                            })
+                        });
+                        if (!response.ok) {
+                            const msg = await response.text();
+                            throw new Error(msg || 'Error al registrarse');
+                        }
+                        setRegSuccess('¡Cuenta creada exitosamente! Ya puedes ingresar.');
+                        setTimeout(() => { setAuthMode('login'); setRegSuccess(''); }, 2500);
+                    } catch (err) {
+                        setRegError(err.message);
+                    } finally {
+                        setRegLoading(false);
+                    }
+                };
+
                 return (
                     <div className="min-h-screen flex items-center justify-center p-4 login-wrapper">
                         <div className="w-full max-w-md">
                             <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
                                 <div className="flex flex-col items-center justify-center mb-6">
-                                    <img
-                                        src="assets/logo_inulaboratorios.jpg"
-                                        alt="INULABORATORIOS"
-                                        className="h-14 mb-2"
-                                        onError={(e) => {
-                                            e.target.style.display = 'none';
-                                            e.target.nextSibling.style.display = 'flex';
-                                        }}
-                                    />
-                                    <div className="hidden w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl items-center justify-center text-white font-bold text-2xl mb-2">
-                                        I
-                                    </div>
-                                    <span className="text-base font-light text-gray-600 tracking-wide">
-                                        INULABORATORIOS
-                                    </span>
+                                    <img src="assets/logo_inulaboratorios.jpg" alt="INULABORATORIOS" className="h-14 mb-2"
+                                        onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }} />
+                                    <div className="hidden w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl items-center justify-center text-white font-bold text-2xl mb-2">I</div>
+                                    <span className="text-base font-light text-gray-600 tracking-wide">INULABORATORIOS</span>
                                 </div>
 
-                                <form onSubmit={handleLogin} className="space-y-3">
-                                    <input
-                                        type="text"
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
-                                        placeholder="Usuario"
-                                    />
-
-                                    <input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
-                                        placeholder="Contraseña"
-                                    />
-
-                                    {error && (
-                                        <div className="bg-red-50 border border-red-200 p-2.5 rounded-xl">
-                                            <p className="text-xs text-red-600">{error}</p>
-                                        </div>
-                                    )}
-
+                                {/* Tabs Ingresar / Crear cuenta */}
+                                <div className="flex rounded-xl bg-gray-100 p-1 mb-5">
                                     <button
-                                        type="submit"
-                                        className="w-full py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-md"
+                                        onClick={() => { setAuthMode('login'); setRegError(''); setRegSuccess(''); }}
+                                        className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'login' ? 'bg-white shadow text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
                                     >
-                                        Iniciar Sesión
+                                        Ingresar
                                     </button>
-                                </form>
-
-                                <div className="mt-4 p-3 bg-gray-50 rounded-xl text-xs text-gray-500">
-                                    <p className="font-semibold text-gray-600 mb-1.5">
-                                        Prueba con:
-                                    </p>
-                                    <p>
-                                        <span className="text-cyan-600 font-medium">Dueño:</span>
-                                        {" "}carlos.rodriguez / cliente123
-                                    </p>
-                                    <p>
-                                        <span className="text-emerald-600 font-medium">Clínica:</span>
-                                        {" "}vetplanet / vp2025
-                                    </p>
+                                    <button
+                                        onClick={() => { setAuthMode('register'); setError(''); }}
+                                        className={`flex-1 py-2 rounded-lg text-sm font-semibold transition-all ${authMode === 'register' ? 'bg-white shadow text-cyan-600' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        Crear cuenta
+                                    </button>
                                 </div>
 
-                                <button
-                                    onClick={() => {
-                                        localStorage.removeItem('inulab_db_v25');
-                                        window.location.reload();
-                                    }}
-                                    className="mt-2 w-full py-1.5 text-xs text-gray-400 hover:text-red-500"
-                                >
-                                    🔄 Resetear datos demo
-                                </button>
+                                {/* FORMULARIO LOGIN */}
+                                {authMode === 'login' && (
+                                    <form onSubmit={handleLogin} className="space-y-3">
+                                        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Usuario" />
+                                        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Contraseña" />
+                                        {error && (
+                                            <div className="bg-red-50 border border-red-200 p-2.5 rounded-xl">
+                                                <p className="text-xs text-red-600">{error}</p>
+                                            </div>
+                                        )}
+                                        <button type="submit"
+                                            className="w-full py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-md">
+                                            Ingresar
+                                        </button>
+                                    </form>
+                                )}
+
+                                {/* FORMULARIO REGISTRO */}
+                                {authMode === 'register' && (
+                                    <form onSubmit={handleRegister} className="space-y-3">
+                                        <input type="text" value={regData.username} onChange={(e) => setRegData({ ...regData, username: e.target.value })}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Nombre de usuario" required />
+                                        <input type="email" value={regData.email} onChange={(e) => setRegData({ ...regData, email: e.target.value })}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Correo electrónico" required />
+                                        <input type="tel" value={regData.phone} onChange={(e) => setRegData({ ...regData, phone: e.target.value })}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Teléfono" />
+                                        <div className="relative">
+                                            <select value={regData.type} onChange={(e) => setRegData({ ...regData, type: e.target.value })}
+                                                className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm focus:border-cyan-500 focus:bg-white focus:outline-none appearance-none">
+                                                <option value="dueño">🐾 Dueño de mascota</option>
+                                                <option value="medico">🏥 Médico / Clínica</option>
+                                            </select>
+                                            <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                                <i className="fas fa-chevron-down text-xs"></i>
+                                            </div>
+                                        </div>
+                                        <input type="password" value={regData.password} onChange={(e) => setRegData({ ...regData, password: e.target.value })}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Contraseña" required />
+                                        <input type="password" value={regData.confirmPassword} onChange={(e) => setRegData({ ...regData, confirmPassword: e.target.value })}
+                                            className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                            placeholder="Confirmar contraseña" required />
+                                        {regError && (
+                                            <div className="bg-red-50 border border-red-200 p-2.5 rounded-xl">
+                                                <p className="text-xs text-red-600">{regError}</p>
+                                            </div>
+                                        )}
+                                        {regSuccess && (
+                                            <div className="bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl">
+                                                <p className="text-xs text-emerald-600">{regSuccess}</p>
+                                            </div>
+                                        )}
+                                        <button type="submit" disabled={regLoading}
+                                            className="w-full py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-md disabled:opacity-60">
+                                            {regLoading ? 'Creando cuenta...' : 'Crear cuenta'}
+                                        </button>
+                                    </form>
+                                )}
                             </div>
                         </div>
                     </div>
