@@ -546,7 +546,7 @@
         // API SERVICE LAYER
         // Configurar BASE_URL según el entorno del backend
         // =============================================================================
-        const API_BASE = "http://localhost:7237/api";
+        const API_BASE = "https://inulab-backend-production.up.railway.app/api";
 
         async function cargarPreciosDesdeAPI() {
             try {
