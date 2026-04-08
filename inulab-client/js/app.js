@@ -2140,7 +2140,7 @@
                         <div style={{flex:1, overflow:'hidden', display:'flex', flexDirection:'column', padding:'12px', gap:'10px'}}>
                             <div style={{flex:1, overflow:'hidden', background:'white', borderRadius:'16px', boxShadow:'0 2px 12px rgba(0,0,0,0.10)', border:'1px solid #e5e7eb'}}>
                                 {selectedExam.pdfData ? (
-                                    <iframe src={selectedExam.pdfData} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px', margin:'8px 0'}} title="PDF" />
+                                    <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedExam.pdfData)}&embedded=true`} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px', margin:'8px 0'}} title="PDF" />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                         <i className="fas fa-file-pdf text-5xl mb-3 text-gray-300"></i>
@@ -2230,7 +2230,7 @@
                         <div style={{flex:1, overflow:'hidden', display:'flex', flexDirection:'column', padding:'12px', gap:'10px'}}>
                             <div style={{flex:1, overflow:'hidden', background:'white', borderRadius:'16px', boxShadow:'0 2px 12px rgba(0,0,0,0.10)', border:'1px solid #e5e7eb'}}>
                                 {selectedExam.pdfData ? (
-                                    <iframe src={selectedExam.pdfData} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} title="PDF" />
+                                    <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedExam.pdfData)}&embedded=true`} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} title="PDF" />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                         <i className="fas fa-file-pdf text-5xl mb-3 text-gray-300"></i>
@@ -4765,7 +4765,7 @@
                                                         {selectedExam.pdfData ? (
                                                             <div className="flex-1 flex flex-col min-h-0">
                                                                 <iframe 
-                                                                    src={selectedExam.pdfData} 
+                                                                    src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedExam.pdfData)}&embedded=true`} 
                                                                     className="flex-1 w-full rounded-xl border border-gray-200" 
                                                                     title="PDF" 
                                                                 />
@@ -6085,7 +6085,7 @@
                                             </div>
                                             {selectedExam.pdfData ? (
                                                 <div className="flex-1 flex flex-col min-h-0">
-                                                    <iframe src={selectedExam.pdfData} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" title="PDF" />
+                                                    <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(selectedExam.pdfData)}&embedded=true`} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" title="PDF" />
                                                     <div className="mt-3 flex justify-center flex-shrink-0">
                                                         <button onClick={() => { const a=document.createElement('a'); a.href=selectedExam.pdfData; a.download=`${selectedExam.type.replace(/[^a-zA-Z0-9]/g,'_')}_${selectedExam.date}.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }} className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm shadow-lg">
                                                             <i className="fas fa-download"></i> Descargar PDF
