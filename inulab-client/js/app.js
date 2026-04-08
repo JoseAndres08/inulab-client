@@ -1300,14 +1300,14 @@
                             createdAt: o.createdAt,
                             completedAt: o.completedAt,
                             documentType: o.documentType || 'boleta',
-                            invoicePdf: o.invoicePdfUrl ? `http://localhost:7237${o.invoicePdfUrl}` : null,
+                            invoicePdf: o.invoicePdfUrl ? `https://inulab-backend-production.up.railway.app${o.invoicePdfUrl}` : null,
                             invoicePdfUrl: o.invoicePdfUrl || null,
                             invoiceStatus: o.invoicePdfUrl ? 'uploaded' : 'pending',
                             status: statusMap[Number(o.status)] || 'pending',
                             addressId: o.addressId,
                             items: (o.items || []).map(item => {
                                 const orderResultPdf = o.resultPdfUrl
-                                    ? (o.resultPdfUrl.startsWith('http') ? o.resultPdfUrl : `http://localhost:7237${o.resultPdfUrl}`)
+                                    ? (o.resultPdfUrl.startsWith('http') ? o.resultPdfUrl : `https://inulab-backend-production.up.railway.app${o.resultPdfUrl}`)
                                     : null;
                                 return {
                                     examName: String(item.examName || ''),
@@ -1420,14 +1420,14 @@
                         createdAt: o.createdAt,
                         completedAt: o.completedAt,
                         documentType: o.documentType || 'boleta',
-                        invoicePdf: o.invoicePdfUrl ? `http://localhost:7237${o.invoicePdfUrl}` : null,
+                        invoicePdf: o.invoicePdfUrl ? `https://inulab-backend-production.up.railway.app${o.invoicePdfUrl}` : null,
                         invoicePdfUrl: o.invoicePdfUrl || null,
                         invoiceStatus: o.invoicePdfUrl ? 'uploaded' : 'pending',
                         status: statusMap[Number(o.status)] || 'pending',
                         addressId: o.addressId,
                         items: (o.items || []).map(item => {
                             const orderResultPdf = o.resultPdfUrl
-                                ? (o.resultPdfUrl.startsWith('http') ? o.resultPdfUrl : `http://localhost:7237${o.resultPdfUrl}`)
+                                ? (o.resultPdfUrl.startsWith('http') ? o.resultPdfUrl : `https://inulab-backend-production.up.railway.app${o.resultPdfUrl}`)
                                 : null;
                             return {
                                 examName: String(item.examName || ''),
@@ -4271,7 +4271,7 @@
                                                                 <div 
                                                                     key={order.id} 
                                                                     onClick={() => {
-                                                                        if (order.invoicePdfUrl) window.open(`http://localhost:7237${order.invoicePdfUrl}`, '_blank');
+                                                                        if (order.invoicePdfUrl) window.open(`https://inulab-backend-production.up.railway.app${order.invoicePdfUrl}`, '_blank');
                                                                         else alert('Este resultado aún no está disponible');
                                                                     }}
                                                                     className="bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg hover:bg-purple-50 transition-all"
@@ -5774,7 +5774,7 @@
                                                         <div className="grid grid-cols-2 gap-4 pb-6">
                                                             {filtered.map(order => (
                                                                 <div key={order.id} onClick={() => {
-                                                                    if (order.invoicePdfUrl) window.open(`http://localhost:7237${order.invoicePdfUrl}`, '_blank');
+                                                                    if (order.invoicePdfUrl) window.open(`https://inulab-backend-production.up.railway.app${order.invoicePdfUrl}`, '_blank');
                                                                     else alert('Este resultado aún no está disponible');
                                                                 
                                                                 }} className="bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all">
@@ -6657,7 +6657,7 @@
                                                                     </p>
                                                                     <div className="space-y-3">
                                                                         {(order.items || []).map((item, idx) => {
-                                                                            const pdfUrl = item.pdfData || item.pdfUrl || order.resultPdfUrl || (order.resultPdfUrl ? `http://localhost:7237${order.resultPdfUrl}` : null);
+                                                                            const pdfUrl = item.pdfData || item.pdfUrl || order.resultPdfUrl || (order.resultPdfUrl ? `https://inulab-backend-production.up.railway.app${order.resultPdfUrl}` : null);
                                                                             return (
                                                                                 <div key={idx}
                                                                                     onClick={() => {
