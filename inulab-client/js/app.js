@@ -2145,7 +2145,7 @@ const PdfViewer = ({ url, style, className }) => {
             if (selectedExam && freshUser.type !== 'medico' && window.innerWidth < 768) {
                 const downloadPdf = () => {
                     if (selectedExam.pdfData) {
-                       window.open(selectedExam.pdfData, '_blank');
+                        const win = window.open(); win.location.href = selectedExam.pdfData;
                     }
                 };
                 
