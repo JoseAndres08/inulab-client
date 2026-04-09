@@ -4300,13 +4300,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                                     onClick={() => {
                                                                         const pdfUrl = order.items?.[0]?.pdfData;
                                                                         if (pdfUrl) {
-                                                                            setSelectedExam({
-                                                                                id: order.id,
-                                                                                type: order.items?.[0]?.examName || 'Resultado',
-                                                                                date: order.completedAt || order.createdAt,
-                                                                                pdfData: pdfUrl,
-                                                                                seen: true
-                                                                            });
+                                                                            const win = window.open();
+                                                                            win.location.href = pdfUrl;
                                                                         } else {
                                                                             alert('El PDF de este resultado aún no está disponible');
                                                                         }
