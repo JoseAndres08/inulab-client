@@ -889,6 +889,38 @@
             );
         };
 
+const PdfViewer = ({ url, style, className }) => {
+    const [blobUrl, setBlobUrl] = React.useState(null);
+    const [error, setError] = React.useState(false);
+
+    React.useEffect(() => {
+        if (!url) { setError(true); return; }
+        if (url.startsWith('data:') || url.startsWith('blob:')) {
+            setBlobUrl(url);
+            return;
+        }
+        const token = localStorage.getItem('inulab_token');
+        fetch(url, { headers: token ? { 'Authorization': `Bearer ${token}` } : {} })
+            .then(r => { if (!r.ok) throw new Error('Error'); return r.blob(); })
+            .then(blob => setBlobUrl(URL.createObjectURL(blob)))
+            .catch(() => setError(true));
+    }, [url]);
+
+    if (error) return (
+        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+            <i className="fas fa-file-pdf text-5xl mb-3 text-gray-300"></i>
+            <p className="text-sm">PDF no disponible</p>
+        </div>
+    );
+    if (!blobUrl) return (
+        <div className="flex flex-col items-center justify-center h-full text-gray-400">
+            <i className="fas fa-spinner fa-spin text-3xl mb-2"></i>
+            <p className="text-sm">Cargando PDF...</p>
+        </div>
+    );
+    return <iframe src={blobUrl} style={style} className={className} title="PDF" />;
+};
+
         const App = () => {
 
             // ✅ PON ESTO AQUÍ
@@ -2191,7 +2223,7 @@
                         <div style={{flex:1, overflow:'hidden', display:'flex', flexDirection:'column', padding:'12px', gap:'10px'}}>
                             <div style={{flex:1, overflow:'hidden', background:'white', borderRadius:'16px', boxShadow:'0 2px 12px rgba(0,0,0,0.10)', border:'1px solid #e5e7eb'}}>
                                 {viewingInvoice.invoicePdf ? (
-                                    <iframe src={viewingInvoice.invoicePdf} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} title={`${docType} PDF`} />
+                                    <PdfViewer url={viewingInvoice.invoicePdf} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                         <i className={`fas ${viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice'} text-5xl mb-3 text-gray-300`}></i>
@@ -2230,7 +2262,7 @@
                         <div style={{flex:1, overflow:'hidden', display:'flex', flexDirection:'column', padding:'12px', gap:'10px'}}>
                             <div style={{flex:1, overflow:'hidden', background:'white', borderRadius:'16px', boxShadow:'0 2px 12px rgba(0,0,0,0.10)', border:'1px solid #e5e7eb'}}>
                                 {selectedExam.pdfData ? (
-                                    <iframe src={selectedExam.pdfData} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} title="PDF" />
+                                    <PdfViewer url={selectedExam.pdfData} style={{width:'100%', height:'100%', display:'block', border:'none', borderRadius:'16px'}} />
                                 ) : (
                                     <div className="flex flex-col items-center justify-center h-full text-gray-400">
                                         <i className="fas fa-file-pdf text-5xl mb-3 text-gray-300"></i>
@@ -4271,8 +4303,18 @@
                                                                 <div 
                                                                     key={order.id} 
                                                                     onClick={() => {
-                                                                        if (order.invoicePdfUrl) window.open(`https://inulab-backend-production.up.railway.app${order.invoicePdfUrl}`, '_blank');
-                                                                        else alert('Este resultado aún no está disponible');
+                                                                        const pdfUrl = order.items?.[0]?.pdfData;
+                                                                        if (pdfUrl) {
+                                                                            setSelectedExam({
+                                                                                id: order.id,
+                                                                                type: order.items?.[0]?.examName || 'Resultado',
+                                                                                date: order.completedAt || order.createdAt,
+                                                                                pdfData: pdfUrl,
+                                                                                seen: true
+                                                                            });
+                                                                        } else {
+                                                                            alert('El PDF de este resultado aún no está disponible');
+                                                                        }
                                                                     }}
                                                                     className="bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg hover:bg-purple-50 transition-all"
                                                                 >
@@ -4764,11 +4806,7 @@
                                                         </div>
                                                         {selectedExam.pdfData ? (
                                                             <div className="flex-1 flex flex-col min-h-0">
-                                                                <iframe 
-                                                                    src={selectedExam.pdfData} 
-                                                                    className="flex-1 w-full rounded-xl border border-gray-200" 
-                                                                    title="PDF" 
-                                                                />
+                                                                <PdfViewer url={selectedExam.pdfData} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" />
                                                                 <div className="mt-3 flex justify-center flex-shrink-0">
                                                                     <button 
                                                                         onClick={() => {
@@ -4828,11 +4866,7 @@
                                                         </div>
                                                         {viewingInvoice.invoicePdf ? (
                                                             <div className="flex-1 flex flex-col min-h-0">
-                                                                <iframe 
-                                                                    src={viewingInvoice.invoicePdf} 
-                                                                    className="flex-1 w-full rounded-xl border border-gray-200" 
-                                                                    title="Comprobante PDF"
-                                                                />
+                                                                <PdfViewer url={viewingInvoice.invoicePdf} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" />
                                                                 <div className="mt-3 flex justify-center flex-shrink-0">
                                                                     <button 
                                                                         onClick={() => {
@@ -6196,11 +6230,7 @@
 
                                                                 {/* Vista previa del PDF */}
                                                                 {facturacionInvoice?.invoicePdf ? (
-                                                                    <iframe
-                                                                        src={facturacionInvoice.invoicePdf}
-                                                                        className="w-full h-[500px] rounded-xl border"
-                                                                        title="Vista previa del comprobante"
-                                                                    ></iframe>
+                                                                    <PdfViewer url={facturacionInvoice.invoicePdf} style={{ width: '100%', height: '500px' }} className="rounded-xl border" />
                                                                 ) : (
                                                                     <div className="flex flex-col items-center justify-center text-gray-400 h-[400px]">
                                                                         <i className="fas fa-file-invoice text-4xl mb-3"></i>
@@ -6729,7 +6759,7 @@
                                                 <div className="bg-white rounded-2xl shadow-lg p-5 flex-1 flex flex-col min-h-0">
                                                     {facInvoice.invoicePdf ? (
                                                         <div className="flex-1 flex flex-col min-h-0">
-                                                            <iframe src={facInvoice.invoicePdf} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" style={{minHeight:'400px'}}></iframe>
+                                                            <PdfViewer url={facInvoice.invoicePdf} className="flex-1 w-full rounded-xl border border-gray-200 min-h-0" style={{ minHeight: '400px' }} />
                                                             <div className="mt-3 flex justify-center flex-shrink-0">
                                                                 <button onClick={() => { const a=document.createElement('a'); a.href=facInvoice.invoicePdf; a.download=`comprobante-${facInvoice.id}.pdf`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }} className={`flex items-center gap-2 px-6 py-2.5 ${facInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600'} text-white rounded-xl font-semibold transition-colors shadow-lg text-sm`}>
                                                                     <i className="fas fa-download"></i> Descargar PDF
