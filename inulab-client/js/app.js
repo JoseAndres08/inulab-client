@@ -2145,7 +2145,7 @@ const PdfViewer = ({ url, style, className }) => {
             if (selectedExam && freshUser.type !== 'medico' && window.innerWidth < 768) {
                 const downloadPdf = () => {
                     if (selectedExam.pdfData) {
-                        const a = document.createElement('a'); a.href = selectedExam.pdfData; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                       const a = document.createElement('a'); a.href = selectedExam.pdfData; a.download = 'resultado.pdf'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
                     }
                 };
                 
@@ -4805,7 +4805,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 <div className="mt-3 flex justify-center flex-shrink-0">
                                                                     <button 
                                                                         onClick={() => {
-                                                                            const a = document.createElement('a'); a.href = selectedExam.pdfData; a.target = '_blank'; a.rel = 'noopener'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                                                                           const a = document.createElement('a'); a.href = selectedExam.pdfData; a.download = 'resultado.pdf'; document.body.appendChild(a); a.click(); document.body.removeChild(a);
                                                                         }}
                                                                         className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-lg text-sm"
                                                                     >
