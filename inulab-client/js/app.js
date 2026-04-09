@@ -2145,12 +2145,7 @@ const PdfViewer = ({ url, style, className }) => {
             if (selectedExam && freshUser.type !== 'medico' && window.innerWidth < 768) {
                 const downloadPdf = () => {
                     if (selectedExam.pdfData) {
-                        const link = document.createElement('a');
-                        link.href = selectedExam.pdfData;
-                        link.download = `${selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_')}_${selectedExam.date}.pdf`;
-                        document.body.appendChild(link);
-                        link.click();
-                        document.body.removeChild(link);
+                        window.open(selectedExam.pdfData, '_blank');
                     }
                 };
                 
@@ -4810,12 +4805,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 <div className="mt-3 flex justify-center flex-shrink-0">
                                                                     <button 
                                                                         onClick={() => {
-                                                                            const link = document.createElement('a');
-                                                                            link.href = selectedExam.pdfData;
-                                                                            link.download = `${selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_')}_${selectedExam.date}.pdf`;
-                                                                            document.body.appendChild(link);
-                                                                            link.click();
-                                                                            document.body.removeChild(link);
+                                                                            window.open(selectedExam.pdfData, '_blank');
                                                                         }}
                                                                         className="flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-lg text-sm"
                                                                     >
