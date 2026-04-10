@@ -6677,13 +6677,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                                                 <div key={idx}
                                                                                     onClick={() => {
                                                                                         if (pdfUrl) {
-                                                                                            setSelectedExam({
-                                                                                                id: order.id + '_' + idx,
-                                                                                                type: item.examName || item?.exam?.name || 'Resultado',
-                                                                                                date: order.completedAt || order.createdAt,
-                                                                                                pdfData: pdfUrl,
-                                                                                                seen: true
-                                                                                            });
+                                                                                            const win = window.open();
+                                                                                            win.location.href = pdfUrl;
                                                                                         } else {
                                                                                             alert('El PDF de este resultado aún no está disponible');
                                                                                         }
