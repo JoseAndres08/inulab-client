@@ -5793,7 +5793,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                         <div className="grid grid-cols-2 gap-4 pb-6">
                                                             {filtered.map(order => (
                                                                 <div key={order.id} onClick={() => {
-                                                                    if (order.invoicePdfUrl) window.open(`https://inulab-backend-production.up.railway.app${order.invoicePdfUrl}`, '_blank');
+                                                                    if (order.resultPdfUrl) { const win = window.open(); win.location.href = `https://inulab-backend-production.up.railway.app${order.resultPdfUrl}`; }
+                                                                    else if (order.items?.[0]?.pdfData) { const win = window.open(); win.location.href = order.items[0].pdfData; }
                                                                     else alert('Este resultado aún no está disponible');
                                                                 
                                                                 }} className="bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all">
