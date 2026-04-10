@@ -6716,7 +6716,7 @@ const PdfViewer = ({ url, style, className }) => {
                                         </div>)}
 
                         {medicoView === 'facturacion' && (() => {
-                            const userInvoices = (database.orders || []).filter(o => o.userId === freshUser.id && o.invoicePdf);
+                            const userInvoices = (database.orders || []).filter(o => o.userId === freshUser.id && o.invoicePdf && !o.resultPdf);
                             const facInvoice = medicoFacInvoice;
                             const setFacInvoice = setMedicoFacInvoice;
                             if (facInvoice) {
