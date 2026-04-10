@@ -5108,7 +5108,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Editar Perfil Desktop */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'configuracion' && showEditProfile && (
-                                        <div className="max-w-lg mx-auto" style={{ overflowY: 'auto', maxHeight: '100vh', paddingBottom: '2rem' }}>
+                                        <div className="max-w-lg mx-auto pb-20">
                                             <div className="bg-white rounded-2xl shadow p-6">
                                                 <div className="flex items-center gap-3 mb-6">
                                                     <button onClick={() => setShowEditProfile(false)} className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-xl flex items-center justify-center">
