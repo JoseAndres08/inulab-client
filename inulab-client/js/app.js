@@ -6003,7 +6003,7 @@ const PdfViewer = ({ url, style, className }) => {
                     
                     {/* Content area - always with sidebar margin on desktop */}
                     {duenoView === 'config' ? (
-                        <div className="app-content-breadcrumb lg:ml-56 lg:pt-16">
+                        <div className="app-content-breadcrumb lg:ml-56 lg:pt-16" style={{ overflowY: 'auto', height: '100vh' }}>
                             <div className="max-w-md mx-auto px-4 py-5">
                                 {!showEditProfile ? (
                                     <div>
