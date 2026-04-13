@@ -398,7 +398,7 @@
             { id: 'DP6', name: 'Perfil Electrolitos', subtitle: 'LYTE 4 (Na, K, Cl) + Calcio + Fósforo', icon: 'fa-bolt', color: 'text-cyan-600', bg: 'bg-cyan-100', price: 220, turnaround: '1-2 hrs' },
             { id: 'DP7', name: 'Perfil Hormonal', subtitle: 'T4 Total + TSH + Cortisol (Healvet)', icon: 'fa-dna', color: 'text-pink-600', bg: 'bg-pink-100', price: 300, turnaround: '2 hrs' },
             { id: 'DP8', name: 'Perfil Hemoparásitos', subtitle: 'Hemograma + Reticulocitos + SNAP 4DX Plus', icon: 'fa-bugs', color: 'text-red-600', bg: 'bg-red-100', price: 250, turnaround: '1-2 hrs' },
-            { id: 'DP9', name: 'Perfil Felino', subtitle: 'Hemograma + Reticulocitos + SNAP Combo Felino', icon: 'fa-cat', color: 'text-indigo-600', bg: 'bg-indigo-100', price: 280, turnaround: '1-2 hrs' },
+            { id: 'DP9', name: 'Perfil Felino', subtitle: 'Hemograma + Reticulocitos + SNAP Combo Felino', icon: 'fa-cat', color: 'text-indigo-600', bg: 'bg-indigo-100', price: 250, turnaround: '1-2 hrs' },
         ];
 
         const categoriasDuenos = [
@@ -436,9 +436,11 @@
             { nombre: 'PCR en Tiempo Real', icon: 'fa-virus', color: 'text-emerald-500', examenes: [
                 { id: 'DPCR1', name: 'PCR Leucemia Felina', subtitle: 'VILEF', icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 400, turnaround: '24-48 hrs' },
                 { id: 'DPCR2', name: 'PCR Mycoplasma Hemotrópico', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 400, turnaround: '24-48 hrs' },
-                { id: 'DPCR3', name: 'PCR Leptospira Interrogans', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 400, turnaround: '24-48 hrs' },
-                { id: 'DPCR4', name: 'PCR VIF / VILEF', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 420, turnaround: '24-48 hrs' },
-                { id: 'DPCR5', name: 'PCR Panel Completo', subtitle: 'Babesia, Lyme, Erlichia, Anaplasma, Mycoplasma', icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 480, turnaround: '24-48 hrs' },
+                { id: 'DPCR3', name: 'PCR Erlichia', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 390, turnaround: '24-48 hrs' },
+                { id: 'DPCR4', name: 'PCR Anaplasma SPP', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 390, turnaround: '24-48 hrs' },
+                { id: 'DPCR5', name: 'PCR Leptospira Interrogans', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 400, turnaround: '24-48 hrs' },
+                { id: 'DPCR6', name: 'PCR VIF / VILEF', subtitle: null, icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 420, turnaround: '24-48 hrs' },
+                { id: 'DPCR7', name: 'PCR Panel Completo', subtitle: 'Babesia, Lyme, Erlichia, Anaplasma, Mycoplasma', icon: 'fa-virus', color: 'text-emerald-500', bg: 'bg-emerald-50', price: 480, turnaround: '24-48 hrs' },
             ]},
             { nombre: 'Inmunoserología', icon: 'fa-shield-virus', color: 'text-blue-500', examenes: [
                 { id: 'DI1', name: 'SNAP Combo Felino', subtitle: 'VIF y VILEF - IDEXX', icon: 'fa-cat', color: 'text-blue-500', bg: 'bg-blue-50', price: 240, turnaround: '1 hr' },
