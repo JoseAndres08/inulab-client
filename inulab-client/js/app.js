@@ -6864,6 +6864,11 @@ const PdfViewer = ({ url, style, className }) => {
                                 <i className="fas fa-clipboard-list"></i>
                                 <span>Pedidos</span>
                             </button>
+                            <button className={`mob-nav-btn ${activeTab === 'facturacion' && duenoView !== 'config' ? 'active' : ''}`}
+                                onClick={() => { resetDuenoState(); setActiveTab('facturacion'); }}>
+                                <i className="fas fa-file-invoice-dollar"></i>
+                                <span>Facturas</span>
+                            </button>
                             <button className={`mob-nav-btn ${activeTab === 'resultados' && duenoView !== 'config' ? 'active' : ''}`}
                                 onClick={() => { resetDuenoState(); setActiveTab('resultados'); }}>
                                 <i className="fas fa-file-medical"></i>
