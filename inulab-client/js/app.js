@@ -6405,7 +6405,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                     </div>
 
                                                     {/* Buscador */}
-                                                    <div className="relative flex-1 max-w-2xl">
+                                                    <div className="relative flex-1 w-full">
                                                         <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
 
                                                         <input
