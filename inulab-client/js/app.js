@@ -6429,7 +6429,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                 </div>
                                             </div>
                                             {/* Contenido scrolleable */}
-                                            <div className="flex-1 overflow-y-auto p-6 pb-6">
+                                            <div className="flex-1 p-6 pb-6">
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
