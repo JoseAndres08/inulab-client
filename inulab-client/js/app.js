@@ -6393,19 +6393,39 @@ const PdfViewer = ({ url, style, className }) => {
                         {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content">
                                         {activeTab === 'pedidos' && (<div className="flex flex-col -mx-4 lg:-mx-6 -mt-4 lg:-mt-6" style={{ height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
                                             {/* Header fijo */}
-                                            <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
-                                                <div className="flex items-center gap-3">
-                                                    <div className="flex items-center gap-2 px-2">
+                                            <div className="flex-shrink-0 bg-gray-100 border-b border-gray-200 px-6 py-3">
+                                                <div className="flex items-center gap-4">
+
+                                                    {/* Título */}
+                                                    <div className="flex items-center gap-2 min-w-max">
                                                         <i className="fas fa-clipboard-list text-cyan-500 text-lg"></i>
-                                                        <span className="text-cyan-600 font-semibold">Pedidos</span>
+                                                        <span className="text-cyan-600 font-semibold text-base">
+                                                            Pedidos
+                                                        </span>
                                                     </div>
-                                                    <div className="relative flex-1">
-                                                        <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                        <input type="text" value={pedidosSearchTerm} onChange={(e) => setPedidosSearchTerm(e.target.value)}
+
+                                                    {/* Buscador */}
+                                                    <div className="relative flex-1 max-w-2xl">
+                                                        <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+
+                                                        <input
+                                                            type="text"
+                                                            value={pedidosSearchTerm}
+                                                            onChange={(e) => setPedidosSearchTerm(e.target.value)}
                                                             placeholder="Buscar examen o servicio..."
-                                                            className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-cyan-500 focus:outline-none bg-white text-sm" />
-                                                        {pedidosSearchTerm && <button onClick={() => setPedidosSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                                            className="w-full py-3 pl-12 pr-10 rounded-full border border-gray-200 bg-white focus:border-cyan-500 focus:outline-none text-sm shadow-sm"
+                                                        />
+
+                                                        {pedidosSearchTerm && (
+                                                            <button
+                                                                onClick={() => setPedidosSearchTerm('')}
+                                                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                            >
+                                                                <i className="fas fa-times text-sm"></i>
+                                                            </button>
+                                                        )}
                                                     </div>
+
                                                 </div>
                                             </div>
                                             {/* Contenido scrolleable */}
