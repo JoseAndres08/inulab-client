@@ -6418,6 +6418,46 @@ const PdfViewer = ({ url, style, className }) => {
                                                 </div>
 
                                                 {(cart.length > 0 || pendingExams.length > 0) && <div className="flex items-center gap-4 mb-4 text-xs text-gray-500"><span className="flex items-center gap-1"><span className="w-3 h-3 bg-emerald-500 rounded-full"></span> Seleccionado</span><span className="text-gray-400">• Toca para deseleccionar</span></div>}
+                                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                                                    {paquetesDuenos.map(paquete => {
+                                                        const isInCart = cart.find(c => c.exam.id === paquete.id);
+                                                        const isPending = pendingExams.find(e => e.id === paquete.id);
+                                                        return (
+                                                            <div key={paquete.id} onClick={() => handleExamClick(paquete)}
+                                                                className={`bg-white rounded-2xl p-4 cursor-pointer hover:shadow-lg transition-all shadow border-2 relative ${isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300'}`}>
+                                                                {paquete.recomendado && <span className="absolute -top-2 right-3 bg-rose-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">⭐ Popular</span>}
+                                                                <div className="flex items-start gap-4">
+                                                                    <div className={`w-14 h-14 ${paquete.bg} rounded-2xl flex items-center justify-center flex-shrink-0`}>
+                                                                        <i className={`fas ${paquete.icon} ${paquete.color} text-2xl`}></i>
+                                                                    </div>
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <h3 className="text-gray-800 font-bold text-base mb-1">{paquete.name}</h3>
+                                                                        <p className="text-gray-500 text-xs leading-snug mb-1">{paquete.description}</p>
+                                                                        <div className="flex items-center gap-3">
+                                                                            <span className="text-xs text-gray-400 flex items-center gap-1">
+                                                                                <i className="fas fa-clock"></i> {paquete.tiempo}
+                                                                            </span>
+                                                                            <button
+                                                                                onClick={(e) => { e.stopPropagation(); setSelectedPaqueteDetail(paquete); document.querySelector('.app-content-dueno')?.scrollTo(0, 0); }}
+                                                                                className="text-xs text-cyan-600 font-medium flex items-center gap-1 hover:text-cyan-700"
+                                                                            >
+                                                                                <i className="fas fa-info-circle"></i> Ver más
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                                                                        {paquete.price && <span className="text-cyan-600 font-bold text-base whitespace-nowrap">S/ {paquete.price}</span>}
+                                                                        {(isInCart || isPending) && (
+                                                                            <div className={`w-7 h-7 ${isInCart ? 'bg-emerald-500' : 'bg-amber-400'} rounded-full flex items-center justify-center`}>
+                                                                                <i className={`fas ${isInCart ? 'fa-check' : 'fa-clock'} text-white text-sm`}></i>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                             {/* Exámenes específicos - collapsible */}
                             <div className="mt-8">
                                 <button onClick={() => setShowTechnicalExams(!showTechnicalExams)} className="w-full flex items-center justify-between py-3 px-4 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-colors">
