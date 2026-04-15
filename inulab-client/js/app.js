@@ -6390,7 +6390,7 @@ const PdfViewer = ({ url, style, className }) => {
                         })()}
                         
                         {/* === Vistas normales: Pedidos y Resultados === */}
-                                    {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col overflow-hidden">
+                                    {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col">
                                         {activeTab === 'pedidos' && (
                                             <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100">
 
