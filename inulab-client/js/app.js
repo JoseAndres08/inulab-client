@@ -1025,6 +1025,7 @@ const PdfViewer = ({ url, style, className }) => {
             const [regError, setRegError] = useState('');
             const [regLoading, setRegLoading] = useState(false);
             const [regSuccess, setRegSuccess] = useState('');
+            const [pedidosSearchTerm, setPedidosSearchTerm] = useState('');
             // Estados búsqueda dueño
             const paquetesFiltrados = paquetesDuenos.filter(paquete => {
                 const texto = pedidosSearchTerm.toLowerCase();
