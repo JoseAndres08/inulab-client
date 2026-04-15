@@ -6392,9 +6392,9 @@ const PdfViewer = ({ url, style, className }) => {
                         {/* === Vistas normales: Pedidos y Resultados === */}
                         {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content">
                                         {activeTab === 'pedidos' && (
-                                            <div className="flex flex-col flex-1 -mx-4 lg:-mx-6 -mt-4 lg:-mt-6">
+                                            <div className="flex flex-col flex-1 -mx-4 lg:-mx-6">
                                             {/* Header fijo */}
-                                            <div className="flex-shrink-0 sticky top-0 z-10 bg-gray-100 border-b border-gray-200 px-6 py-3 w-full">
+                                            <div className="flex-shrink-0 sticky top-0 z-20 bg-gray-100 border-b border-gray-200 px-6 py-3 w-full">
                                                 <div className="flex items-center gap-4">
 
                                                     {/* Título */}
