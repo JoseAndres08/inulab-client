@@ -6818,78 +6818,36 @@ const PdfViewer = ({ url, style, className }) => {
                                                 return null;
                                             })()}
 
-                                            {/* Resultados completados con PDF */}
-                                            {(() => {
-                                                const completedOrders = (database.orders || []).filter(o =>
-                                                    o.status === 'completed' || o.status === 9 || Number(o.status) === 9
-                                                ).filter(o => {
-                                                    if (resSearchTerm && !(o.items || []).some(i => (i.examName || '').toLowerCase().includes(resSearchTerm.toLowerCase()) || (i.pet?.name || '').toLowerCase().includes(resSearchTerm.toLowerCase()))) return false;
-                                                    const d = new Date(o.completedAt || o.createdAt);
-                                                    if (resFilterDay && String(d.getDate()).padStart(2, '0') !== resFilterDay) return false;
-                                                    if (resFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== resFilterMonth) return false;
-                                                    if (resFilterYear && String(d.getFullYear()) !== resFilterYear) return false;
-                                                    return true;
-                                                });
-                                                if (completedOrders.length === 0) return (
-                                                    <div className="bg-white rounded-2xl p-10 text-center shadow">
-                                                        <i className="fas fa-file-medical text-4xl text-gray-300 mb-2"></i>
-                                                        <p className="text-gray-500">No hay resultados disponibles aún</p>
-                                                    </div>
-                                                );
-                                                return (
-                                                    <div>
-                                                        <h2 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-                                                            <i className="fas fa-file-medical text-purple-500"></i>Resultados
-                                                        </h2>
-                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                                            {completedOrders.map(order => (
-                                                                <div key={order.id} className="bg-white rounded-2xl shadow p-4">
-                                                                    <p className="text-xs text-gray-400 mb-3">
-                                                                        {new Date(order.completedAt || order.createdAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}
-                                                                    </p>
-                                                                    <div className="space-y-3">
-                                                                        {(order.items || []).map((item, idx) => {
-                                                                            const pdfUrl = item.pdfData || item.pdfUrl || order.resultPdfUrl || (order.resultPdfUrl ? `https://inulab-backend-production.up.railway.app${order.resultPdfUrl}` : null);
-                                                                            return (
-                                                                                <div key={idx}
-                                                                                    onClick={() => {
-                                                                                        if (pdfUrl) {
-                                                                                            const win = window.open();
-                                                                                            win.location.href = pdfUrl;
-                                                                                        } else {
-                                                                                            alert('El PDF de este resultado aún no está disponible');
-                                                                                        }
-                                                                                    }}
-                                                                                    className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${pdfUrl ? 'bg-purple-50 hover:bg-purple-100 border border-purple-200' : 'bg-gray-50 border border-gray-200 opacity-60'}`}
-                                                                                >
-                                                                                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${pdfUrl ? 'bg-purple-100' : 'bg-gray-200'}`}>
-                                                                                        <i className={`fas fa-file-pdf text-lg ${pdfUrl ? 'text-purple-600' : 'text-gray-400'}`}></i>
-                                                                                    </div>
-                                                                                    <div className="flex-1 min-w-0">
-                                                                                        <p className="font-semibold text-gray-800 text-sm truncate">
-                                                                                            {item.examName || item?.exam?.name || 'Resultado'}
-                                                                                        </p>
-                                                                                        <p className="text-xs text-gray-500">
-                                                                                            {item?.pet?.name || item?.petName || ''}
-                                                                                        </p>
-                                                                                    </div>
-                                                                                    {pdfUrl ? (
-                                                                                        <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center flex-shrink-0">
-                                                                                            <i className="fas fa-eye text-white text-sm"></i>
-                                                                                        </div>
-                                                                                    ) : (
-                                                                                        <span className="text-xs text-gray-400">Sin PDF</span>
-                                                                                    )}
-                                                                                </div>
-                                                                            );
-                                                                        })}
-                                                                    </div>
+                                            {/* Selecciona tu mascota */}
+                                            <h2 className="text-lg font-bold text-gray-800 mb-4">Selecciona tu mascota</h2>
+                                            {(database.pets || []).filter(p =>
+                                                !resSearchTerm || (p.name || '').toLowerCase().includes(resSearchTerm.toLowerCase())
+                                            ).length === 0 ? (
+                                                <div className="bg-white rounded-2xl p-10 text-center shadow">
+                                                    <i className="fas fa-paw text-4xl text-gray-300 mb-2"></i>
+                                                    <p className="text-gray-500">No tienes mascotas registradas</p>
+                                                </div>
+                                            ) : (
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    {(database.pets || []).filter(p =>
+                                                        !resSearchTerm || (p.name || '').toLowerCase().includes(resSearchTerm.toLowerCase())
+                                                    ).map(pet => (
+                                                        <div key={pet.id} onClick={() => setSelectedPet(pet)}
+                                                            className="bg-white rounded-2xl p-5 shadow cursor-pointer hover:shadow-lg hover:border-purple-400 border-2 border-transparent transition-all">
+                                                            <div className="flex items-center gap-4">
+                                                                <div className="text-4xl">{pet.photo}</div>
+                                                                <div className="flex-1">
+                                                                    <h3 className="text-lg font-bold text-gray-800">{pet.name}</h3>
+                                                                    <p className="text-gray-500 text-sm">{pet.breed}</p>
                                                                 </div>
-                                                            ))}
+                                                                <div className="bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">
+                                                                    {(pet.exams || []).length}
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                );
-                                            })()}
+                                                    ))}
+                                                </div>
+                                            )}
                                         </div>)}
 
                         {medicoView === 'facturacion' && (() => {
