@@ -6395,7 +6395,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div className="flex flex-col flex-1 -mx-4 lg:-mx-6 bg-gray-100">
 
                                                 {/* Header fijo */}
-                                                <div className="flex-shrink-0 sticky top-0 z-50 bg-gray-100/95 backdrop-blur-md px-6 py-1 border-b border-gray-200">
+                                                <div className="flex-shrink-0 sticky top-0 z-50 bg-gray-100 px-6 py-1 border-b border-gray-200 -mt-1">
 
                                                     <div className="flex items-center gap-4">
 
