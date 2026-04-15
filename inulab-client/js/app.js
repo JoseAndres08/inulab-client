@@ -6724,6 +6724,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                     </div>
                                                 </div>
                                             </div>
+
                                             {/* Pedidos en curso */}
                                             {(() => {
                                                 const userOrders = (database.orders || []).filter(o =>
