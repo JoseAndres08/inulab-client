@@ -6395,42 +6395,38 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div className="flex flex-col flex-1 -mx-4 lg:-mx-6">
 
                                                 {/* Header fijo */}
-                                                <div className="flex-shrink-0 sticky top-0 z-20 bg-gray-100 px-6 py-3">
+                                                <div className="flex-shrink-0 sticky top-0 z-20 bg-gray-100 px-6 py-2">
 
-                                                    <div className="rounded-2xl shadow-sm border border-gray-200 px-4 py-3">
+                                                    <div className="flex items-center gap-4 border border-gray-200 rounded-xl px-4 py-2 bg-gray-100">
 
-                                                        <div className="flex items-center gap-4">
+                                                        {/* Título */}
+                                                        <div className="flex items-center gap-2 min-w-max">
+                                                            <i className="fas fa-clipboard-list text-cyan-500 text-base"></i>
+                                                            <span className="text-cyan-600 font-semibold text-sm">
+                                                                Pedidos
+                                                            </span>
+                                                        </div>
 
-                                                            {/* Título */}
-                                                            <div className="flex items-center gap-2 min-w-max">
-                                                                <i className="fas fa-clipboard-list text-cyan-500 text-lg"></i>
-                                                                <span className="text-cyan-600 font-semibold text-base">
-                                                                    Pedidos
-                                                                </span>
-                                                            </div>
+                                                        {/* Buscador */}
+                                                        <div className="relative flex-1">
+                                                            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
 
-                                                            {/* Buscador */}
-                                                            <div className="relative flex-1 w-full">
-                                                                <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                            <input
+                                                                type="text"
+                                                                value={pedidosSearchTerm}
+                                                                onChange={(e) => setPedidosSearchTerm(e.target.value)}
+                                                                placeholder="Buscar examen o servicio..."
+                                                                className="w-full py-2.5 pl-10 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none"
+                                                            />
 
-                                                                <input
-                                                                    type="text"
-                                                                    value={pedidosSearchTerm}
-                                                                    onChange={(e) => setPedidosSearchTerm(e.target.value)}
-                                                                    placeholder="Buscar examen o servicio..."
-                                                                    className="w-full py-3 pl-12 pr-10 rounded-full border border-gray-300 bg-gray-100 focus:border-cyan-500 focus:outline-none text-sm"
-                                                                />
-
-                                                                {pedidosSearchTerm && (
-                                                                    <button
-                                                                        onClick={() => setPedidosSearchTerm('')}
-                                                                        className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                                                    >
-                                                                        <i className="fas fa-times text-sm"></i>
-                                                                    </button>
-                                                                )}
-                                                            </div>
-
+                                                            {pedidosSearchTerm && (
+                                                                <button
+                                                                    onClick={() => setPedidosSearchTerm('')}
+                                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                                                >
+                                                                    <i className="fas fa-times text-xs"></i>
+                                                                </button>
+                                                            )}
                                                         </div>
 
                                                     </div>
