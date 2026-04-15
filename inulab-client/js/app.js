@@ -1026,7 +1026,14 @@ const PdfViewer = ({ url, style, className }) => {
             const [regLoading, setRegLoading] = useState(false);
             const [regSuccess, setRegSuccess] = useState('');
             // Estados búsqueda dueño
-            const [pedidosSearchTerm, setPedidosSearchTerm] = useState('');
+            const paquetesFiltrados = paquetesDuenos.filter(paquete => {
+                const texto = pedidosSearchTerm.toLowerCase();
+
+                return (
+                    (paquete.name && paquete.name.toLowerCase().includes(texto)) ||
+                    (paquete.description && paquete.description.toLowerCase().includes(texto))
+                );
+            });
             const [facDuenoSearchTerm, setFacDuenoSearchTerm] = useState('');
             const [facDuenoFilterDay, setFacDuenoFilterDay] = useState('');
             const [facDuenoFilterMonth, setFacDuenoFilterMonth] = useState('');
@@ -6395,36 +6402,36 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100 overflow-hidden">
 
                                                 {/* Header fijo */}
-                                                <div className="flex-shrink-0 sticky top-0 z-50 bg-gray-100 px-6 py-1 border-b border-gray-200">
+                                                <div className="flex-shrink-0 sticky top-0 z-50 bg-gray-100 px-6 pt-1 pb-3 border-b border-gray-200">
 
                                                     <div className="flex items-center gap-4">
 
                                                         {/* Título */}
                                                         <div className="flex items-center gap-2 min-w-max">
-                                                            <i className="fas fa-clipboard-list text-cyan-500 text-base"></i>
-                                                            <span className="text-cyan-600 font-semibold text-sm">
+                                                            <i className="fas fa-clipboard-list text-cyan-500 text-lg"></i>
+                                                            <span className="text-cyan-600 font-semibold text-base">
                                                                 Pedidos
                                                             </span>
                                                         </div>
 
-                                                        {/* Buscador */}
+                                                        {/* Buscador GRANDE */}
                                                         <div className="relative flex-1">
-                                                            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                            <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-base"></i>
 
                                                             <input
                                                                 type="text"
                                                                 value={pedidosSearchTerm}
                                                                 onChange={(e) => setPedidosSearchTerm(e.target.value)}
                                                                 placeholder="Buscar examen o servicio..."
-                                                                className="w-full py-2.5 pl-10 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none"
+                                                                className="w-full py-3.5 pl-12 pr-10 rounded-full border border-gray-200 bg-white text-base focus:border-cyan-500 focus:outline-none shadow-sm"
                                                             />
 
                                                             {pedidosSearchTerm && (
                                                                 <button
                                                                     onClick={() => setPedidosSearchTerm('')}
-                                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+                                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
                                                                 >
-                                                                    <i className="fas fa-times text-xs"></i>
+                                                                    <i className="fas fa-times text-sm"></i>
                                                                 </button>
                                                             )}
                                                         </div>
@@ -6433,7 +6440,7 @@ const PdfViewer = ({ url, style, className }) => {
 
                                                 </div>
 
-                                                {/* CONTENIDO (AQUÍ ESTÁ LA CLAVE) */}
+                                                {/* CONTENIDO */}
                                                 <div className="flex-1 overflow-y-auto px-6 pb-6 pt-0">
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
@@ -6444,7 +6451,7 @@ const PdfViewer = ({ url, style, className }) => {
 
                                                 {(cart.length > 0 || pendingExams.length > 0) && <div className="flex items-center gap-4 mb-4 text-xs text-gray-500"><span className="flex items-center gap-1"><span className="w-3 h-3 bg-emerald-500 rounded-full"></span> Seleccionado</span><span className="text-gray-400">• Toca para deseleccionar</span></div>}
                                                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                                                    {paquetesDuenos.map(paquete => {
+                                                        {paquetesFiltrados.map(paquete => {
                                                         const isInCart = cart.find(c => c.exam.id === paquete.id);
                                                         const isPending = pendingExams.find(e => e.id === paquete.id);
                                                         return (
