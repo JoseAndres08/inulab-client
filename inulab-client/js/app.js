@@ -1452,9 +1452,18 @@ const PdfViewer = ({ url, style, className }) => {
                         ageValue: p.age,
                         ageUnit: 'años',
                         sex: String(p.sex || ''),
-                        photo: '🐾',
+                        photo: p.species === 'perro' ? '🐶' :
+                            p.species === 'gato' ? '🐱' :
+                                p.species === 'ave' ? '🦜' :
+                                    p.species === 'conejo' ? '🐰' : '🐾',
                         owner: String(p.ownerName || p.owner || ''),
-                        exams: []
+                        exams: (p.exams || []).map(e => ({
+                            id: e.id,
+                            type: e.type || e.examName || 'Examen',
+                            date: e.date,
+                            seen: true,
+                            pdfData: null
+                        }))
                     }));
 
                     console.log("pets OK", pets);
@@ -1505,6 +1514,25 @@ const PdfViewer = ({ url, style, className }) => {
                         addressesResponse?.data ||
                         [];
 
+                    // Enriquecer exams con pdfData de orders
+                    pets.forEach(pet => {
+                        pet.exams = pet.exams.map(exam => {
+                            const matchingOrder = orders.find(o =>
+                                (o.status === 'completed' || Number(o.status) === 9) &&
+                                (o.items || []).some(i =>
+                                    String(i.examName).toLowerCase() === String(exam.type).toLowerCase()
+                                )
+                            );
+                            const rawUrl = matchingOrder?.resultPdfUrl || null;
+                            const pdfUrl = rawUrl
+                                ? (rawUrl.startsWith('http')
+                                    ? rawUrl
+                                    : `https://inulab-backend-production.up.railway.app${rawUrl}`)
+                                : null;
+                            return { ...exam, pdfData: pdfUrl };
+                        });
+                    });
+                                        
                     const db = {
                         pets: pets || [],
                         orders: orders || [],
