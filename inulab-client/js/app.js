@@ -6392,7 +6392,7 @@ const PdfViewer = ({ url, style, className }) => {
                         {/* === Vistas normales: Pedidos y Resultados === */}
                                     {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col">
                                         {activeTab === 'pedidos' && (
-                                            <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100">
+                                            <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100 overflow-hidden">
 
                                                 {/* Header fijo */}
                                                 <div className="flex-shrink-0 sticky top-0 z-50 bg-gray-100 px-6 py-1 border-b border-gray-200">
@@ -6432,8 +6432,9 @@ const PdfViewer = ({ url, style, className }) => {
                                                     </div>
 
                                                 </div>
-                                            {/* Contenido scrolleable */}
-                                                <div className="mb-6 mt-0">
+
+                                                {/* CONTENIDO (AQUÍ ESTÁ LA CLAVE) */}
+                                                <div className="flex-1 overflow-y-auto px-6 pb-6 pt-0">
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
