@@ -1513,9 +1513,15 @@ const PdfViewer = ({ url, style, className }) => {
                         addressesResponse?.addresses ||
                         addressesResponse?.data ||
                         [];
-
+                    
                     // Enriquecer exams con pdfData de orders
                     pets.forEach(pet => {
+                        console.log('PET EXAMS:', pet.exams.map(e => e.type));
+                        console.log('ORDERS COMPLETED:', orders.filter(o => Number(o.status) === 9).map(o => ({
+                            status: o.status,
+                            resultPdfUrl: o.resultPdfUrl,
+                            items: (o.items || []).map(i => i.examName)
+                        })));
                         pet.exams = pet.exams.map(exam => {
                             const matchingOrder = orders.find(o =>
                                 (o.status === 'completed' || Number(o.status) === 9) &&
