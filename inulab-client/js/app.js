@@ -6302,7 +6302,7 @@ const PdfViewer = ({ url, style, className }) => {
                         )}
 
                         {/* === Vista Perfil de Mascota (inline) === */}
-                        {!viewingOrderTracking && !selectedExam && !viewingInvoice && selectedPet && activeTab === 'resultados' && (() => {
+                        {!viewingOrderTracking && !selectedExam && !viewingInvoice && selectedPet && activeTab === 'resultados' && freshUser.type !== 'medico' && (() => {
                             const currentPet = petsOrPatients.find(p => p.id === selectedPet.id) || selectedPet;
                             return (<div className="dueno-normal-content">
                                 <button onClick={() => setSelectedPet(null)} className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"><i className="fas fa-arrow-left"></i><span className="text-sm font-medium">Volver a mascotas</span></button>
