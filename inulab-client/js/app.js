@@ -1526,6 +1526,7 @@ const PdfViewer = ({ url, style, className }) => {
                             resultPdfUrl: o.resultPdfUrl,
                             items: (o.items || []).map(i => i.examName)
                         })));
+                        console.log('BUSCANDO:', exam.type, 'EN ORDERS:', orders.map(o => o.items?.map(i => i.examName)));
                         pet.exams = pet.exams.map(exam => {
                             const matchingOrder = orders.find(o =>
                                 (o.status === 'completed' || Number(o.status) === 9) &&
