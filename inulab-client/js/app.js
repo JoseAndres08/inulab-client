@@ -1044,6 +1044,7 @@ const PdfViewer = ({ url, style, className }) => {
             const [resFilterMonth, setResFilterMonth] = useState('');
             const [resFilterYear, setResFilterYear] = useState('');
             const [showMobileSearch, setShowMobileSearch] = React.useState(false);
+            const [showFacMobileSearch, setShowFacMobileSearch] = React.useState(false);
 
             useEffect(() => {
                 if (showAddressSelection) {
@@ -7134,45 +7135,81 @@ const PdfViewer = ({ url, style, className }) => {
                             const userInvoices = facturas;
                                 return (
                                                 <div className="dueno-normal-content pb-6">
-                                                    {/* Header fijo con título + buscador + filtros integrados */}
-                                                    <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4 -mx-4 -mt-4 mb-6 lg:-mx-6 lg:-mt-6">
-                                                        {/* Fila 1: Título */}
-                                                        <div className="flex items-center gap-2 mb-3">
-                                                            <i className="fas fa-file-invoice-dollar text-amber-500 text-lg"></i>
-                                                            <span className="text-amber-600 font-semibold">Facturación</span>
-                                                            <span className="bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">{(facturas || []).length}</span>
-                                                        </div>
-                                                        {/* Fila 2: Buscador */}
-                                                        <div className="relative mb-2">
-                                                            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                            <input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)}
-                                                                placeholder="Buscar comprobante..."
-                                                                className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm" />
-                                                            {facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
-                                                        </div>
-                                                        {/* Fila 3: Filtros */}
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-xs text-gray-500 flex-shrink-0">Filtrar:</span>
-                                                            <div className="relative flex-1">
-                                                                <select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                                    <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
-                                                                </select>
-                                                                <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                            </div>
-                                                            <div className="relative flex-1">
-                                                                <select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                                    <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                                </select>
-                                                                <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                            </div>
-                                                            <div className="relative flex-1">
-                                                                <select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                                    <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
-                                                                </select>
-                                                                <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                            </div>
-                                                        </div>
+                                        {/* Header: Desktop */}
+                                        <div className="hidden lg:block flex-shrink-0 bg-white border-b border-gray-200 px-6 py-3 -mx-6 -mt-6 mb-6">
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex items-center gap-2">
+                                                    <i className="fas fa-file-invoice-dollar text-amber-500 text-lg"></i>
+                                                    <span className="text-amber-600 font-semibold text-lg">Facturación</span>
+                                                    <span className="bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">{(facturas || []).length}</span>
+                                                </div>
+                                                <div className="relative flex-1">
+                                                    <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                                    <input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)}
+                                                        placeholder="Buscar comprobante..."
+                                                        className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm" />
+                                                    {facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <span className="text-xs text-gray-500">Filtrar por:</span>
+                                                    <div className="relative">
+                                                        <select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="h-10 w-20 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
+                                                            <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
+                                                        </select>
+                                                        <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
                                                     </div>
+                                                    <div className="relative">
+                                                        <select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
+                                                            <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                        </select>
+                                                        <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                                    </div>
+                                                    <div className="relative">
+                                                        <select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
+                                                            <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                        </select>
+                                                        <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Header: Mobile */}
+                                        <div className="lg:hidden" style={{ position: 'fixed', top: 'calc(56px + env(safe-area-inset-top, 0px))', left: 0, right: 0, zIndex: 500, background: '#ffffff', boxShadow: '0 4px 14px -2px rgba(0,0,0,0.1)' }}>
+                                            <div style={{ padding: '10px 16px' }}>
+                                                <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                    <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
+                                                    <span className="text-white font-semibold text-sm">Facturación</span>
+                                                    <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto">{(facturas || []).length}</span>
+                                                    <button onClick={() => setShowFacMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0">
+                                                        <i className="fas fa-search text-xs"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            {showFacMobileSearch && (
+                                                <div className="px-4 pb-3 flex flex-col gap-2">
+                                                    <div className="relative">
+                                                        <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                                        <input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)}
+                                                            placeholder="Buscar comprobante..."
+                                                            className="w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm" />
+                                                        {facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                            <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
+                                                        </select>
+                                                        <select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                            <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                        </select>
+                                                        <select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                            <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div className="lg:hidden" style={{ height: '70px' }}></div>
                                     {(userInvoices || []).length === 0 ? (
                                         <div className="bg-white rounded-2xl p-12 text-center shadow-sm">
                                             <i className="fas fa-file-invoice text-5xl text-gray-300 mb-4 block"></i>
