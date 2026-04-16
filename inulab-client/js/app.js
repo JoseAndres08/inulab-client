@@ -1043,6 +1043,7 @@ const PdfViewer = ({ url, style, className }) => {
             const [resFilterDay, setResFilterDay] = useState('');
             const [resFilterMonth, setResFilterMonth] = useState('');
             const [resFilterYear, setResFilterYear] = useState('');
+            const [showMobileSearch, setShowMobileSearch] = React.useState(false);
 
             useEffect(() => {
                 if (showAddressSelection) {
@@ -6325,8 +6326,36 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 <p className="text-cyan-600 truncate" style={{ fontSize: '10px' }}>{currentPet.breed} · {formatAge(currentPet)} · {currentPet.sex}</p>
                                                             </div>
                                                             <span className="bg-cyan-500 text-white text-xs px-2 py-0.5 rounded-full flex-shrink-0">{(currentPet.exams || []).length}</span>
+                                                            <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white rounded-full flex items-center justify-center text-gray-600 flex-shrink-0 shadow-sm">
+                                                                <i className="fas fa-search text-xs"></i>
+                                                            </button>
                                                         </div>
                                                     </div>
+                                                    {showMobileSearch && (
+                                                        <div className="px-4 pb-3 flex flex-col gap-2">
+                                                            <div className="relative">
+                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                                                <input type="text" value={examSearchTerm} onChange={(e) => setExamSearchTerm(e.target.value)}
+                                                                    placeholder="Buscar examen..."
+                                                                    className="w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
+                                                                {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Día</option>
+                                                                    {[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
+                                                                </select>
+                                                                <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Mes</option>
+                                                                    {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                                </select>
+                                                                <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Año</option>
+                                                                    {['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
 
                                                 {/* Mobile: Content */}
@@ -6339,7 +6368,16 @@ const PdfViewer = ({ url, style, className }) => {
                                                         </div>
                                                     ) : (
                                                         <div className="space-y-2">
-                                                            {(currentPet.exams || []).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
+                                                                {(currentPet.exams || []).filter(exam => {
+                                                                    if (examSearchTerm && !exam.type.toLowerCase().includes(examSearchTerm.toLowerCase())) return false;
+                                                                    if (examFilterDay || examFilterMonth || examFilterYear) {
+                                                                        const d = new Date(exam.date);
+                                                                        if (examFilterDay && String(d.getDate()).padStart(2, '0') !== examFilterDay) return false;
+                                                                        if (examFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== examFilterMonth) return false;
+                                                                        if (examFilterYear && String(d.getFullYear()) !== examFilterYear) return false;
+                                                                    }
+                                                                    return true;
+                                                                }).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
                                                                 <div key={exam.id} onClick={() => markExamAsSeen(exam, currentPet)}
                                                                     className={`bg-white rounded-2xl p-3 shadow-sm cursor-pointer hover:shadow-md ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
                                                                     <div className="flex items-center gap-3">
