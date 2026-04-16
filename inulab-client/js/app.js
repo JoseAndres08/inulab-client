@@ -6308,15 +6308,115 @@ const PdfViewer = ({ url, style, className }) => {
                         )}
 
                         {/* === Vista Perfil de Mascota (inline) === */}
-                        {!viewingOrderTracking && !selectedExam && !viewingInvoice && selectedPet && activeTab === 'resultados' && freshUser.type !== 'medico' && (() => {
-                            const currentPet = petsOrPatients.find(p => p.id === selectedPet.id) || selectedPet;
-                            return (<div className="dueno-normal-content">
-                                <button onClick={() => setSelectedPet(null)} className="flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"><i className="fas fa-arrow-left"></i><span className="text-sm font-medium">Volver a mascotas</span></button>
-                                <div className="bg-white rounded-2xl shadow-lg p-6 mb-6"><div className="flex items-center gap-4"><div className="text-5xl">{currentPet?.photo}</div><div><h1 className="text-2xl font-bold text-gray-800">{currentPet.name}</h1>{currentPet.owner && <p className="text-gray-500 text-sm">Dueño: {currentPet.owner}</p>}<div className="flex flex-wrap gap-2 mt-2"><span className="bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full text-xs">{currentPet.breed}</span><span className="bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full text-xs">{formatAge(currentPet)}</span><span className="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs">{currentPet.sex}</span></div></div></div></div>
-                                <h2 className="text-lg font-bold text-gray-800 mb-4">Resultados</h2>
-                                {(currentPet?.exams || []).length === 0 ? <div className="bg-white rounded-2xl p-10 text-center shadow"><i className="fas fa-folder-open text-4xl text-gray-300 mb-2"></i><p className="text-gray-500">No hay resultados disponibles</p></div> : <div className="space-y-3">{(currentPet.exams || []).map(exam => (<div key={exam.id} onClick={() => markExamAsSeen(exam, currentPet)} className={`bg-white rounded-xl p-4 shadow cursor-pointer hover:shadow-lg flex items-center justify-between ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}><div className="flex items-center gap-3"><div className={`w-10 h-10 rounded-xl flex items-center justify-center ${exam.seen === false ? 'bg-red-100' : 'bg-cyan-100'}`}><i className={`fas fa-file-pdf ${exam.seen === false ? 'text-red-600' : 'text-cyan-600'}`}></i></div><div><p className="font-semibold text-gray-800">{exam.type}</p><p className="text-xs text-gray-500">{new Date(exam.date).toLocaleDateString('es-ES')}</p></div>{exam.seen === false && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold ml-2">NUEVO</span>}</div><i className="fas fa-chevron-right text-gray-400"></i></div>))}</div>}
-                            </div>);
-                        })()}
+                                    {!viewingOrderTracking && !selectedExam && !viewingInvoice && selectedPet && activeTab === 'resultados' && (() => {
+                                        const currentPet = (database.pets || []).find(p => p.id === selectedPet.id) || selectedPet;
+                                        return (
+                                            <div>
+                                                {/* Mobile: Fixed header */}
+                                                <div className="lg:hidden" style={{ position: 'fixed', top: 'calc(56px + env(safe-area-inset-top, 0px))', left: 0, right: 0, zIndex: 500, background: '#ffffff', boxShadow: '0 4px 14px -2px rgba(0,0,0,0.1)' }}>
+                                                    <div style={{ padding: '10px 16px' }}>
+                                                        <div className="bg-gray-100 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                            <button onClick={() => setSelectedPet(null)} className="dueno-circle-btn flex items-center justify-center bg-white/95 text-gray-600 flex-shrink-0">
+                                                                <i className="fas fa-arrow-left text-xs"></i>
+                                                            </button>
+                                                            <span className="text-lg">{currentPet.photo}</span>
+                                                            <div className="flex-1 min-w-0">
+                                                                <p className="text-gray-800 font-semibold text-sm leading-tight truncate">{currentPet.name}</p>
+                                                                <p className="text-cyan-600 truncate" style={{ fontSize: '10px' }}>{currentPet.breed} · {formatAge(currentPet)} · {currentPet.sex}</p>
+                                                            </div>
+                                                            <span className="bg-cyan-500 text-white text-xs px-2 py-0.5 rounded-full flex-shrink-0">{(currentPet.exams || []).length}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                {/* Mobile: Content */}
+                                                <div className="lg:hidden dueno-normal-content pb-20">
+                                                    <div style={{ height: '70px' }}></div>
+                                                    {(currentPet.exams || []).length === 0 ? (
+                                                        <div className="bg-white rounded-2xl p-8 text-center shadow-sm">
+                                                            <i className="fas fa-folder-open text-4xl text-gray-300 mb-2"></i>
+                                                            <p className="text-gray-500">No hay resultados disponibles</p>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="space-y-2">
+                                                            {(currentPet.exams || []).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
+                                                                <div key={exam.id} onClick={() => markExamAsSeen(exam, currentPet)}
+                                                                    className={`bg-white rounded-2xl p-3 shadow-sm cursor-pointer hover:shadow-md ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${exam.seen === false ? 'bg-red-100' : 'bg-purple-100'}`}>
+                                                                            <i className={`fas fa-file-pdf ${exam.seen === false ? 'text-red-600' : 'text-purple-600'}`}></i>
+                                                                        </div>
+                                                                        <div className="flex-1 min-w-0">
+                                                                            <p className="font-semibold text-gray-800 text-sm">{exam.type}</p>
+                                                                            <p className="text-xs text-gray-500">{new Date(exam.date).toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                                                        </div>
+                                                                        {exam.seen === false && <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold">NUEVO</span>}
+                                                                        <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
+                                                                            <i className="fas fa-eye text-purple-600 text-sm"></i>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Desktop: igual que antes */}
+                                                <div className="hidden lg:flex flex-col" style={{ height: 'calc(100vh - 70px)' }}>
+                                                    <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300">
+                                                        <div className="p-4 border-b border-gray-200">
+                                                            <div className="flex items-center gap-4">
+                                                                <button onClick={() => setSelectedPet(null)} className="w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm">
+                                                                    <i className="fas fa-arrow-left"></i>
+                                                                </button>
+                                                                <span className="text-4xl">{currentPet.photo}</span>
+                                                                <div className="flex-1">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <h1 className="text-xl font-bold text-gray-800">{currentPet.name}</h1>
+                                                                        <span className="bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full font-medium">{(currentPet.exams || []).length} exámenes</span>
+                                                                    </div>
+                                                                    <div className="flex items-center gap-4 mt-1">
+                                                                        <span className="text-sm text-gray-600"><i className="fas fa-dog text-cyan-500 mr-1"></i>{currentPet.breed}</span>
+                                                                        <span className="text-sm text-gray-600"><i className="fas fa-birthday-cake text-cyan-500 mr-1"></i>{formatAge(currentPet)}</span>
+                                                                        <span className="text-sm text-gray-600"><i className="fas fa-venus-mars text-cyan-500 mr-1"></i>{currentPet.sex}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="flex-1 overflow-y-auto p-6">
+                                                        {(currentPet.exams || []).length === 0 ? (
+                                                            <div className="bg-white rounded-xl p-8 text-center shadow">
+                                                                <i className="fas fa-folder-open text-4xl text-gray-300 mb-2"></i>
+                                                                <p className="text-gray-500">No hay resultados disponibles</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="space-y-3 pb-6">
+                                                                {(currentPet.exams || []).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
+                                                                    <div key={exam.id} onClick={() => markExamAsSeen(exam, currentPet)}
+                                                                        className={`bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
+                                                                        <div className="flex items-center gap-4">
+                                                                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${exam.seen === false ? 'bg-red-100' : 'bg-purple-100'}`}>
+                                                                                <i className={`fas fa-file-pdf text-xl ${exam.seen === false ? 'text-red-600' : 'text-purple-600'}`}></i>
+                                                                            </div>
+                                                                            <div className="flex-1">
+                                                                                <p className="font-semibold text-gray-800">{exam.type}</p>
+                                                                                <p className="text-sm text-gray-500"><i className="fas fa-calendar mr-1"></i>{new Date(exam.date).toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' })}</p>
+                                                                            </div>
+                                                                            {exam.seen === false && <span className="bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold">NUEVO</span>}
+                                                                            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
+                                                                                <i className="fas fa-eye text-purple-600"></i>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })()}
                         
                         {/* === Vista Selección de Mascota/Dirección (inline) === */}
                         {!viewingOrderTracking && !selectedPet && currentExamForPet && (() => {
