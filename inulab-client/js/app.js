@@ -6383,6 +6383,45 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        {/* Fila 2: Buscador y filtros */}
+                                                        <div className="p-4 flex items-center gap-3">
+                                                            <div className="relative flex-1">
+                                                                <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                                                                <input type="text" value={examSearchTerm} onChange={(e) => setExamSearchTerm(e.target.value)}
+                                                                    placeholder="Buscar examen..."
+                                                                    className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
+                                                                {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times"></i></button>}
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-xs text-gray-500">Filtrar por:</span>
+                                                                <div className="relative">
+                                                                    <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="h-10 w-20 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
+                                                                        <option value="">Día</option>
+                                                                        {[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
+                                                                    </select>
+                                                                    <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                                                </div>
+                                                                <div className="relative">
+                                                                    <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
+                                                                        <option value="">Mes</option>
+                                                                        {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                                    </select>
+                                                                    <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                                                </div>
+                                                                <div className="relative">
+                                                                    <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
+                                                                        <option value="">Año</option>
+                                                                        {['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                                    </select>
+                                                                    <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
+                                                                </div>
+                                                                {(examFilterDay || examFilterMonth || examFilterYear) && (
+                                                                    <button onClick={() => { setExamFilterDay(''); setExamFilterMonth(''); setExamFilterYear(''); }} className="h-10 px-3 rounded-full bg-red-100 text-red-600 text-xs hover:bg-red-200">
+                                                                        <i className="fas fa-times mr-1"></i>Limpiar
+                                                                    </button>
+                                                                )}
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     <div className="flex-1 overflow-y-auto p-6">
                                                         {(currentPet.exams || []).length === 0 ? (
@@ -6392,7 +6431,16 @@ const PdfViewer = ({ url, style, className }) => {
                                                             </div>
                                                         ) : (
                                                             <div className="space-y-3 pb-6">
-                                                                {(currentPet.exams || []).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
+                                                                    {(currentPet.exams || []).filter(exam => {
+                                                                        if (examSearchTerm && !exam.type.toLowerCase().includes(examSearchTerm.toLowerCase())) return false;
+                                                                        if (examFilterDay || examFilterMonth || examFilterYear) {
+                                                                            const d = new Date(exam.date);
+                                                                            if (examFilterDay && String(d.getDate()).padStart(2, '0') !== examFilterDay) return false;
+                                                                            if (examFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== examFilterMonth) return false;
+                                                                            if (examFilterYear && String(d.getFullYear()) !== examFilterYear) return false;
+                                                                        }
+                                                                        return true;
+                                                                    }).sort((a, b) => new Date(b.date) - new Date(a.date)).map(exam => (
                                                                     <div key={exam.id} onClick={() => markExamAsSeen(exam, currentPet)}
                                                                         className={`bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
                                                                         <div className="flex items-center gap-4">
