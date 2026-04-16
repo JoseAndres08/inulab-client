@@ -1533,7 +1533,7 @@ const PdfViewer = ({ url, style, className }) => {
                             const matchingOrder = orders.find(o =>
                                 (o.status === 'completed' || Number(o.status) === 9) &&
                                 (o.items || []).some(i =>
-                                    String(i.examName).toLowerCase() === String(exam.type).toLowerCase()
+                                    String(i.examName).toLowerCase() === String(exam.type || exam).toLowerCase()
                                 )
                             );
                             const rawUrl = matchingOrder?.resultPdfUrl || null;
