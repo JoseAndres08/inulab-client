@@ -1491,8 +1491,9 @@ const PdfViewer = ({ url, style, className }) => {
                         status: statusMap[Number(o.status)] || 'pending',
                         addressId: o.addressId,
                         items: (o.items || []).map(item => {
-                            const orderResultPdf = o.resultPdfUrl
-                                ? (o.resultPdfUrl.startsWith('http') ? o.resultPdfUrl : `https://inulab-backend-production.up.railway.app${o.resultPdfUrl}`)
+                            const rawPdf = item.pdfUrl || o.resultPdfUrl || null;
+                            const orderResultPdf = rawPdf
+                                ? (rawPdf.startsWith('http') ? rawPdf : `https://inulab-backend-production.up.railway.app${rawPdf}`)
                                 : null;
                             return {
                                 examName: String(item.examName || ''),
