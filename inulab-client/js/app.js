@@ -1465,7 +1465,7 @@ const PdfViewer = ({ url, style, className }) => {
                             type: e.type || e.examName || 'Examen',
                             date: e.date,
                             seen: true,
-                            pdfData: null
+                            pdfData: e.pdfUrl ? (e.pdfUrl.startsWith('http') ? e.pdfUrl : 'https://inulab-backend-production.up.railway.app' + e.pdfUrl) : null
                         }))
                     }));
 
