@@ -4256,7 +4256,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             {filterExams(selectedMascota.exams).map(exam => (
                                                 <div 
                                                     key={exam.id} 
-                                                    onClick={() => markExamAsSeen(exam, selectedMascota)}
+                                                    onClick={() => { markExamAsSeen(exam, selectedMascota); if (exam.pdfData) setSelectedExam(exam); }}
                                                     className={`bg-white rounded-xl p-4 shadow cursor-pointer hover:shadow-lg flex items-center justify-between ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}
                                                 >
                                                     <div className="flex items-center gap-3">
