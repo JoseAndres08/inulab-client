@@ -6910,37 +6910,13 @@ const PdfViewer = ({ url, style, className }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* MOBILE: barra con lupa */}
+                                                {/* MOBILE: barra morada */}
                                                 <div className="lg:hidden">
-                                                    <div className="flex items-center gap-2">
-                                                        <i className="fas fa-file-medical text-purple-500"></i>
-                                                        <span className="text-purple-600 font-semibold flex-1">Resultados</span>
-                                                        <button onClick={() => setShowResMobileSearch(prev => !prev)} className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
-                                                            <i className="fas fa-search text-xs"></i>
-                                                        </button>
+                                                    <div className="bg-gradient-to-r from-purple-500 to-purple-700 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                        <i className="fas fa-file-medical text-white text-sm"></i>
+                                                        <span className="text-white font-semibold text-sm flex-1">Resultados</span>
+                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{(database.pets || []).length}</span>
                                                     </div>
-                                                    {showResMobileSearch && (
-                                                        <div className="mt-2 flex flex-col gap-2">
-                                                            <div className="relative">
-                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
-                                                                <input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)}
-                                                                    placeholder="Buscar mascota..."
-                                                                    className="w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
-                                                                {resSearchTerm && <button onClick={() => setResSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                                            </div>
-                                                            <div className="flex gap-2">
-                                                                <select value={resFilterDay} onChange={(e) => setResFilterDay(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
-                                                                    <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
-                                                                </select>
-                                                                <select value={resFilterMonth} onChange={(e) => setResFilterMonth(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
-                                                                    <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                                </select>
-                                                                <select value={resFilterYear} onChange={(e) => setResFilterYear(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
-                                                                    <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    )}
                                                 </div>
                                             </div>
 
