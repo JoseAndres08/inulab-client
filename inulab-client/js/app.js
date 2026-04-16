@@ -1452,7 +1452,7 @@ const PdfViewer = ({ url, style, className }) => {
                         age: p.age,
                         ageValue: p.age,
                         ageUnit: 'años',
-                        sex: String(p.sex || ''),
+                        sex: String(p.sex || p.gender || p.sexo || p.genero || ''),
                         photo: p.species === 'perro' ? '🐶' :
                             p.species === 'gato' ? '🐱' :
                                 p.species === 'ave' ? '🦜' :
