@@ -1045,6 +1045,7 @@ const PdfViewer = ({ url, style, className }) => {
             const [resFilterYear, setResFilterYear] = useState('');
             const [showMobileSearch, setShowMobileSearch] = React.useState(false);
             const [showFacMobileSearch, setShowFacMobileSearch] = React.useState(false);
+            const [showResMobileSearch, setShowResMobileSearch] = React.useState(false);
 
             useEffect(() => {
                 if (showAddressSelection) {
@@ -6909,40 +6910,37 @@ const PdfViewer = ({ url, style, className }) => {
                                                     </div>
                                                 </div>
 
-                                                {/* MOBILE: apilado en 3 filas */}
+                                                {/* MOBILE: barra con lupa */}
                                                 <div className="lg:hidden">
-                                                    <div className="flex items-center gap-2 mb-3">
-                                                        <i className="fas fa-file-medical text-purple-500"></i>
-                                                        <span className="text-purple-600 font-semibold">Resultados</span>
-                                                    </div>
-                                                    <div className="relative mb-2">
-                                                        <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                        <input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)}
-                                                            placeholder="Buscar mascota..."
-                                                            className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
-                                                        {resSearchTerm && <button onClick={() => setResSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
-                                                    </div>
                                                     <div className="flex items-center gap-2">
-                                                        <span className="text-xs text-gray-500 flex-shrink-0">Filtrar:</span>
-                                                        <div className="relative flex-1">
-                                                            <select value={resFilterDay} onChange={(e) => setResFilterDay(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
-                                                        <div className="relative flex-1">
-                                                            <select value={resFilterMonth} onChange={(e) => setResFilterMonth(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
-                                                        <div className="relative flex-1">
-                                                            <select value={resFilterYear} onChange={(e) => setResFilterYear(e.target.value)} className="w-full h-9 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
+                                                        <i className="fas fa-file-medical text-purple-500"></i>
+                                                        <span className="text-purple-600 font-semibold flex-1">Resultados</span>
+                                                        <button onClick={() => setShowResMobileSearch(prev => !prev)} className="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
+                                                            <i className="fas fa-search text-xs"></i>
+                                                        </button>
                                                     </div>
+                                                    {showResMobileSearch && (
+                                                        <div className="mt-2 flex flex-col gap-2">
+                                                            <div className="relative">
+                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                                                                <input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)}
+                                                                    placeholder="Buscar mascota..."
+                                                                    className="w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
+                                                                {resSearchTerm && <button onClick={() => setResSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                            </div>
+                                                            <div className="flex gap-2">
+                                                                <select value={resFilterDay} onChange={(e) => setResFilterDay(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
+                                                                </select>
+                                                                <select value={resFilterMonth} onChange={(e) => setResFilterMonth(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                                </select>
+                                                                <select value={resFilterYear} onChange={(e) => setResFilterYear(e.target.value)} className="flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white">
+                                                                    <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
                                             </div>
 
