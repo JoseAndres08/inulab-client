@@ -1490,6 +1490,7 @@ const PdfViewer = ({ url, style, className }) => {
                         invoiceStatus: o.invoicePdfUrl ? 'uploaded' : 'pending',
                         status: statusMap[Number(o.status)] || 'pending',
                         addressId: o.addressId,
+                        resultPdfUrl: o.resultPdfUrl || null,
                         items: (o.items || []).map(item => {
                             const rawPdf = item.pdfUrl || o.resultPdfUrl || null;
                             const orderResultPdf = rawPdf
