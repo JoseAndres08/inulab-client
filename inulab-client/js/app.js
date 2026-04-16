@@ -5734,7 +5734,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                         {filterExams(selectedMascota.exams)
                                                             .sort((a, b) => new Date(b.date) - new Date(a.date))
                                                             .map(exam => (
-                                                            <div key={exam.id} onClick={() => exam.pdfData && setSelectedExam(exam)} className={`bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
+                                                                <div key={exam.id} onClick={() => { console.log('EXAM:', exam); if (exam.pdfData) setSelectedExam(exam); }} className={`bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ${exam.seen === false ? 'border-l-4 border-red-500' : ''}`}>
                                                                 <div className="flex items-center gap-4">
                                                                     <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${exam.seen === false ? 'bg-red-100' : 'bg-purple-100'}`}>
                                                                         <i className={`fas fa-file-pdf text-xl ${exam.seen === false ? 'text-red-600' : 'text-purple-600'}`}></i>
