@@ -897,7 +897,7 @@ const PdfViewer = ({ url, style, className }) => {
 
     React.useEffect(() => {
         if (!url) { setError(true); return; }
-        if (url.startsWith('data:') || url.startsWith('blob:')) {
+        if (url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('https://www.') || url.startsWith('http://')) {
             setBlobUrl(url);
             return;
         }
