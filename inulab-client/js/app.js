@@ -4035,13 +4035,17 @@ const PdfViewer = ({ url, style, className }) => {
                             {/* ==================== PEDIDOS ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'pedidos' && (
                                 <div>
-                                    <div className="relative mb-4">
-                                        <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                        <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} 
-                                            placeholder="Buscar examen o perfil..." 
-                                            className="w-full pl-11 pr-10 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white shadow-sm" />
-                                        {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times"></i></button>}
-                                    </div>
+                                            <div className="flex items-center gap-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl px-4 py-2 mb-4">
+                                                <i className="fas fa-clipboard-list text-white text-base"></i>
+                                                <span className="text-white font-semibold text-sm flex-1">Pedidos</span>
+                                                <div className="relative flex-1">
+                                                    <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                    <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
+                                                        placeholder="Buscar examen o perfil..."
+                                                        className="w-full pl-9 pr-8 py-2 rounded-xl border border-gray-200 focus:border-cyan-500 focus:outline-none bg-white text-sm" />
+                                                    {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                </div>
+                                            </div>
                                     
                                     {(cart.length > 0 || pendingExams.length > 0) && (
                                         <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
