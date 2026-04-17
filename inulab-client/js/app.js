@@ -6625,7 +6625,7 @@ const PdfViewer = ({ url, style, className }) => {
                         })()}
                         
                         {/* === Vistas normales: Pedidos y Resultados === */}
-                                    {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col">
+                                    {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col" style={{ padding: 0, maxWidth: 'none' }}>
                                         {activeTab === 'pedidos' && (
                                             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', marginLeft: '-24px', marginRight: '-24px', marginTop: '-20px', background: '#f3f4f6', overflow: 'hidden' }}>
 
