@@ -3890,7 +3890,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 return (
                                                                     <div key={`tr-${order.id}`} onClick={() => setViewingOrderTracking(order)} className="bg-white rounded-xl p-3 shadow-sm cursor-pointer active:opacity-75">
                                                                         <div className="flex items-center gap-2.5">
-                                                                            <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-2xl leading-none">🐾</div>
+                                                                            <div className="w-8 h-8 flex items-center justify-center flex-shrink-0 text-2xl leading-none">{order?.items?.[0]?.pet?.photo || '🐾'}</div>
                                                                             <div className="flex-1 min-w-0">
                                                                                 <p className="font-semibold text-gray-800 text-sm leading-tight truncate">{order?.items?.[0]?.examName || 'Pedido'}</p>
                                                                                 <p className="text-xs text-gray-500 truncate">{order?.items?.[0]?.examName || ''}</p>
