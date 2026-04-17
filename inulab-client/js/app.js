@@ -1368,7 +1368,7 @@ const PdfViewer = ({ url, style, className }) => {
                                 return {
                                     examName: String(item.examName || ''),
                                     exam: { name: String(item.examName || ''), icon: 'fa-vial', color: 'text-cyan-600', bg: 'bg-cyan-100' },
-                                    pet: { name: String(item.petName || ''), photo: item.petPhoto || '🐾' },
+                                    pet: { name: String(item.petName || ''), photo: item.petSpecies === 'perro' ? '🐶' : item.petSpecies === 'gato' ? '🐱' : item.petSpecies === 'ave' ? '🦜' : item.petSpecies === 'conejo' ? '🐰' : '🐾' },
                                     address: {
                                         address: String(item.addressStreet || ''),
                                         district: String(item.addressDistrict || '')
@@ -1499,7 +1499,7 @@ const PdfViewer = ({ url, style, className }) => {
                             return {
                                 examName: String(item.examName || ''),
                                 exam: { name: String(item.examName || ''), icon: 'fa-vial', color: 'text-cyan-600', bg: 'bg-cyan-100' },
-                                pet: { name: String(item.petName || ''), photo: item.petPhoto || '🐾' },
+                                pet: { name: String(item.petName || ''), photo: item.petSpecies === 'perro' ? '🐶' : item.petSpecies === 'gato' ? '🐱' : item.petSpecies === 'ave' ? '🦜' : item.petSpecies === 'conejo' ? '🐰' : '🐾' },
                                 address: {
                                     address: String(item.addressStreet || ''),
                                     district: String(item.addressDistrict || '')
