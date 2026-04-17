@@ -6643,7 +6643,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                         </div>
 
                                                         {/* Buscador COMPACTO */}
-                                                        <div className="relative" style={{ width: '320px' }}>
+                                                        <div className="relative flex-1">
                                                             <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
 
                                                             <input
