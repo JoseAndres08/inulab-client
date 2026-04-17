@@ -4035,17 +4035,22 @@ const PdfViewer = ({ url, style, className }) => {
                             {/* ==================== PEDIDOS ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'pedidos' && (
                                 <div>
-                                            <div className="flex items-center gap-3 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl px-4 py-2 mb-4">
-                                                <i className="fas fa-clipboard-list text-white text-base"></i>
+                                            <div className="flex items-center bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl px-4 py-3 mb-3">
+                                                <i className="fas fa-clipboard-list text-white text-base mr-2"></i>
                                                 <span className="text-white font-semibold text-sm flex-1">Pedidos</span>
-                                                <div className="relative flex-1">
-                                                    <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white">
+                                                    <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-sm`}></i>
+                                                </button>
+                                            </div>
+                                            {showMobileSearch && (
+                                                <div className="relative mb-3">
+                                                    <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
                                                     <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
                                                         placeholder="Buscar examen o perfil..."
-                                                        className="w-full pl-9 pr-8 py-2 rounded-xl border border-gray-200 focus:border-cyan-500 focus:outline-none bg-white text-sm" />
-                                                    {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                        className="w-full pl-11 pr-10 py-3 rounded-2xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white text-sm" />
+                                                    {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
                                                 </div>
-                                            </div>
+                                            )}
                                     
                                     {(cart.length > 0 || pendingExams.length > 0) && (
                                         <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
