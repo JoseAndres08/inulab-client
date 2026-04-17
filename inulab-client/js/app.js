@@ -4226,11 +4226,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                                     className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm" />
                                                                 {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
                                                             </div>
-                                                            <div className="grid grid-cols-4 gap-2">
-                                                                <select value={examFilterType} onChange={(e) => setExamFilterType(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                                    <option value="">Tipo</option>
-                                                                    {[...new Set(selectedMascota.exams.map(e => e.type))].map(type => <option key={type} value={type}>{type}</option>)}
-                                                                </select>
+                                                            <div className="grid grid-cols-3 gap-2">
                                                                 <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
                                                                     <option value="">Día</option>
                                                                     {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}</option>)}
@@ -4292,14 +4288,6 @@ const PdfViewer = ({ url, style, className }) => {
                                             ))}
                                         </div>
                                     )}
-                                    
-                                    {/* Botón volver */}
-                                    <button 
-                                        onClick={() => setSelectedMascota(null)}
-                                        className="mt-6 w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-medium hover:bg-gray-50"
-                                    >
-                                        <i className="fas fa-arrow-left mr-2"></i>Volver a pacientes
-                                    </button>
                                 </>
                             )}
                             
