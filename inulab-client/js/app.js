@@ -6883,7 +6883,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                         <i className="fas fa-file-medical text-purple-500 text-lg"></i>
                                                         <span className="text-purple-600 font-semibold">Resultados</span>
                                                     </div>
-                                                    <div className="relative flex-1">
+                                                    <div className="relative" style={{ flex: 2 }}>
                                                         <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
                                                         <input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)}
                                                             placeholder="Buscar mascota..."
