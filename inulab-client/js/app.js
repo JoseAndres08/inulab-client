@@ -5439,9 +5439,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                             <div className="flex items-center gap-4">
 
                                                                 <span className="text-3xl">
-                                                                    {typeof firstItem?.pet?.photo === "string"
-                                                                        ? firstItem.petPhoto 
-                                                                        : "🐾"}
+                                                                    {firstItem?.pet?.photo || '🐾'}
                                                                 </span>
 
                                                                 <div className="flex-1">
