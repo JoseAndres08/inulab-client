@@ -2159,6 +2159,19 @@ const PdfViewer = ({ url, style, className }) => {
                                                 <i className="fas fa-chevron-down text-xs"></i>
                                             </div>
                                         </div>
+                                        {regData.type === 'medico' && (
+                                            <>
+                                                <input type="text" value={regData.clinicName || ''} onChange={(e) => setRegData({ ...regData, clinicName: e.target.value })}
+                                                    className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                                    placeholder="Nombre de la clínica" />
+                                                <input type="text" value={regData.ruc || ''} onChange={(e) => setRegData({ ...regData, ruc: e.target.value })}
+                                                    className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                                    placeholder="RUC (opcional)" maxLength={11} />
+                                                <input type="text" value={regData.district || ''} onChange={(e) => setRegData({ ...regData, district: e.target.value })}
+                                                    className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
+                                                    placeholder="Distrito" />
+                                            </>
+                                        )}
                                         <input type="password" value={regData.password} onChange={(e) => setRegData({ ...regData, password: e.target.value })}
                                             className="w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none"
                                             placeholder="Contraseña" required />
