@@ -6642,16 +6642,16 @@ const PdfViewer = ({ url, style, className }) => {
                                                             </span>
                                                         </div>
 
-                                                        {/* Buscador GRANDE */}
-                                                        <div className="relative flex-1">
-                                                            <i className="fas fa-search absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 text-base"></i>
+                                                        {/* Buscador COMPACTO */}
+                                                        <div className="relative" style={{ width: '320px' }}>
+                                                            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
 
                                                             <input
                                                                 type="text"
                                                                 value={pedidosSearchTerm}
                                                                 onChange={(e) => setPedidosSearchTerm(e.target.value)}
                                                                 placeholder="Buscar examen o servicio..."
-                                                                className="w-full py-3.5 pl-12 pr-10 rounded-full border border-gray-200 bg-white text-base focus:border-cyan-500 focus:outline-none shadow-sm"
+                                                                className="w-full py-2.5 pl-11 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none shadow-sm"
                                                             />
 
                                                             {pedidosSearchTerm && (
