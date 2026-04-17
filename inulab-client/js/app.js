@@ -6630,7 +6630,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', marginLeft: '-24px', marginRight: '-24px', marginTop: '-20px', background: '#f3f4f6', overflow: 'hidden' }}>
 
                                                 {/* Header fijo */}
-                                                <div style={{ position: 'sticky', top: 0, zIndex: 100, flexShrink: 0, background: 'white', padding: '10px 32px', borderBottom: '1px solid #e5e7eb', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', width: '100%' }}>
+                                                <div style={{ flexShrink: 0, background: 'white', padding: '10px 32px', borderBottom: '1px solid #e5e7eb', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', width: '100%' }}>
 
                                                     <div className="flex items-center gap-4">
 
@@ -6642,10 +6642,9 @@ const PdfViewer = ({ url, style, className }) => {
                                                             </span>
                                                         </div>
 
-                                                        {/* Buscador COMPACTO */}
+                                                        {/* Buscador */}
                                                         <div className="relative flex-1">
                                                             <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-
                                                             <input
                                                                 type="text"
                                                                 value={pedidosSearchTerm}
@@ -6653,7 +6652,6 @@ const PdfViewer = ({ url, style, className }) => {
                                                                 placeholder="Buscar examen o servicio..."
                                                                 className="w-full py-2.5 pl-11 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none shadow-sm"
                                                             />
-
                                                             {pedidosSearchTerm && (
                                                                 <button
                                                                     onClick={() => setPedidosSearchTerm('')}
@@ -6669,7 +6667,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                 </div>
 
                                                 {/* CONTENIDO */}
-                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 32px 24px 32px', background: '#f9fafb', height: '0', maxWidth: 'none' }}>
+                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 10% 24px 10%', background: '#f9fafb', height: '0' }}>
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
