@@ -4297,29 +4297,36 @@ const PdfViewer = ({ url, style, className }) => {
                             {/* ==================== RESULTADOS (Historial de pedidos) ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'resultados' && (
                                 <>
-                                    {/* Panel de filtros fijo */}
-                                    <div className="filters-panel">
-                                        <div className="filters-panel-inner">
-                                            <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2">
-                                                <i className="fas fa-file-medical text-white text-sm"></i>
-                                                <span className="text-white font-semibold text-sm">Resultados</span>
-                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto">{completedOrders.length}</span>
+                                            {/* Panel de filtros fijo */}
+                                            <div className="filters-panel">
+                                                <div className="filters-panel-inner">
+                                                    <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-2 flex items-center gap-2">
+                                                        <i className="fas fa-file-medical text-white text-sm"></i>
+                                                        <span className="text-white font-semibold text-sm flex-1">Resultados</span>
+                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.length}</span>
+                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
+                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
+                                                        </button>
+                                                    </div>
+                                                    {showMobileSearch && (
+                                                        <>
+                                                            <div className="relative mt-2 mb-2">
+                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                                <input type="text" value={resultadosSearch} onChange={(e) => setResultadosSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-sm" />
+                                                                {resultadosSearch && <button onClick={() => setResultadosSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                            </div>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                <select value={resultadosFilterDay} onChange={(e) => setResultadosFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
+                                                                <select value={resultadosFilterMonth} onChange={(e) => setResultadosFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
+                                                                <select value={resultadosFilterYear} onChange={(e) => setResultadosFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="relative mb-2">
-                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                <input type="text" value={resultadosSearch} onChange={(e) => setResultadosSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-sm" />
-                                                {resultadosSearch && <button onClick={() => setResultadosSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <select value={resultadosFilterDay} onChange={(e) => setResultadosFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
-                                                <select value={resultadosFilterMonth} onChange={(e) => setResultadosFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
-                                                <select value={resultadosFilterYear} onChange={(e) => setResultadosFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Espaciador */}
-                                    <div className="list-spacer-medium"></div>
+
+                                            {/* Espaciador */}
+                                            <div className="list-spacer-small"></div>
                                     
                                     {/* Lista */}
                                     {(() => {
