@@ -7113,7 +7113,7 @@ const PdfViewer = ({ url, style, className }) => {
                                 return (
                                                 <div className="dueno-normal-content pb-6">
                                         {/* Header: Desktop */}
-                                        <div className="hidden lg:block flex-shrink-0 bg-white border-b border-gray-200 px-6 py-3 -mx-6 -mt-6 mb-6">
+                                        <div className="hidden lg:block flex-shrink-0 bg-white border-b border-gray-200 py-3 mb-6" style={{ marginLeft: '-24px', marginRight: '-24px', paddingLeft: '32px', paddingRight: '32px' }}>
                                             <div className="flex items-center gap-4">
                                                 <div className="flex items-center gap-2">
                                                     <i className="fas fa-file-invoice-dollar text-amber-500 text-lg"></i>
