@@ -6630,7 +6630,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100 overflow-hidden">
 
                                                 {/* Header fijo */}
-                                                <div className="flex-shrink-0 sticky top-0 z-50 bg-white px-6 pt-3 pb-3 border-b-2 border-gray-200 shadow-sm">
+                                                <div style={{ position: 'sticky', top: 0, zIndex: 50, background: 'white', padding: '10px 24px', borderBottom: '2px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', marginLeft: '-24px', marginRight: '-24px' }}>
 
                                                     <div className="flex items-center gap-4">
 
