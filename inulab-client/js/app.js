@@ -4129,34 +4129,39 @@ const PdfViewer = ({ url, style, className }) => {
                             {/* ==================== MASCOTAS/PACIENTES ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'mascotas' && !selectedMascota && (
                                 <>
-                                    {/* Panel de filtros fijo */}
-                                    <div className="filters-panel">
-                                        <div className="filters-panel-inner">
-                                            <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2">
-                                                <i className="fas fa-paw text-white text-sm"></i>
-                                                <span className="text-white font-semibold text-sm">Pacientes</span>
-                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto">{petsOrPatients.length}</span>
+                                            {/* Header fijo */}
+                                            <div className="filters-panel">
+                                                <div className="filters-panel-inner">
+                                                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2">
+                                                        <i className="fas fa-paw text-white text-sm"></i>
+                                                        <span className="text-white font-semibold text-sm flex-1">Pacientes</span>
+                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{petsOrPatients.length}</span>
+                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
+                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
+                                                        </button>
+                                                    </div>
+                                                    {showMobileSearch && (
+                                                        <div className="relative mt-2">
+                                                            <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                            <input
+                                                                type="text"
+                                                                value={mascotaSearchTerm}
+                                                                onChange={(e) => setMascotaSearchTerm(e.target.value)}
+                                                                placeholder="Buscar mascota o dueño..."
+                                                                className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm"
+                                                            />
+                                                            {mascotaSearchTerm && (
+                                                                <button onClick={() => setMascotaSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
+                                                                    <i className="fas fa-times text-xs"></i>
+                                                                </button>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="relative">
-                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                <input 
-                                                    type="text" 
-                                                    value={mascotaSearchTerm} 
-                                                    onChange={(e) => setMascotaSearchTerm(e.target.value)} 
-                                                    placeholder="Buscar mascota o dueño..." 
-                                                    className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm" 
-                                                />
-                                                {mascotaSearchTerm && (
-                                                    <button onClick={() => setMascotaSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                                        <i className="fas fa-times text-xs"></i>
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Espaciador */}
-                                    <div className="list-spacer-small"></div>
+
+                                            {/* Espaciador */}
+                                            <div className="list-spacer-small"></div>
                                     
                                     {/* Lista */}
                                     {(filteredMascotas || []).length === 0 ? (
