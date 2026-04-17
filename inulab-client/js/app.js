@@ -6630,7 +6630,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', marginLeft: '-24px', marginRight: '-24px', marginTop: '-20px', background: '#f3f4f6', overflow: 'hidden' }}>
 
                                                 {/* Header fijo */}
-                                                <div style={{ position: 'sticky', top: 0, zIndex: 100, flexShrink: 0, background: 'white', padding: '10px 24px', borderBottom: '2px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', width: '100%' }}>
+                                                <div style={{ position: 'sticky', top: 0, zIndex: 100, flexShrink: 0, background: 'white', padding: '10px 32px', borderBottom: '1px solid #e5e7eb', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', width: '100%' }}>
 
                                                     <div className="flex items-center gap-4">
 
@@ -6669,7 +6669,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                 </div>
 
                                                 {/* CONTENIDO */}
-                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 24px 24px', background: '#f9fafb', height: '0' }}>
+                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 32px 24px 32px', background: '#f9fafb', height: '0', maxWidth: 'none' }}>
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
