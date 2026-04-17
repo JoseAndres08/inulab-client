@@ -4416,28 +4416,35 @@ const PdfViewer = ({ url, style, className }) => {
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'facturacion' && (
                                 <>
                                     {/* Panel de filtros fijo */}
-                                    <div className="filters-panel">
-                                        <div className="filters-panel-inner">
-                                            <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2">
-                                                <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
-                                                <span className="text-white font-semibold text-sm">Facturación</span>
-                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto">{completedOrders.filter(o => o.invoicePdf).length}</span>
+                                            <div className="filters-panel">
+                                                <div className="filters-panel-inner">
+                                                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-2 flex items-center gap-2">
+                                                        <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
+                                                        <span className="text-white font-semibold text-sm flex-1">Facturación</span>
+                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.filter(o => o.invoicePdf).length}</span>
+                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
+                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
+                                                        </button>
+                                                    </div>
+                                                    {showMobileSearch && (
+                                                        <>
+                                                            <div className="relative mt-2 mb-2">
+                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                                <input type="text" value={facturacionSearch} onChange={(e) => setFacturacionSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-amber-500 focus:outline-none bg-gray-50 text-sm" />
+                                                                {facturacionSearch && <button onClick={() => setFacturacionSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                            </div>
+                                                            <div className="grid grid-cols-3 gap-2">
+                                                                <select value={facturacionFilterDay} onChange={(e) => setFacturacionFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
+                                                                <select value={facturacionFilterMonth} onChange={(e) => setFacturacionFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
+                                                                <select value={facturacionFilterYear} onChange={(e) => setFacturacionFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
                                             </div>
-                                            <div className="relative mb-2">
-                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                <input type="text" value={facturacionSearch} onChange={(e) => setFacturacionSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-amber-500 focus:outline-none bg-gray-50 text-sm" />
-                                                {facturacionSearch && <button onClick={() => setFacturacionSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                            </div>
-                                            <div className="grid grid-cols-3 gap-2">
-                                                <select value={facturacionFilterDay} onChange={(e) => setFacturacionFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
-                                                <select value={facturacionFilterMonth} onChange={(e) => setFacturacionFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
-                                                <select value={facturacionFilterYear} onChange={(e) => setFacturacionFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Espaciador */}
-                                    <div className="list-spacer-medium"></div>
+
+                                            {/* Espaciador */}
+                                            <div className="list-spacer-small"></div>
                                     
                                     {/* Comprobantes Pendientes */}
                                     {(() => {
