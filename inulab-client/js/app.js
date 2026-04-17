@@ -6627,10 +6627,10 @@ const PdfViewer = ({ url, style, className }) => {
                         {/* === Vistas normales: Pedidos y Resultados === */}
                                     {!viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && (<><div className="dueno-normal-content h-full flex flex-col">
                                         {activeTab === 'pedidos' && (
-                                            <div className="flex flex-col flex-1 h-full -mx-4 lg:-mx-6 bg-gray-100 overflow-hidden">
+                                            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', marginLeft: '-16px', marginRight: '-16px', background: '#f3f4f6', overflow: 'hidden' }}>
 
                                                 {/* Header fijo */}
-                                                <div style={{ flexShrink: 0, background: 'white', padding: '10px 24px', borderBottom: '2px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}>
+                                                <div style={{ flexShrink: 0, background: 'white', padding: '10px 24px', borderBottom: '2px solid #e5e7eb', boxShadow: '0 2px 8px rgba(0,0,0,0.06)', width: '100%' }}>
 
                                                     <div className="flex items-center gap-4">
 
@@ -6669,7 +6669,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                 </div>
 
                                                 {/* CONTENIDO */}
-                                                <div className="flex-1 overflow-y-auto px-6 pb-6 pt-5 bg-gray-50">
+                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 24px 24px 24px', background: '#f9fafb' }}>
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
