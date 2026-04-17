@@ -4207,6 +4207,9 @@ const PdfViewer = ({ url, style, className }) => {
                                         <div className="filters-panel-inner">
                                             {/* Info compacta de la mascota con color */}
                                                     <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2">
+                                                        <button onClick={() => setSelectedMascota(null)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0">
+                                                            <i className="fas fa-arrow-left text-xs"></i>
+                                                        </button>
                                                         <span className="text-xl">{selectedMascota.photo}</span>
                                                         <div className="flex-1 min-w-0">
                                                             <span className="text-white font-semibold text-sm">{getPetFullName(selectedMascota)}</span>
