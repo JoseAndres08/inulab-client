@@ -4206,45 +4206,46 @@ const PdfViewer = ({ url, style, className }) => {
                                     <div className="filters-panel">
                                         <div className="filters-panel-inner">
                                             {/* Info compacta de la mascota con color */}
-                                            <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2">
-                                                <span className="text-xl">{selectedMascota.photo}</span>
-                                                <div className="flex-1">
-                                                    <span className="text-white font-semibold text-sm">{getPetFullName(selectedMascota)}</span>
-                                                    <span className="text-white/70 text-xs ml-2">{selectedMascota.breed}</span>
-                                                    {selectedMascota.owner && <span className="text-white/70 text-xs ml-2">• {selectedMascota.owner}</span>}
-                                                </div>
-                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{selectedMascota.exams.length} exám.</span>
-                                            </div>
-                                            {/* Buscador */}
-                                            <div className="relative mb-2">
-                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                <input 
-                                                    type="text" 
-                                                    value={examSearchTerm} 
-                                                    onChange={(e) => setExamSearchTerm(e.target.value)}
-                                                    placeholder="Buscar examen..." 
-                                                    className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm" 
-                                                />
-                                            </div>
-                                            {/* Filtros compactos */}
-                                            <div className="grid grid-cols-4 gap-2">
-                                                <select value={examFilterType} onChange={(e) => setExamFilterType(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                    <option value="">Tipo</option>
-                                                    {[...new Set(selectedMascota.exams.map(e => e.type))].map(type => <option key={type} value={type}>{type}</option>)}
-                                                </select>
-                                                <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                    <option value="">Día</option>
-                                                    {Array.from({length: 31}, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}</option>)}
-                                                </select>
-                                                <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                    <option value="">Mes</option>
-                                                    {['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                </select>
-                                                <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                    <option value="">Año</option>
-                                                    {Array.from({length: 5}, (_, i) => String(new Date().getFullYear() - i)).map(y => <option key={y} value={y}>{y}</option>)}
-                                                </select>
-                                            </div>
+                                                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2">
+                                                        <span className="text-xl">{selectedMascota.photo}</span>
+                                                        <div className="flex-1 min-w-0">
+                                                            <span className="text-white font-semibold text-sm">{getPetFullName(selectedMascota)}</span>
+                                                            <span className="text-white/70 text-xs ml-2">{selectedMascota.breed}</span>
+                                                        </div>
+                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{selectedMascota.exams.length} exám.</span>
+                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
+                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
+                                                        </button>
+                                                    </div>
+                                                    {showMobileSearch && (
+                                                        <>
+                                                            <div className="relative mt-2 mb-2">
+                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                                <input type="text" value={examSearchTerm} onChange={(e) => setExamSearchTerm(e.target.value)}
+                                                                    placeholder="Buscar examen..."
+                                                                    className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm" />
+                                                                {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
+                                                            </div>
+                                                            <div className="grid grid-cols-4 gap-2">
+                                                                <select value={examFilterType} onChange={(e) => setExamFilterType(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
+                                                                    <option value="">Tipo</option>
+                                                                    {[...new Set(selectedMascota.exams.map(e => e.type))].map(type => <option key={type} value={type}>{type}</option>)}
+                                                                </select>
+                                                                <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
+                                                                    <option value="">Día</option>
+                                                                    {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}</option>)}
+                                                                </select>
+                                                                <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
+                                                                    <option value="">Mes</option>
+                                                                    {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
+                                                                </select>
+                                                                <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
+                                                                    <option value="">Año</option>
+                                                                    {Array.from({ length: 5 }, (_, i) => String(new Date().getFullYear() - i)).map(y => <option key={y} value={y}>{y}</option>)}
+                                                                </select>
+                                                            </div>
+                                                        </>
+                                                    )}
                                         </div>
                                     </div>
                                     
