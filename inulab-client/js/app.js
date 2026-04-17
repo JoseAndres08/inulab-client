@@ -6875,7 +6875,7 @@ const PdfViewer = ({ url, style, className }) => {
                         </div>)}
                                         {activeTab === 'resultados' && (<div>
                                             {/* Header - Desktop: todo en una fila / Mobile: apilado */}
-                                            <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4 -mx-4 -mt-4 mb-4 lg:-mx-6 lg:-mt-6 lg:mb-6">
+                                            <div className="flex-shrink-0 bg-white border-b border-gray-200 p-4 -mx-4 -mt-4 mb-4" style={{ marginLeft: '-24px', marginRight: '-24px', paddingLeft: '32px', paddingRight: '32px', marginTop: '-20px' }}>
 
                                                 {/* DESKTOP: una sola fila */}
                                                 <div className="hidden lg:flex items-center gap-3">
