@@ -1,11 +1,11 @@
 "use strict";
 
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
 function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : i + ""; }
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _slicedToArray(r, e) { return _arrayWithHoles(r) || _iterableToArrayLimit(r, e) || _unsupportedIterableToArray(r, e) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t["return"] && (u = t["return"](), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
@@ -1237,7 +1237,7 @@ var perfilesDuenos = [{
   icon: 'fa-cat',
   color: 'text-indigo-600',
   bg: 'bg-indigo-100',
-  price: 280,
+  price: 250,
   turnaround: '1-2 hrs'
 }];
 var categoriasDuenos = [{
@@ -1504,6 +1504,24 @@ var categoriasDuenos = [{
     turnaround: '24-48 hrs'
   }, {
     id: 'DPCR3',
+    name: 'PCR Erlichia',
+    subtitle: null,
+    icon: 'fa-virus',
+    color: 'text-emerald-500',
+    bg: 'bg-emerald-50',
+    price: 390,
+    turnaround: '24-48 hrs'
+  }, {
+    id: 'DPCR4',
+    name: 'PCR Anaplasma SPP',
+    subtitle: null,
+    icon: 'fa-virus',
+    color: 'text-emerald-500',
+    bg: 'bg-emerald-50',
+    price: 390,
+    turnaround: '24-48 hrs'
+  }, {
+    id: 'DPCR5',
     name: 'PCR Leptospira Interrogans',
     subtitle: null,
     icon: 'fa-virus',
@@ -1512,7 +1530,7 @@ var categoriasDuenos = [{
     price: 400,
     turnaround: '24-48 hrs'
   }, {
-    id: 'DPCR4',
+    id: 'DPCR6',
     name: 'PCR VIF / VILEF',
     subtitle: null,
     icon: 'fa-virus',
@@ -1521,7 +1539,7 @@ var categoriasDuenos = [{
     price: 420,
     turnaround: '24-48 hrs'
   }, {
-    id: 'DPCR5',
+    id: 'DPCR7',
     name: 'PCR Panel Completo',
     subtitle: 'Babesia, Lyme, Erlichia, Anaplasma, Mycoplasma',
     icon: 'fa-virus',
@@ -1865,12 +1883,127 @@ var flexibleSearch = function flexibleSearch(text, searchTerm) {
 // API SERVICE LAYER
 // Configurar BASE_URL según el entorno del backend
 // =============================================================================
-var API_BASE = "https://inulab-backend-production.up.railway.app";
+var API_BASE = "https://inulab-backend-production.up.railway.app/api";
+function cargarPreciosDesdeAPI() {
+  return _cargarPreciosDesdeAPI.apply(this, arguments);
+}
+function _cargarPreciosDesdeAPI() {
+  _cargarPreciosDesdeAPI = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee23() {
+    var token, headers, response, precios, _t1;
+    return _regenerator().w(function (_context23) {
+      while (1) switch (_context23.p = _context23.n) {
+        case 0:
+          _context23.p = 0;
+          token = localStorage.getItem('inulab_token');
+          headers = token ? {
+            'Authorization': "Bearer ".concat(token)
+          } : {};
+          _context23.n = 1;
+          return fetch("".concat(API_BASE, "/Precios"), {
+            headers: headers
+          });
+        case 1:
+          response = _context23.v;
+          if (response.ok) {
+            _context23.n = 2;
+            break;
+          }
+          return _context23.a(2);
+        case 2:
+          _context23.n = 3;
+          return response.json();
+        case 3:
+          precios = _context23.v;
+          precios.forEach(function (p) {
+            var id = p.examenId;
+            var precio = p.precio;
+            var tipo = p.tipoUsuario;
+            if (tipo === 'medico') {
+              // Actualizar en perfiles (médico)
+              var perfil = perfiles.find(function (x) {
+                return x.id === id;
+              });
+              if (perfil) {
+                perfil.price = precio;
+                return;
+              }
+              // Actualizar en categorias (médico)
+              var _iterator2 = _createForOfIteratorHelper(categorias),
+                _step2;
+              try {
+                for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+                  var cat = _step2.value;
+                  var exam = cat.examenes.find(function (x) {
+                    return x.id === id;
+                  });
+                  if (exam) {
+                    exam.price = precio;
+                    return;
+                  }
+                }
+              } catch (err) {
+                _iterator2.e(err);
+              } finally {
+                _iterator2.f();
+              }
+            }
+            if (tipo === 'dueno') {
+              // Actualizar en paquetesDuenos (por id que coincide con el examen)
+              var paquete = paquetesDuenos.find(function (x) {
+                return x.id === id;
+              });
+              if (paquete) {
+                paquete.price = precio;
+              }
+              // Actualizar en perfilesDuenos
+              var _perfil = perfilesDuenos.find(function (x) {
+                return x.id === id;
+              });
+              if (_perfil) {
+                _perfil.price = precio;
+                return;
+              }
+              // Actualizar en categoriasDuenos
+              var _iterator3 = _createForOfIteratorHelper(categoriasDuenos),
+                _step3;
+              try {
+                for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+                  var _cat = _step3.value;
+                  var _exam = _cat.examenes.find(function (x) {
+                    return x.id === id;
+                  });
+                  if (_exam) {
+                    _exam.price = precio;
+                    return;
+                  }
+                }
+              } catch (err) {
+                _iterator3.e(err);
+              } finally {
+                _iterator3.f();
+              }
+            }
+          });
+          console.log('✅ Precios cargados desde API:', precios.length, 'registros');
+          _context23.n = 5;
+          break;
+        case 4:
+          _context23.p = 4;
+          _t1 = _context23.v;
+          console.warn('⚠️ No se pudieron cargar precios desde API, usando valores por defecto:', _t1);
+        case 5:
+          return _context23.a(2);
+      }
+    }, _callee23, null, [[0, 4]]);
+  }));
+  return _cargarPreciosDesdeAPI.apply(this, arguments);
+}
+cargarPreciosDesdeAPI();
 var getToken = function getToken() {
   return localStorage.getItem('inulab_token');
 };
 var api = {
-  // Headers comunes con autenticación JWT
+  // Headers con JWT
   _headers: function _headers() {
     var h = {
       'Content-Type': 'application/json'
@@ -1879,7 +2012,7 @@ var api = {
     if (token) h['Authorization'] = "Bearer ".concat(token);
     return h;
   },
-  // --- AUTH ---
+  // ---------- AUTH ----------
   login: function login(username, password) {
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee() {
       var res, data;
@@ -1887,7 +2020,7 @@ var api = {
         while (1) switch (_context.n) {
           case 0:
             _context.n = 1;
-            return fetch("".concat(API_BASE, "/api/Auth/login"), {
+            return fetch("".concat(API_BASE, "/Auth/login"), {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -1909,6 +2042,7 @@ var api = {
             return res.json();
           case 3:
             data = _context.v;
+            console.log("DATA LOGIN:", data);
             localStorage.setItem('inulab_token', data.token);
             return _context.a(2, data);
         }
@@ -1923,7 +2057,7 @@ var api = {
         while (1) switch (_context2.n) {
           case 0:
             _context2.n = 1;
-            return fetch("".concat(API_BASE, "/api/Auth/me"), {
+            return fetch("".concat(API_BASE, "/Auth/me"), {
               headers: _this._headers()
             });
           case 1:
@@ -1942,7 +2076,10 @@ var api = {
       }, _callee2);
     }))();
   },
-  // --- PERFIL ---
+  logout: function logout() {
+    localStorage.removeItem('inulab_token');
+  },
+  // ---------- PERFIL ----------
   updateProfile: function updateProfile(profileData) {
     var _this2 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee3() {
@@ -1951,7 +2088,7 @@ var api = {
         while (1) switch (_context3.n) {
           case 0:
             _context3.n = 1;
-            return fetch("".concat(API_BASE, "/users/profile"), {
+            return fetch("".concat(API_BASE, "/Users/profile"), {
               method: 'PUT',
               headers: _this2._headers(),
               body: JSON.stringify(profileData)
@@ -1976,7 +2113,7 @@ var api = {
       }, _callee3);
     }))();
   },
-  // --- MASCOTAS / PACIENTES ---
+  // ---------- MASCOTAS ----------
   createPet: function createPet(petData) {
     var _this3 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee4() {
@@ -1985,7 +2122,7 @@ var api = {
         while (1) switch (_context4.n) {
           case 0:
             _context4.n = 1;
-            return fetch("".concat(API_BASE, "/pets"), {
+            return fetch("".concat(API_BASE, "/Pets"), {
               method: 'POST',
               headers: _this3._headers(),
               body: JSON.stringify(petData)
@@ -1996,7 +2133,7 @@ var api = {
               _context4.n = 2;
               break;
             }
-            throw new Error('Error al crear paciente');
+            throw new Error('Error al crear mascota');
           case 2:
             _context4.n = 3;
             return res.json();
@@ -2014,7 +2151,7 @@ var api = {
         while (1) switch (_context5.n) {
           case 0:
             _context5.n = 1;
-            return fetch("".concat(API_BASE, "/pets"), {
+            return fetch("".concat(API_BASE, "/Pets"), {
               headers: _this4._headers()
             });
           case 1:
@@ -2033,7 +2170,7 @@ var api = {
       }, _callee5);
     }))();
   },
-  // --- DIRECCIONES ---
+  // ---------- DIRECCIONES ----------
   createAddress: function createAddress(addressData) {
     var _this5 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee6() {
@@ -2042,7 +2179,7 @@ var api = {
         while (1) switch (_context6.n) {
           case 0:
             _context6.n = 1;
-            return fetch("".concat(API_BASE, "/addresses"), {
+            return fetch("".concat(API_BASE, "/Addresses"), {
               method: 'POST',
               headers: _this5._headers(),
               body: JSON.stringify(addressData)
@@ -2071,7 +2208,7 @@ var api = {
         while (1) switch (_context7.n) {
           case 0:
             _context7.n = 1;
-            return fetch("".concat(API_BASE, "/addresses"), {
+            return fetch("".concat(API_BASE, "/Addresses"), {
               headers: _this6._headers()
             });
           case 1:
@@ -2090,7 +2227,7 @@ var api = {
       }, _callee7);
     }))();
   },
-  // --- PEDIDOS ---
+  // ---------- PEDIDOS ----------
   createOrder: function createOrder(orderData) {
     var _this7 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee8() {
@@ -2098,8 +2235,9 @@ var api = {
       return _regenerator().w(function (_context8) {
         while (1) switch (_context8.n) {
           case 0:
+            console.log("ADDRESS ID QUE ENVÍAS:", orderData.addressId);
             _context8.n = 1;
-            return fetch("".concat(API_BASE, "/orders"), {
+            return fetch("".concat(API_BASE, "/Orders"), {
               method: 'POST',
               headers: _this7._headers(),
               body: JSON.stringify(orderData)
@@ -2123,12 +2261,12 @@ var api = {
   getOrders: function getOrders() {
     var _this8 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee9() {
-      var res;
+      var res, data;
       return _regenerator().w(function (_context9) {
         while (1) switch (_context9.n) {
           case 0:
             _context9.n = 1;
-            return fetch("".concat(API_BASE, "/orders"), {
+            return fetch("".concat(API_BASE, "/Orders"), {
               headers: _this8._headers()
             });
           case 1:
@@ -2142,12 +2280,14 @@ var api = {
             _context9.n = 3;
             return res.json();
           case 3:
-            return _context9.a(2, _context9.v);
+            data = _context9.v;
+            console.log('RAW orders data:', data);
+            return _context9.a(2, data.orders);
         }
       }, _callee9);
     }))();
   },
-  // --- RESULTADOS ---
+  // ---------- RESULTADOS ----------
   markExamSeen: function markExamSeen(examId) {
     var _this9 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee0() {
@@ -2156,7 +2296,7 @@ var api = {
         while (1) switch (_context0.n) {
           case 0:
             _context0.n = 1;
-            return fetch("".concat(API_BASE, "/exams/").concat(examId, "/seen"), {
+            return fetch("".concat(API_BASE, "/Exams/").concat(examId, "/seen"), {
               method: 'PUT',
               headers: _this9._headers()
             });
@@ -2166,7 +2306,7 @@ var api = {
               _context0.n = 2;
               break;
             }
-            throw new Error('Error al marcar como visto');
+            throw new Error('Error al marcar examen');
           case 2:
             _context0.n = 3;
             return res.json();
@@ -2176,7 +2316,7 @@ var api = {
       }, _callee0);
     }))();
   },
-  // --- CONFIG ---
+  // ---------- CONFIG ----------
   getConfig: function getConfig() {
     var _this0 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee1() {
@@ -2185,7 +2325,7 @@ var api = {
         while (1) switch (_context1.n) {
           case 0:
             _context1.n = 1;
-            return fetch("".concat(API_BASE, "/config"), {
+            return fetch("".concat(API_BASE, "/Config"), {
               headers: _this0._headers()
             });
           case 1:
@@ -2207,7 +2347,42 @@ var api = {
     }))();
   }
 };
-
+function checkAuth() {
+  return _checkAuth.apply(this, arguments);
+}
+function _checkAuth() {
+  _checkAuth = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee24() {
+    var token, _t10;
+    return _regenerator().w(function (_context24) {
+      while (1) switch (_context24.p = _context24.n) {
+        case 0:
+          token = localStorage.getItem('inulab_token');
+          if (token) {
+            _context24.n = 1;
+            break;
+          }
+          console.log("No logueado");
+          return _context24.a(2);
+        case 1:
+          _context24.p = 1;
+          _context24.n = 2;
+          return api.getMe();
+        case 2:
+          _context24.n = 4;
+          break;
+        case 3:
+          _context24.p = 3;
+          _t10 = _context24.v;
+          console.log("Token inválido");
+          localStorage.removeItem('inulab_token');
+        case 4:
+          return _context24.a(2);
+      }
+    }, _callee24, null, [[1, 3]]);
+  }));
+  return _checkAuth.apply(this, arguments);
+}
+checkAuth();
 // =============================================================================
 // NOTA SOBRE PDFs:
 // El frontend actual usa exam.pdfData para mostrar PDFs (puede ser base64 o URL).
@@ -2218,10 +2393,244 @@ var api = {
 // =============================================================================
 
 // =============================================================================
+// VERSIÓN DEMO - Datos de demostración con localStorage
 // =============================================================================
-// NOTA: Los datos de demo (initialDatabase) han sido eliminados.
-// Todos los datos se cargan desde el backend via API (ver sección API SERVICE LAYER).
-// =============================================================================
+
+var initialDatabase = {
+  users: [{
+    id: 'USR001',
+    username: 'carlos.rodriguez',
+    password: 'cliente123',
+    type: 'dueño',
+    name: 'Carlos',
+    lastName: 'Rodríguez',
+    phone: '999888777',
+    addresses: [{
+      id: 'ADDR001',
+      name: 'Casa',
+      address: 'Av. Javier Prado 1234',
+      district: 'San Isidro',
+      reference: 'Frente al parque'
+    }, {
+      id: 'ADDR002',
+      name: 'Oficina',
+      address: 'Calle Las Begonias 456',
+      district: 'San Isidro',
+      reference: 'Edificio Torre Azul, piso 5'
+    }],
+    pets: [{
+      id: 'PET001',
+      name: 'Max',
+      animalType: 'perro',
+      breed: 'Golden Retriever',
+      ageValue: 5,
+      ageUnit: 'años',
+      sex: 'Macho',
+      photo: '🐶',
+      exams: []
+    }, {
+      id: 'PET002',
+      name: 'Luna',
+      animalType: 'gato',
+      breed: 'Siamés',
+      ageValue: 3,
+      ageUnit: 'años',
+      sex: 'Hembra',
+      photo: '🐱',
+      exams: []
+    }]
+  }, {
+    id: 'USR002',
+    username: 'vetplanet',
+    password: 'vp2025',
+    type: 'medico',
+    name: 'Vet Planet',
+    lastName: '',
+    clinic: 'Vet Planet',
+    phone: '999777666',
+    addresses: [{
+      id: 'ADDR003',
+      name: 'Clínica',
+      address: 'Av. Arequipa 2850',
+      district: 'San Isidro',
+      reference: 'Al lado de la farmacia'
+    }],
+    patients: [{
+      id: 'PAT001',
+      name: 'Simba',
+      animalType: 'perro',
+      breed: 'Labrador',
+      ageValue: 4,
+      ageUnit: 'años',
+      sex: 'Macho',
+      photo: '🐶',
+      owner: 'Juan Pérez',
+      exams: [{
+        id: 'EX001',
+        type: 'Hemograma + Reticulocitos',
+        date: '2025-02-10',
+        pdfData: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSAoSGVsdmV0aWNhKQo+Pgo+PgovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjEwMCA3MDAgVGQKKFJlc3VsdGFkbyBkZSBIZW1vZ3JhbWEpIFRqCkVUCmVuZHN0cmVhbQplbmRvYmoKeHJlZgowIDUKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAowMDAwMDAwMjE0IDAwMDAwIG4gCnRyYWlsZXIKPDwKL1NpemUgNQovUm9vdCAxIDAgUgo+PgpzdGFydHhyZWYKMzA5CiUlRU9G',
+        seen: true,
+        orderId: 'ORD001'
+      }, {
+        id: 'EX002',
+        type: 'Perfil Básico',
+        date: '2025-01-15',
+        pdfData: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSAoSGVsdmV0aWNhKQo+Pgo+PgovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjEwMCA3MDAgVGQKKFJlc3VsdGFkbyBkZSBQZXJmaWwgQmFzaWNvKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIxNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjMwOQolJUVPRg==',
+        seen: true,
+        orderId: 'ORD002'
+      }]
+    }, {
+      id: 'PAT002',
+      name: 'Michi',
+      animalType: 'gato',
+      breed: 'Persa',
+      ageValue: 2,
+      ageUnit: 'años',
+      sex: 'Hembra',
+      photo: '🐱',
+      owner: 'Ana López',
+      exams: [{
+        id: 'EX003',
+        type: 'Perfil Felino',
+        date: '2025-02-12',
+        pdfData: 'data:application/pdf;base64,JVBERi0xLjQKMSAwIG9iago8PAovVHlwZSAvQ2F0YWxvZwovUGFnZXMgMiAwIFIKPj4KZW5kb2JqCjIgMCBvYmoKPDwKL1R5cGUgL1BhZ2VzCi9LaWRzIFszIDAgUl0KL0NvdW50IDEKL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KPj4KZW5kb2JqCjMgMCBvYmoKPDwKL1R5cGUgL1BhZ2UKL1BhcmVudCAyIDAgUgovUmVzb3VyY2VzIDw8Ci9Gb250IDw8Ci9GMSAoSGVsdmV0aWNhKQo+Pgo+PgovQ29udGVudHMgNCAwIFIKPj4KZW5kb2JqCjQgMCBvYmoKPDwKL0xlbmd0aCA0NAo+PgpzdHJlYW0KQlQKL0YxIDI0IFRmCjEwMCA3MDAgVGQKKFJlc3VsdGFkbyBkZSBQZXJmaWwgRmVsaW5vKSBUagpFVAplbmRzdHJlYW0KZW5kb2JqCnhyZWYKMCA1CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDAwOSAwMDAwMCBuIAowMDAwMDAwMDU4IDAwMDAwIG4gCjAwMDAwMDAxMTUgMDAwMDAgbiAKMDAwMDAwMDIxNCAwMDAwMCBuIAp0cmFpbGVyCjw8Ci9TaXplIDUKL1Jvb3QgMSAwIFIKPj4Kc3RhcnR4cmVmCjMwOQolJUVPRg==',
+        seen: false,
+        orderId: 'ORD003'
+      }]
+    }, {
+      id: 'PAT003',
+      name: 'Rocky',
+      animalType: 'perro',
+      breed: 'Bulldog Francés',
+      ageValue: 3,
+      ageUnit: 'años',
+      sex: 'Macho',
+      photo: '🐶',
+      owner: 'María García',
+      exams: []
+    }, {
+      id: 'PAT004',
+      name: 'Pelusa',
+      animalType: 'gato',
+      breed: 'Maine Coon',
+      ageValue: 5,
+      ageUnit: 'años',
+      sex: 'Hembra',
+      photo: '🐱',
+      owner: 'Carlos Mendoza',
+      exams: []
+    }, {
+      id: 'PAT005',
+      name: 'Thor',
+      animalType: 'perro',
+      breed: 'Pastor Alemán',
+      ageValue: 7,
+      ageUnit: 'años',
+      sex: 'Macho',
+      photo: '🐶',
+      owner: 'Luis Torres',
+      exams: []
+    }, {
+      id: 'PAT006',
+      name: 'Canela',
+      animalType: 'perro',
+      breed: 'Cocker Spaniel',
+      ageValue: 6,
+      ageUnit: 'años',
+      sex: 'Hembra',
+      photo: '🐶',
+      owner: 'Patricia Ruiz',
+      exams: []
+    }]
+  }],
+  orders: [{
+    id: 'ORD001',
+    userId: 'USR002',
+    userName: 'Vet Planet',
+    userType: 'medico',
+    date: '2025-02-10T09:30:00',
+    status: 'completed',
+    completedAt: '2025-02-10T14:00:00',
+    comment: 'Recoger antes de las 11am por favor',
+    items: [{
+      exam: {
+        id: 'H1',
+        name: 'Hemograma + Reticulocitos',
+        icon: 'fa-droplet',
+        color: 'text-red-500',
+        bg: 'bg-red-50'
+      },
+      pet: {
+        id: 'PAT001',
+        name: 'Simba',
+        photo: '🐶',
+        owner: 'Juan Pérez'
+      },
+      address: {
+        name: 'Clínica',
+        address: 'Av. Arequipa 2850',
+        district: 'San Isidro'
+      }
+    }]
+  }, {
+    id: 'ORD002',
+    userId: 'USR002',
+    userName: 'Vet Planet',
+    userType: 'medico',
+    date: '2025-02-15T10:00:00',
+    status: 'moto_en_camino',
+    comment: 'Tocar timbre 2 veces',
+    items: [{
+      exam: {
+        id: 'H1',
+        name: 'Hemograma Completo',
+        icon: 'fa-droplet',
+        color: 'text-red-500',
+        bg: 'bg-red-50'
+      },
+      pet: {
+        id: 'PAT006',
+        name: 'Canela',
+        photo: '🐶',
+        owner: 'Patricia Ruiz'
+      },
+      address: {
+        name: 'Clínica',
+        address: 'Av. Arequipa 2850',
+        district: 'San Isidro'
+      }
+    }]
+  }, {
+    id: 'ORD003',
+    userId: 'USR002',
+    userName: 'Vet Planet',
+    userType: 'medico',
+    date: '2025-02-18T09:00:00',
+    status: 'pending',
+    items: [{
+      exam: {
+        id: 'B1',
+        name: 'Bioquímica CHEM 10',
+        icon: 'fa-flask',
+        color: 'text-purple-500',
+        bg: 'bg-purple-50'
+      },
+      pet: {
+        id: 'PAT001',
+        name: 'Simba',
+        photo: '🐶',
+        owner: 'Juan Pérez'
+      },
+      address: {
+        name: 'Clínica',
+        address: 'Av. Arequipa 2850',
+        district: 'San Isidro'
+      }
+    }]
+  }],
+  nightMode: false
+};
 
 // SwipeToDelete — slide left to reveal red delete zone
 var SwipeToDelete = function SwipeToDelete(_ref) {
@@ -2322,92 +2731,206 @@ var SwipeToDelete = function SwipeToDelete(_ref) {
     }
   }, children));
 };
+var PdfViewer = function PdfViewer(_ref2) {
+  var url = _ref2.url,
+    style = _ref2.style,
+    className = _ref2.className;
+  var _React$useState1 = React.useState(null),
+    _React$useState10 = _slicedToArray(_React$useState1, 2),
+    blobUrl = _React$useState10[0],
+    setBlobUrl = _React$useState10[1];
+  var _React$useState11 = React.useState(false),
+    _React$useState12 = _slicedToArray(_React$useState11, 2),
+    error = _React$useState12[0],
+    setError = _React$useState12[1];
+  React.useEffect(function () {
+    if (!url) {
+      setError(true);
+      return;
+    }
+    if (url.startsWith('data:') || url.startsWith('blob:') || url.startsWith('https://www.') || url.startsWith('http://')) {
+      setBlobUrl(url);
+      return;
+    }
+    var token = localStorage.getItem('inulab_token');
+    fetch(url, {
+      headers: token ? {
+        'Authorization': "Bearer ".concat(token)
+      } : {}
+    }).then(function (r) {
+      if (!r.ok) throw new Error('Error');
+      return r.blob();
+    }).then(function (blob) {
+      return setBlobUrl(URL.createObjectURL(blob));
+    })["catch"](function () {
+      return setError(true);
+    });
+  }, [url]);
+  if (error) return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center justify-center h-full text-gray-400"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-pdf text-5xl mb-3 text-gray-300"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "PDF no disponible"));
+  if (!blobUrl) return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center justify-center h-full text-gray-400"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-spinner fa-spin text-3xl mb-2"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm"
+  }, "Cargando PDF..."));
+  return /*#__PURE__*/React.createElement("iframe", {
+    src: blobUrl,
+    style: style,
+    className: className,
+    title: "PDF"
+  });
+};
 var App = function App() {
-  var _useState = useState(null),
+  // ✅ PON ESTO AQUÍ
+  var safeText = function safeText(value) {
+    if (typeof value === "string" || typeof value === "number") return value;
+    if (value && _typeof(value) === "object") return value.name || "";
+    return "";
+  };
+  var safeImage = function safeImage(value) {
+    return typeof value === "string" ? value : null;
+  };
+  var _useState = useState({
+      pets: [],
+      orders: [],
+      addresses: [],
+      results: [],
+      users: [],
+      invoices: [],
+      exams: []
+    }),
     _useState2 = _slicedToArray(_useState, 2),
     database = _useState2[0],
     setDatabase = _useState2[1];
-  var _useState3 = useState(false),
+  var _useState3 = useState(null),
     _useState4 = _slicedToArray(_useState3, 2),
-    isAuthenticated = _useState4[0],
-    setIsAuthenticated = _useState4[1];
-  var _useState5 = useState(null),
+    selectedAddressId = _useState4[0],
+    setSelectedAddressId = _useState4[1];
+  var loadAddresses = /*#__PURE__*/function () {
+    var _ref3 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10() {
+      var res, data, _t;
+      return _regenerator().w(function (_context10) {
+        while (1) switch (_context10.p = _context10.n) {
+          case 0:
+            _context10.p = 0;
+            _context10.n = 1;
+            return fetch("".concat(API_BASE, "/Addresses"), {
+              headers: api._headers()
+            });
+          case 1:
+            res = _context10.v;
+            _context10.n = 2;
+            return res.json();
+          case 2:
+            data = _context10.v;
+            setDatabase(function (prev) {
+              return _objectSpread(_objectSpread({}, prev), {}, {
+                addresses: data
+              });
+            });
+            _context10.n = 4;
+            break;
+          case 3:
+            _context10.p = 3;
+            _t = _context10.v;
+            console.error("Error cargando direcciones", _t);
+          case 4:
+            return _context10.a(2);
+        }
+      }, _callee10, null, [[0, 3]]);
+    }));
+    return function loadAddresses() {
+      return _ref3.apply(this, arguments);
+    };
+  }();
+  var _useState5 = useState(false),
     _useState6 = _slicedToArray(_useState5, 2),
-    currentUser = _useState6[0],
-    setCurrentUser = _useState6[1];
+    isAuthenticated = _useState6[0],
+    setIsAuthenticated = _useState6[1];
   var _useState7 = useState(null),
     _useState8 = _slicedToArray(_useState7, 2),
-    userType = _useState8[0],
-    setUserType = _useState8[1];
-  var _useState9 = useState(''),
+    currentUser = _useState8[0],
+    setCurrentUser = _useState8[1];
+  var _useState9 = useState(null),
     _useState0 = _slicedToArray(_useState9, 2),
-    username = _useState0[0],
-    setUsername = _useState0[1];
+    userType = _useState0[0],
+    setUserType = _useState0[1];
   var _useState1 = useState(''),
     _useState10 = _slicedToArray(_useState1, 2),
-    password = _useState10[0],
-    setPassword = _useState10[1];
+    username = _useState10[0],
+    setUsername = _useState10[1];
   var _useState11 = useState(''),
     _useState12 = _slicedToArray(_useState11, 2),
-    error = _useState12[0],
-    setError = _useState12[1];
-  var _useState13 = useState(true),
+    password = _useState12[0],
+    setPassword = _useState12[1];
+  var _useState13 = useState(''),
     _useState14 = _slicedToArray(_useState13, 2),
-    loading = _useState14[0],
-    setLoading = _useState14[1];
-  var _useState15 = useState('pedidos'),
+    error = _useState14[0],
+    setError = _useState14[1];
+  var _useState15 = useState(false),
     _useState16 = _slicedToArray(_useState15, 2),
-    activeTab = _useState16[0],
-    setActiveTab = _useState16[1];
-  var _useState17 = useState(''),
+    loading = _useState16[0],
+    setLoading = _useState16[1];
+  var _useState17 = useState('pedidos'),
     _useState18 = _slicedToArray(_useState17, 2),
-    searchTerm = _useState18[0],
-    setSearchTerm = _useState18[1];
-  var _useState19 = useState(null),
+    activeTab = _useState18[0],
+    setActiveTab = _useState18[1];
+  var _useState19 = useState(''),
     _useState20 = _slicedToArray(_useState19, 2),
-    selectedPet = _useState20[0],
-    setSelectedPet = _useState20[1];
+    searchTerm = _useState20[0],
+    setSearchTerm = _useState20[1];
   var _useState21 = useState(null),
     _useState22 = _slicedToArray(_useState21, 2),
-    selectedExam = _useState22[0],
-    setSelectedExam = _useState22[1];
+    selectedPet = _useState22[0],
+    setSelectedPet = _useState22[1];
   var _useState23 = useState(null),
     _useState24 = _slicedToArray(_useState23, 2),
-    viewingInvoice = _useState24[0],
-    setViewingInvoice = _useState24[1];
+    selectedExam = _useState24[0],
+    setSelectedExam = _useState24[1];
   var _useState25 = useState(null),
     _useState26 = _slicedToArray(_useState25, 2),
-    viewingOrderTracking = _useState26[0],
-    setViewingOrderTracking = _useState26[1];
-  var _useState27 = useState(false),
+    viewingInvoice = _useState26[0],
+    setViewingInvoice = _useState26[1];
+  var _useState27 = useState(null),
     _useState28 = _slicedToArray(_useState27, 2),
-    showAllPending = _useState28[0],
-    setShowAllPending = _useState28[1];
+    viewingOrderTracking = _useState28[0],
+    setViewingOrderTracking = _useState28[1];
   var _useState29 = useState(false),
     _useState30 = _slicedToArray(_useState29, 2),
-    trackingMenuOpen = _useState30[0],
-    setTrackingMenuOpen = _useState30[1];
-  var _useState31 = useState([]),
+    showAllPending = _useState30[0],
+    setShowAllPending = _useState30[1];
+  var _useState31 = useState(false),
     _useState32 = _slicedToArray(_useState31, 2),
-    cart = _useState32[0],
-    setCart = _useState32[1];
+    trackingMenuOpen = _useState32[0],
+    setTrackingMenuOpen = _useState32[1];
   var _useState33 = useState([]),
     _useState34 = _slicedToArray(_useState33, 2),
-    pendingExams = _useState34[0],
-    setPendingExams = _useState34[1];
-  var _useState35 = useState(null),
+    cart = _useState34[0],
+    setCart = _useState34[1];
+  var _useState35 = useState([]),
     _useState36 = _slicedToArray(_useState35, 2),
-    currentExamForPet = _useState36[0],
-    setCurrentExamForPet = _useState36[1];
-  var _useState37 = useState(''),
+    pendingExams = _useState36[0],
+    setPendingExams = _useState36[1];
+  var _useState37 = useState(null),
     _useState38 = _slicedToArray(_useState37, 2),
-    petSearchTerm = _useState38[0],
-    setPetSearchTerm = _useState38[1];
-  var _useState39 = useState(false),
+    currentExamForPet = _useState38[0],
+    setCurrentExamForPet = _useState38[1];
+  var _useState39 = useState(''),
     _useState40 = _slicedToArray(_useState39, 2),
-    showNewPetForm = _useState40[0],
-    setShowNewPetForm = _useState40[1];
-  var _useState41 = useState({
+    petSearchTerm = _useState40[0],
+    setPetSearchTerm = _useState40[1];
+  var _useState41 = useState(false),
+    _useState42 = _slicedToArray(_useState41, 2),
+    showNewPetForm = _useState42[0],
+    setShowNewPetForm = _useState42[1];
+  var _useState43 = useState({
       name: '',
       owner: '',
       animalType: '',
@@ -2416,59 +2939,59 @@ var App = function App() {
       ageUnit: 'años',
       sex: ''
     }),
-    _useState42 = _slicedToArray(_useState41, 2),
-    newPet = _useState42[0],
-    setNewPet = _useState42[1];
-  var _useState43 = useState(false),
     _useState44 = _slicedToArray(_useState43, 2),
-    showOrderSummary = _useState44[0],
-    setShowOrderSummary = _useState44[1];
-  var _useState45 = useState('factura'),
+    newPet = _useState44[0],
+    setNewPet = _useState44[1];
+  var _useState45 = useState(false),
     _useState46 = _slicedToArray(_useState45, 2),
-    invoiceType = _useState46[0],
-    setInvoiceType = _useState46[1]; // 'boleta', 'factura'
-  var _useState47 = useState(null),
+    showOrderSummary = _useState46[0],
+    setShowOrderSummary = _useState46[1];
+  var _useState47 = useState('factura'),
     _useState48 = _slicedToArray(_useState47, 2),
-    selectedPetForOrder = _useState48[0],
-    setSelectedPetForOrder = _useState48[1];
-  var _useState49 = useState(false),
+    invoiceType = _useState48[0],
+    setInvoiceType = _useState48[1]; // 'boleta', 'factura'
+  var _useState49 = useState(null),
     _useState50 = _slicedToArray(_useState49, 2),
-    showAddressSelection = _useState50[0],
-    setShowAddressSelection = _useState50[1];
+    selectedPetForOrder = _useState50[0],
+    setSelectedPetForOrder = _useState50[1];
   var _useState51 = useState(false),
     _useState52 = _slicedToArray(_useState51, 2),
-    showNewAddressForm = _useState52[0],
-    setShowNewAddressForm = _useState52[1];
-  var _useState53 = useState({
+    showAddressSelection = _useState52[0],
+    setShowAddressSelection = _useState52[1];
+  var _useState53 = useState(false),
+    _useState54 = _slicedToArray(_useState53, 2),
+    showNewAddressForm = _useState54[0],
+    setShowNewAddressForm = _useState54[1];
+  var _useState55 = useState({
       name: '',
       address: '',
       district: '',
       reference: ''
     }),
-    _useState54 = _slicedToArray(_useState53, 2),
-    newAddress = _useState54[0],
-    setNewAddress = _useState54[1];
-  var _useState55 = useState(false),
     _useState56 = _slicedToArray(_useState55, 2),
-    newResultHighlight = _useState56[0],
-    setNewResultHighlight = _useState56[1];
+    newAddress = _useState56[0],
+    setNewAddress = _useState56[1];
   var _useState57 = useState(false),
     _useState58 = _slicedToArray(_useState57, 2),
-    newInvoiceHighlight = _useState58[0],
-    setNewInvoiceHighlight = _useState58[1];
-  var _useState59 = useState(0),
+    newResultHighlight = _useState58[0],
+    setNewResultHighlight = _useState58[1];
+  var _useState59 = useState(false),
     _useState60 = _slicedToArray(_useState59, 2),
-    lastSeenResultCount = _useState60[0],
-    setLastSeenResultCount = _useState60[1];
+    newInvoiceHighlight = _useState60[0],
+    setNewInvoiceHighlight = _useState60[1];
   var _useState61 = useState(0),
     _useState62 = _slicedToArray(_useState61, 2),
-    lastSeenInvoiceCount = _useState62[0],
-    setLastSeenInvoiceCount = _useState62[1];
-  var _useState63 = useState(false),
+    lastSeenResultCount = _useState62[0],
+    setLastSeenResultCount = _useState62[1];
+  var _useState63 = useState(0),
     _useState64 = _slicedToArray(_useState63, 2),
-    showEditProfile = _useState64[0],
-    setShowEditProfile = _useState64[1];
-  var _useState65 = useState({
+    lastSeenInvoiceCount = _useState64[0],
+    setLastSeenInvoiceCount = _useState64[1];
+  var _useState65 = useState(false),
+    _useState66 = _slicedToArray(_useState65, 2),
+    showEditProfile = _useState66[0],
+    setShowEditProfile = _useState66[1];
+  var _useState67 = useState({
       name: '',
       clinic: '',
       phone: '',
@@ -2477,105 +3000,190 @@ var App = function App() {
       district: '',
       ruc: ''
     }),
-    _useState66 = _slicedToArray(_useState65, 2),
-    editProfile = _useState66[0],
-    setEditProfile = _useState66[1];
-  var _useState67 = useState(null),
     _useState68 = _slicedToArray(_useState67, 2),
-    selectedUserForUpload = _useState68[0],
-    setSelectedUserForUpload = _useState68[1];
+    editProfile = _useState68[0],
+    setEditProfile = _useState68[1];
   var _useState69 = useState(null),
     _useState70 = _slicedToArray(_useState69, 2),
-    selectedPetForUpload = _useState70[0],
-    setSelectedPetForUpload = _useState70[1];
+    selectedUserForUpload = _useState70[0],
+    setSelectedUserForUpload = _useState70[1];
   var _useState71 = useState(null),
     _useState72 = _slicedToArray(_useState71, 2),
-    uploadedFile = _useState72[0],
-    setUploadedFile = _useState72[1];
-  var _useState73 = useState(''),
+    selectedPetForUpload = _useState72[0],
+    setSelectedPetForUpload = _useState72[1];
+  var _useState73 = useState(null),
     _useState74 = _slicedToArray(_useState73, 2),
-    examTitle = _useState74[0],
-    setExamTitle = _useState74[1];
-  var _useState75 = useState(new Date().toISOString().split('T')[0]),
+    uploadedFile = _useState74[0],
+    setUploadedFile = _useState74[1];
+  var _useState75 = useState(''),
     _useState76 = _slicedToArray(_useState75, 2),
-    examDate = _useState76[0],
-    setExamDate = _useState76[1];
-  var _useState77 = useState(''),
+    examTitle = _useState76[0],
+    setExamTitle = _useState76[1];
+  var _useState77 = useState(new Date().toISOString().split('T')[0]),
     _useState78 = _slicedToArray(_useState77, 2),
-    successMessage = _useState78[0],
-    setSuccessMessage = _useState78[1];
-  var _useState79 = useState(null),
+    examDate = _useState78[0],
+    setExamDate = _useState78[1];
+  var _useState79 = useState(''),
     _useState80 = _slicedToArray(_useState79, 2),
-    selectedPaqueteDetail = _useState80[0],
-    setSelectedPaqueteDetail = _useState80[1];
-  var _useState81 = useState(''),
+    successMessage = _useState80[0],
+    setSuccessMessage = _useState80[1];
+  var _useState81 = useState(null),
     _useState82 = _slicedToArray(_useState81, 2),
-    mascotaSearchTerm = _useState82[0],
-    setMascotaSearchTerm = _useState82[1];
-  var _useState83 = useState(null),
+    selectedPaqueteDetail = _useState82[0],
+    setSelectedPaqueteDetail = _useState82[1];
+  var _useState83 = useState(''),
     _useState84 = _slicedToArray(_useState83, 2),
-    selectedMascota = _useState84[0],
-    setSelectedMascota = _useState84[1];
-  var _useState85 = useState(''),
+    mascotaSearchTerm = _useState84[0],
+    setMascotaSearchTerm = _useState84[1];
+  var _useState85 = useState(null),
     _useState86 = _slicedToArray(_useState85, 2),
-    examFilterType = _useState86[0],
-    setExamFilterType = _useState86[1];
+    selectedMascota = _useState86[0],
+    setSelectedMascota = _useState86[1];
   var _useState87 = useState(''),
     _useState88 = _slicedToArray(_useState87, 2),
-    examSearchTerm = _useState88[0],
-    setExamSearchTerm = _useState88[1];
+    examFilterType = _useState88[0],
+    setExamFilterType = _useState88[1];
   var _useState89 = useState(''),
     _useState90 = _slicedToArray(_useState89, 2),
-    examFilterDay = _useState90[0],
-    setExamFilterDay = _useState90[1];
+    examSearchTerm = _useState90[0],
+    setExamSearchTerm = _useState90[1];
   var _useState91 = useState(''),
     _useState92 = _slicedToArray(_useState91, 2),
-    examFilterMonth = _useState92[0],
-    setExamFilterMonth = _useState92[1];
+    examFilterDay = _useState92[0],
+    setExamFilterDay = _useState92[1];
   var _useState93 = useState(''),
     _useState94 = _slicedToArray(_useState93, 2),
-    examFilterYear = _useState94[0],
-    setExamFilterYear = _useState94[1];
-  var _useState95 = useState(false),
+    examFilterMonth = _useState94[0],
+    setExamFilterMonth = _useState94[1];
+  var _useState95 = useState(''),
     _useState96 = _slicedToArray(_useState95, 2),
-    menuOpen = _useState96[0],
-    setMenuOpen = _useState96[1];
+    examFilterYear = _useState96[0],
+    setExamFilterYear = _useState96[1];
   var _useState97 = useState(false),
     _useState98 = _slicedToArray(_useState97, 2),
-    duenoMenuOpen = _useState98[0],
-    setDuenoMenuOpen = _useState98[1];
-  var _useState99 = useState('main'),
+    menuOpen = _useState98[0],
+    setMenuOpen = _useState98[1];
+  var _useState99 = useState(false),
     _useState100 = _slicedToArray(_useState99, 2),
-    duenoView = _useState100[0],
-    setDuenoView = _useState100[1]; // 'main' o 'config'
-  var _useState101 = useState(''),
+    duenoMenuOpen = _useState100[0],
+    setDuenoMenuOpen = _useState100[1];
+  var _useState101 = useState('main'),
     _useState102 = _slicedToArray(_useState101, 2),
-    orderComment = _useState102[0],
-    setOrderComment = _useState102[1];
-  var _useState103 = useState(false),
+    duenoView = _useState102[0],
+    setDuenoView = _useState102[1]; // 'main' o 'config'
+  var _useState103 = useState(''),
     _useState104 = _slicedToArray(_useState103, 2),
-    termsAccepted = _useState104[0],
-    setTermsAccepted = _useState104[1];
+    orderComment = _useState104[0],
+    setOrderComment = _useState104[1];
   var _useState105 = useState(false),
     _useState106 = _slicedToArray(_useState105, 2),
-    showTermsModal = _useState106[0],
-    setShowTermsModal = _useState106[1];
+    termsAccepted = _useState106[0],
+    setTermsAccepted = _useState106[1];
   var _useState107 = useState(false),
     _useState108 = _slicedToArray(_useState107, 2),
-    showTechnicalExams = _useState108[0],
-    setShowTechnicalExams = _useState108[1];
+    showTermsModal = _useState108[0],
+    setShowTermsModal = _useState108[1];
   var _useState109 = useState(false),
     _useState110 = _slicedToArray(_useState109, 2),
-    showTomaMuestraStep = _useState110[0],
-    setShowTomaMuestraStep = _useState110[1];
-  var _useState111 = useState(null),
+    showTechnicalExams = _useState110[0],
+    setShowTechnicalExams = _useState110[1];
+  var _useState111 = useState(false),
     _useState112 = _slicedToArray(_useState111, 2),
-    pendingOrderAddress = _useState112[0],
-    setPendingOrderAddress = _useState112[1];
+    showTomaMuestraStep = _useState112[0],
+    setShowTomaMuestraStep = _useState112[1];
+  var _useState113 = useState(null),
+    _useState114 = _slicedToArray(_useState113, 2),
+    pendingOrderAddress = _useState114[0],
+    setPendingOrderAddress = _useState114[1];
+  var _useState115 = useState([]),
+    _useState116 = _slicedToArray(_useState115, 2),
+    facturas = _useState116[0],
+    setFacturas = _useState116[1];
+  var _useState117 = useState('login'),
+    _useState118 = _slicedToArray(_useState117, 2),
+    authMode = _useState118[0],
+    setAuthMode = _useState118[1];
+  var _useState119 = useState({
+      username: '',
+      email: '',
+      phone: '',
+      password: '',
+      confirmPassword: '',
+      type: 'dueño'
+    }),
+    _useState120 = _slicedToArray(_useState119, 2),
+    regData = _useState120[0],
+    setRegData = _useState120[1];
+  var _useState121 = useState(''),
+    _useState122 = _slicedToArray(_useState121, 2),
+    regError = _useState122[0],
+    setRegError = _useState122[1];
+  var _useState123 = useState(false),
+    _useState124 = _slicedToArray(_useState123, 2),
+    regLoading = _useState124[0],
+    setRegLoading = _useState124[1];
+  var _useState125 = useState(''),
+    _useState126 = _slicedToArray(_useState125, 2),
+    regSuccess = _useState126[0],
+    setRegSuccess = _useState126[1];
+  var _useState127 = useState(''),
+    _useState128 = _slicedToArray(_useState127, 2),
+    pedidosSearchTerm = _useState128[0],
+    setPedidosSearchTerm = _useState128[1];
+  // Estados búsqueda dueño
+  var paquetesFiltrados = paquetesDuenos.filter(function (paquete) {
+    var texto = pedidosSearchTerm.toLowerCase();
+    return paquete.name && paquete.name.toLowerCase().includes(texto) || paquete.description && paquete.description.toLowerCase().includes(texto);
+  });
+  var _useState129 = useState(''),
+    _useState130 = _slicedToArray(_useState129, 2),
+    facDuenoSearchTerm = _useState130[0],
+    setFacDuenoSearchTerm = _useState130[1];
+  var _useState131 = useState(''),
+    _useState132 = _slicedToArray(_useState131, 2),
+    facDuenoFilterDay = _useState132[0],
+    setFacDuenoFilterDay = _useState132[1];
+  var _useState133 = useState(''),
+    _useState134 = _slicedToArray(_useState133, 2),
+    facDuenoFilterMonth = _useState134[0],
+    setFacDuenoFilterMonth = _useState134[1];
+  var _useState135 = useState(''),
+    _useState136 = _slicedToArray(_useState135, 2),
+    facDuenoFilterYear = _useState136[0],
+    setFacDuenoFilterYear = _useState136[1];
+  var _useState137 = useState(''),
+    _useState138 = _slicedToArray(_useState137, 2),
+    resSearchTerm = _useState138[0],
+    setResSearchTerm = _useState138[1];
+  var _useState139 = useState(''),
+    _useState140 = _slicedToArray(_useState139, 2),
+    resFilterDay = _useState140[0],
+    setResFilterDay = _useState140[1];
+  var _useState141 = useState(''),
+    _useState142 = _slicedToArray(_useState141, 2),
+    resFilterMonth = _useState142[0],
+    setResFilterMonth = _useState142[1];
+  var _useState143 = useState(''),
+    _useState144 = _slicedToArray(_useState143, 2),
+    resFilterYear = _useState144[0],
+    setResFilterYear = _useState144[1];
+  var _React$useState13 = React.useState(false),
+    _React$useState14 = _slicedToArray(_React$useState13, 2),
+    showMobileSearch = _React$useState14[0],
+    setShowMobileSearch = _React$useState14[1];
+  var _React$useState15 = React.useState(false),
+    _React$useState16 = _slicedToArray(_React$useState15, 2),
+    showFacMobileSearch = _React$useState16[0],
+    setShowFacMobileSearch = _React$useState16[1];
+  var _React$useState17 = React.useState(false),
+    _React$useState18 = _slicedToArray(_React$useState17, 2),
+    showResMobileSearch = _React$useState18[0],
+    setShowResMobileSearch = _React$useState18[1];
   useEffect(function () {
-    setLoading(false);
-    setIsAuthenticated(false);
-  }, []);
+    if (showAddressSelection) {
+      loadAddresses();
+    }
+  }, [showAddressSelection]);
   var examTotal = cart.reduce(function (sum, item) {
     return sum + (item.exam.price || 0);
   }, 0);
@@ -2591,6 +3199,36 @@ var App = function App() {
     }, 0);
   }();
   var cartTotal = examTotal + tomaMuestraFees;
+  function cargarFacturas() {
+    return _cargarFacturas.apply(this, arguments);
+  }
+  function _cargarFacturas() {
+    _cargarFacturas = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee22() {
+      var token, res, data;
+      return _regenerator().w(function (_context22) {
+        while (1) switch (_context22.n) {
+          case 0:
+            token = localStorage.getItem("inulab_token"); // ← correcto
+            _context22.n = 1;
+            return fetch("".concat(API_BASE, "/Facturas"), {
+              headers: {
+                "Authorization": "Bearer ".concat(token)
+              }
+            });
+          case 1:
+            res = _context22.v;
+            _context22.n = 2;
+            return res.json();
+          case 2:
+            data = _context22.v;
+            setFacturas(data);
+          case 3:
+            return _context22.a(2);
+        }
+      }, _callee22);
+    }));
+    return _cargarFacturas.apply(this, arguments);
+  }
   var termsContent = {
     notas: ['Los tubos de muestra deben ser llenados estrictamente hasta la marca indicada, según el volumen requerido para garantizar la validez del análisis.', 'Los resultados de las muestras se entregan en un tiempo aproximado de 1 a 2 horas para exámenes IDEXX y Healvet, sujeto a variaciones según la ubicación.', 'El horario de recepción y procesamiento para muestras manuales (hemograma manual, frotis sanguíneo, exámenes coprológicos y análisis de orina) es de lunes a viernes de 9:00 a.m. a 5:00 p.m. y los días sábado de 9:00 a.m. a 2:00 p.m.', 'Disponible 24 hrs solo para exámenes de IDEXX y Healvet.'],
     tenerEnCuenta: ['Las diluciones no están incluidas en los paquetes. En caso de requerirse por alerta del equipo o condición del paciente, se realizarán bajo criterio médico y se cobrarán como analito individual.', 'Los precios están expresados en Soles (S/) e incluyen IGV.', 'Los tiempos de entrega son aproximados y pueden variar según la complejidad del análisis y la ubicación del paciente.'],
@@ -2778,68 +3416,94 @@ var App = function App() {
       className: "text-cyan-600 font-semibold underline hover:text-cyan-700"
     }, "t\xE9rminos y condiciones"), " de entrega y procesamiento de muestras.")));
   };
-  var _useState113 = useState('inicio'),
-    _useState114 = _slicedToArray(_useState113, 2),
-    medicoView = _useState114[0],
-    setMedicoView = _useState114[1]; // inicio, pedidos, mascotas, resultados, facturacion
-  var _useState115 = useState(''),
-    _useState116 = _slicedToArray(_useState115, 2),
-    resultadosSearch = _useState116[0],
-    setResultadosSearch = _useState116[1];
-  var _useState117 = useState(''),
-    _useState118 = _slicedToArray(_useState117, 2),
-    resultadosFilterDay = _useState118[0],
-    setResultadosFilterDay = _useState118[1];
-  var _useState119 = useState(''),
-    _useState120 = _slicedToArray(_useState119, 2),
-    resultadosFilterMonth = _useState120[0],
-    setResultadosFilterMonth = _useState120[1];
-  var _useState121 = useState(''),
-    _useState122 = _slicedToArray(_useState121, 2),
-    resultadosFilterYear = _useState122[0],
-    setResultadosFilterYear = _useState122[1];
-  var _useState123 = useState(''),
-    _useState124 = _slicedToArray(_useState123, 2),
-    facturacionSearch = _useState124[0],
-    setFacturacionSearch = _useState124[1];
-  var _useState125 = useState(''),
-    _useState126 = _slicedToArray(_useState125, 2),
-    facturacionFilterDay = _useState126[0],
-    setFacturacionFilterDay = _useState126[1];
-  var _useState127 = useState(''),
-    _useState128 = _slicedToArray(_useState127, 2),
-    facturacionFilterMonth = _useState128[0],
-    setFacturacionFilterMonth = _useState128[1];
-  var _useState129 = useState(''),
-    _useState130 = _slicedToArray(_useState129, 2),
-    facturacionFilterYear = _useState130[0],
-    setFacturacionFilterYear = _useState130[1];
+  var _useState145 = useState('inicio'),
+    _useState146 = _slicedToArray(_useState145, 2),
+    medicoView = _useState146[0],
+    setMedicoView = _useState146[1]; // inicio, pedidos, mascotas, resultados, facturacion
+  var _useState147 = useState(''),
+    _useState148 = _slicedToArray(_useState147, 2),
+    resultadosSearch = _useState148[0],
+    setResultadosSearch = _useState148[1];
+  var _useState149 = useState(''),
+    _useState150 = _slicedToArray(_useState149, 2),
+    resultadosFilterDay = _useState150[0],
+    setResultadosFilterDay = _useState150[1];
+  var _useState151 = useState(''),
+    _useState152 = _slicedToArray(_useState151, 2),
+    resultadosFilterMonth = _useState152[0],
+    setResultadosFilterMonth = _useState152[1];
+  var _useState153 = useState(''),
+    _useState154 = _slicedToArray(_useState153, 2),
+    resultadosFilterYear = _useState154[0],
+    setResultadosFilterYear = _useState154[1];
+  var _useState155 = useState(''),
+    _useState156 = _slicedToArray(_useState155, 2),
+    facturacionSearch = _useState156[0],
+    setFacturacionSearch = _useState156[1];
+  var _useState157 = useState(null),
+    _useState158 = _slicedToArray(_useState157, 2),
+    facturacionInvoice = _useState158[0],
+    setFacturacionInvoice = _useState158[1];
+  var _useState159 = useState(null),
+    _useState160 = _slicedToArray(_useState159, 2),
+    medicoFacInvoice = _useState160[0],
+    setMedicoFacInvoice = _useState160[1];
+  var _useState161 = useState(''),
+    _useState162 = _slicedToArray(_useState161, 2),
+    facturacionFilterDay = _useState162[0],
+    setFacturacionFilterDay = _useState162[1];
+  var _useState163 = useState(''),
+    _useState164 = _slicedToArray(_useState163, 2),
+    facturacionFilterMonth = _useState164[0],
+    setFacturacionFilterMonth = _useState164[1];
+  var _useState165 = useState(''),
+    _useState166 = _slicedToArray(_useState165, 2),
+    facturacionFilterYear = _useState166[0],
+    setFacturacionFilterYear = _useState166[1];
 
-  // ─── Helpers para actualizar estado local tras llamadas API ───────────────
-  // Reemplaza saveDatabase(fn) por setDatabase(fn) + llamada al endpoint correspondiente.
-  // Cada mutación tiene su propio método en el objeto `api` de arriba.
+  // DEMO: Funciones de persistencia localStorage
+  var saveDatabase = function saveDatabase(newDbOrFn) {
+    if (typeof newDbOrFn === 'function') {
+      setDatabase(function (prev) {
+        var result = newDbOrFn(prev);
+        try {
+          localStorage.setItem('inulab_db_v25', JSON.stringify(result));
+        } catch (err) {}
+        return result;
+      });
+    } else {
+      setDatabase(newDbOrFn);
+      try {
+        localStorage.setItem('inulab_db_v25', JSON.stringify(newDbOrFn));
+      } catch (err) {}
+    }
+  };
   var getCurrentNightMode = function getCurrentNightMode() {
+    try {
+      var s = localStorage.getItem('inulab_db_v25');
+      if (s) return JSON.parse(s).nightMode;
+    } catch (e) {}
     return (database === null || database === void 0 ? void 0 : database.nightMode) || false;
   };
 
   // Toggle modo motorizado
 
   // Componente de Mapa de Tracking
-  var TrackingMapComponent = function TrackingMapComponent(_ref2) {
-    var orderId = _ref2.orderId;
+  var TrackingMapComponent = function TrackingMapComponent(_ref4) {
+    var orderId = _ref4.orderId;
     var mapRef = React.useRef(null);
     var mapInstanceRef = React.useRef(null);
     var motoMarkerRef = React.useRef(null);
     var simulationRef = React.useRef(null);
     var currentIndexRef = React.useRef(0);
-    var _useState131 = useState('8'),
-      _useState132 = _slicedToArray(_useState131, 2),
-      eta = _useState132[0],
-      setEta = _useState132[1];
-    var _useState133 = useState('2.3'),
-      _useState134 = _slicedToArray(_useState133, 2),
-      dist = _useState134[0],
-      setDist = _useState134[1];
+    var _useState167 = useState('8'),
+      _useState168 = _slicedToArray(_useState167, 2),
+      eta = _useState168[0],
+      setEta = _useState168[1];
+    var _useState169 = useState('2.3'),
+      _useState170 = _slicedToArray(_useState169, 2),
+      dist = _useState170[0],
+      setDist = _useState170[1];
     var routePoints = [[-12.0564, -77.0528], [-12.0544, -77.0508], [-12.0524, -77.0488], [-12.0504, -77.0468], [-12.0484, -77.0448], [-12.0464, -77.0428]];
     var destination = [-12.0464, -77.0428];
     var calcDist = function calcDist(p1, p2) {
@@ -2954,8 +3618,15 @@ var App = function App() {
   // Componente de Mapa de Tracking para Admin (incluye ruta de regreso)
 
   useEffect(function () {
-    loadDatabase();
-  }, []);
+    if (isAuthenticated) {
+      loadDatabase();
+    }
+  }, [isAuthenticated]);
+  useEffect(function () {
+    if (activeTab === "facturacion") {
+      cargarFacturas();
+    }
+  }, [activeTab]);
   useEffect(function () {
     // Solicitar permisos de notificación al cargar
     if ('Notification' in window && Notification.permission === 'default') {
@@ -2963,68 +3634,123 @@ var App = function App() {
     }
   }, [isAuthenticated]);
 
-  // ─── Polling: refresca pedidos y usuarios desde el backend cada 10 segundos ──
-  // TODO: Reemplazar por WebSocket/SSE para notificaciones en tiempo real.
+  // Polling para actualizar pedidos y datos del usuario (cada 10 segundos)
   useEffect(function () {
-    if (!isAuthenticated || !currentUser) return;
-    var interval = setInterval(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee10() {
-      return _regenerator().w(function (_context10) {
-        while (1) switch (_context10.n) {
+    if (!isAuthenticated) return;
+    var interval = setInterval(/*#__PURE__*/_asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11() {
+      var ordersResponse, statusMap, orders, _t2;
+      return _regenerator().w(function (_context11) {
+        while (1) switch (_context11.p = _context11.n) {
           case 0:
-            try {
-              // TODO: Llamar api.getOrders() y api.getMe() para refrescar datos
-              // const { orders } = await api.getOrders();
-              // const { user } = await api.getMe();
-              // setDatabase(prev => ({ ...prev, orders, users: prev.users.map(u => u.id === user.id ? user : u) }));
-            } catch (err) {
-              console.error('Polling error:', err);
-            }
+            _context11.p = 0;
+            _context11.n = 1;
+            return api.getOrders();
           case 1:
-            return _context10.a(2);
+            ordersResponse = _context11.v;
+            statusMap = {
+              0: 'pending',
+              1: 'assigned',
+              2: 'moto_en_camino',
+              3: 'moto_arrived',
+              4: 'pickup_in_progress',
+              5: 'sample_received',
+              6: 'arrived_at_lab',
+              7: 'processing',
+              8: 'results_uploaded',
+              9: 'completed'
+            };
+            orders = (ordersResponse || []).map(function (o) {
+              return {
+                id: o.id,
+                userId: o.userId,
+                userName: o.userName || '',
+                comment: o.comment || '',
+                createdAt: o.createdAt,
+                completedAt: o.completedAt,
+                documentType: o.documentType || 'boleta',
+                invoicePdf: o.invoicePdfUrl ? "https://inulab-backend-production.up.railway.app".concat(o.invoicePdfUrl) : null,
+                invoicePdfUrl: o.invoicePdfUrl || null,
+                invoiceStatus: o.invoicePdfUrl ? 'uploaded' : 'pending',
+                status: statusMap[Number(o.status)] || 'pending',
+                addressId: o.addressId,
+                items: (o.items || []).map(function (item) {
+                  var rawPdf = item.pdfUrl || o.resultPdfUrl || null;
+                  var orderResultPdf = rawPdf ? rawPdf.startsWith('http') ? rawPdf : "https://inulab-backend-production.up.railway.app".concat(rawPdf) : null;
+                  return {
+                    examName: String(item.examName || ''),
+                    exam: {
+                      name: String(item.examName || ''),
+                      icon: 'fa-vial',
+                      color: 'text-cyan-600',
+                      bg: 'bg-cyan-100'
+                    },
+                    pet: {
+                      name: String(item.petName || ''),
+                      photo: item.petPhoto || '🐾'
+                    },
+                    address: {
+                      address: String(item.addressStreet || ''),
+                      district: String(item.addressDistrict || '')
+                    },
+                    pdfData: orderResultPdf
+                  };
+                })
+              };
+            });
+            setDatabase(function (prev) {
+              return _objectSpread(_objectSpread({}, prev), {}, {
+                orders: orders
+              });
+            });
+            _context11.n = 2;
+            return cargarFacturas();
+          case 2:
+            _context11.n = 4;
+            break;
+          case 3:
+            _context11.p = 3;
+            _t2 = _context11.v;
+            console.error('Polling error:', _t2);
+          case 4:
+            return _context11.a(2);
         }
-      }, _callee10);
-    })), 10000);
+      }, _callee11, null, [[0, 3]]);
+    })), 15000);
     return function () {
       return clearInterval(interval);
     };
-  }, [isAuthenticated, currentUser]);
+  }, [isAuthenticated]);
 
   // Estados para trackear nuevos pendientes de mostrar
-  var _useState135 = useState(false),
-    _useState136 = _slicedToArray(_useState135, 2),
-    pendingNewResult = _useState136[0],
-    setPendingNewResult = _useState136[1];
-  var _useState137 = useState(false),
-    _useState138 = _slicedToArray(_useState137, 2),
-    pendingNewInvoice = _useState138[0],
-    setPendingNewInvoice = _useState138[1];
+  var _useState171 = useState(false),
+    _useState172 = _slicedToArray(_useState171, 2),
+    pendingNewResult = _useState172[0],
+    setPendingNewResult = _useState172[1];
+  var _useState173 = useState(false),
+    _useState174 = _slicedToArray(_useState173, 2),
+    pendingNewInvoice = _useState174[0],
+    setPendingNewInvoice = _useState174[1];
 
   // Efecto para detectar nuevos resultados y comprobantes (solo marca como pendiente)
+
   useEffect(function () {
-    if (!currentUser || !database) return;
-    var freshUser = database.users.find(function (u) {
+    var _database$users;
+    if (!currentUser || !Array.isArray(database === null || database === void 0 ? void 0 : database.orders)) return;
+    var orders = database.orders;
+    var freshUser = ((_database$users = database.users) === null || _database$users === void 0 ? void 0 : _database$users.find(function (u) {
       return u.id === (currentUser === null || currentUser === void 0 ? void 0 : currentUser.id);
-    }) || currentUser;
-    if (!freshUser) return;
-    var completedOrders = (database.orders || []).filter(function (o) {
-      return o.userId === freshUser.id && o.status === 'completed';
+    })) || currentUser;
+    var completedOrders = orders.filter(function (o) {
+      return (o.status === 9 || o.status === 'completed' || Number(o.status) === 9) && (o.items || []).length > 0;
     });
     var invoicesWithPdf = completedOrders.filter(function (o) {
       return o.invoicePdf;
     });
-
-    // Detectar nuevos resultados - marcar como pendiente
-    if (completedOrders.length > lastSeenResultCount && lastSeenResultCount > 0) {
+    if ((completedOrders || []).length > lastSeenResultCount && lastSeenResultCount > 0) {
       setPendingNewResult(true);
     }
-    setLastSeenResultCount(completedOrders.length);
-
-    // Detectar nuevos comprobantes - marcar como pendiente
-    if (invoicesWithPdf.length > lastSeenInvoiceCount && lastSeenInvoiceCount > 0) {
-      setPendingNewInvoice(true);
-    }
-    setLastSeenInvoiceCount(invoicesWithPdf.length);
-  }, [database === null || database === void 0 ? void 0 : database.orders, currentUser]);
+    setLastSeenResultCount((completedOrders || []).length);
+  }, [database, currentUser]);
 
   // Efecto para activar highlights cuando el usuario entra a Inicio
   useEffect(function () {
@@ -3046,76 +3772,284 @@ var App = function App() {
     }
   }, [medicoView, pendingNewResult, pendingNewInvoice]);
 
-  // ─── Carga inicial de datos desde el backend ──────────────────────────────
-  var loadDatabase = /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee11() {
-      var token;
-      return _regenerator().w(function (_context11) {
-        while (1) switch (_context11.n) {
-          case 0:
-            try {
-              token = getToken();
-              if (token) {
-                // TODO: Llamar endpoints para hidratar el estado inicial
-                // const { user }    = await api.getMe();
-                // const { orders }  = await api.getOrders();
-                // const { pets }    = await api.getPets();
-                // setCurrentUser(user);
-                // setUserType(user.type);
-                // setIsAuthenticated(true);
-                // setDatabase({ users: [user], orders, nightMode: false });
-              }
-            } catch (err) {
-              console.error('Error cargando datos:', err);
-            }
-            setLoading(false);
-          case 1:
-            return _context11.a(2);
-        }
-      }, _callee11);
-    }));
-    return function loadDatabase() {
-      return _ref4.apply(this, arguments);
+  // Bloquear scroll del #root cuando estamos en inicio (sin overlay ni vista secundaria)
+  useEffect(function () {
+    var root = document.getElementById('root');
+    if (!root) return;
+    var isInicio = medicoView === 'inicio' && !viewingOrderTracking && !selectedExam && !viewingInvoice && !currentExamForPet && !showOrderSummary;
+    root.style.overflowY = isInicio ? 'hidden' : 'auto';
+    return function () {
+      root.style.overflowY = 'auto';
     };
-  }();
-
-  // ─── Login ────────────────────────────────────────────────────────────────
-  var handleLogin = /*#__PURE__*/function () {
-    var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee12(e) {
-      var data, user, _t;
+  }, [medicoView, viewingOrderTracking, selectedExam, viewingInvoice, currentExamForPet, showOrderSummary]);
+  var loadDatabase = /*#__PURE__*/function () {
+    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee12() {
+      var silent,
+        loadingTimeout,
+        petsResponse,
+        pets,
+        ordersResponse,
+        statusMap,
+        orders,
+        addressesResponse,
+        addresses,
+        db,
+        _database$orders$,
+        _args12 = arguments,
+        _t3;
       return _regenerator().w(function (_context12) {
         while (1) switch (_context12.p = _context12.n) {
           case 0:
-            e.preventDefault();
-            setError('');
-            setLoading(true);
+            silent = _args12.length > 0 && _args12[0] !== undefined ? _args12[0] : false;
+            console.log("INICIANDO LOAD DATABASE");
+            if (!silent) setLoading(true);
+            loadingTimeout = setTimeout(function () {
+              setLoading(false);
+            }, 6000);
             _context12.p = 1;
+            console.log("cargando pets...");
             _context12.n = 2;
-            return api.login(username, password);
+            return api.getPets();
           case 2:
-            data = _context12.v;
-            user = data.user;
-            setCurrentUser(user);
-            setUserType(user.type);
-            setIsAuthenticated(true);
-            setActiveTab('pedidos');
-            _context12.n = 4;
-            break;
+            petsResponse = _context12.v;
+            console.log("RAW pets:", petsResponse); // ← agrega aquí
+            pets = ((petsResponse === null || petsResponse === void 0 ? void 0 : petsResponse.pets) || petsResponse || []).map(function (p) {
+              return {
+                id: p.id,
+                name: String(p.name || p.Name || ''),
+                species: String(p.species || p.animalType || ''),
+                breed: String(p.breed || ''),
+                age: p.age,
+                ageValue: p.age,
+                ageUnit: 'años',
+                sex: String(p.sex || p.gender || p.sexo || p.genero || ''),
+                photo: p.species === 'perro' ? '🐶' : p.species === 'gato' ? '🐱' : p.species === 'ave' ? '🦜' : p.species === 'conejo' ? '🐰' : '🐾',
+                owner: String(p.ownerName || p.owner || ''),
+                exams: (p.exams || []).map(function (e) {
+                  return {
+                    id: e.id,
+                    type: e.type || e.examName || 'Examen',
+                    date: e.date,
+                    seen: true,
+                    pdfData: e.pdfUrl ? e.pdfUrl.startsWith('http') ? e.pdfUrl : 'https://inulab-backend-production.up.railway.app' + e.pdfUrl : null
+                  };
+                })
+              };
+            });
+            console.log("pets OK", pets);
+            console.log("cargando orders...");
+            _context12.n = 3;
+            return api.getOrders();
           case 3:
-            _context12.p = 3;
-            _t = _context12.v;
-            setError(_t.message || 'Usuario o contraseña incorrectos');
+            ordersResponse = _context12.v;
+            console.log('ordersResponse directo:', ordersResponse);
+            statusMap = {
+              0: 'pending',
+              1: 'assigned',
+              2: 'moto_en_camino',
+              3: 'moto_arrived',
+              4: 'pickup_in_progress',
+              5: 'sample_received',
+              6: 'arrived_at_lab',
+              7: 'processing',
+              8: 'results_uploaded',
+              9: 'completed'
+            };
+            console.log('ordersResponse antes de map:', ordersResponse, Array.isArray(ordersResponse));
+            orders = (ordersResponse || []).map(function (o) {
+              return {
+                id: o.id,
+                userId: o.userId,
+                userName: o.userName || '',
+                comment: o.comment || '',
+                createdAt: o.createdAt,
+                completedAt: o.completedAt,
+                documentType: o.documentType || 'boleta',
+                invoicePdf: o.invoicePdfUrl ? "https://inulab-backend-production.up.railway.app".concat(o.invoicePdfUrl) : null,
+                invoicePdfUrl: o.invoicePdfUrl || null,
+                invoiceStatus: o.invoicePdfUrl ? 'uploaded' : 'pending',
+                status: statusMap[Number(o.status)] || 'pending',
+                addressId: o.addressId,
+                resultPdfUrl: o.resultPdfUrl || null,
+                items: (o.items || []).map(function (item) {
+                  var rawPdf = item.pdfUrl || o.resultPdfUrl || null;
+                  var orderResultPdf = rawPdf ? rawPdf.startsWith('http') ? rawPdf : "https://inulab-backend-production.up.railway.app".concat(rawPdf) : null;
+                  return {
+                    examName: String(item.examName || ''),
+                    exam: {
+                      name: String(item.examName || ''),
+                      icon: 'fa-vial',
+                      color: 'text-cyan-600',
+                      bg: 'bg-cyan-100'
+                    },
+                    pet: {
+                      name: String(item.petName || ''),
+                      photo: item.petPhoto || '🐾'
+                    },
+                    address: {
+                      address: String(item.addressStreet || ''),
+                      district: String(item.addressDistrict || '')
+                    },
+                    pdfData: orderResultPdf
+                  };
+                })
+              };
+            });
+            console.log("orders OK", orders);
+            console.log("STATUS:", orders.map(function (o) {
+              return o.status;
+            }));
+            console.log("cargando addresses...");
+            _context12.n = 4;
+            return api.getAddresses();
           case 4:
-            _context12.p = 4;
-            setLoading(false);
-            return _context12.f(4);
+            addressesResponse = _context12.v;
+            console.log("RAW addresses:", addressesResponse);
+            addresses = Array.isArray(addressesResponse) ? addressesResponse : (addressesResponse === null || addressesResponse === void 0 ? void 0 : addressesResponse.$values) || (addressesResponse === null || addressesResponse === void 0 ? void 0 : addressesResponse.addresses) || (addressesResponse === null || addressesResponse === void 0 ? void 0 : addressesResponse.data) || []; // Enriquecer exams con pdfData de orders
+            pets.forEach(function (pet) {
+              console.log('PET EXAMS:', pet.exams.map(function (e) {
+                return e.type;
+              }));
+              console.log('ORDERS COMPLETED:', orders.filter(function (o) {
+                return Number(o.status) === 9;
+              }).map(function (o) {
+                return {
+                  status: o.status,
+                  resultPdfUrl: o.resultPdfUrl,
+                  items: (o.items || []).map(function (i) {
+                    return i.examName;
+                  })
+                };
+              }));
+              pet.exams = pet.exams.map(function (exam) {
+                console.log('EXAM TYPE:', exam.type, '| ITEMS:', orders.map(function (o) {
+                  var _o$items;
+                  return (_o$items = o.items) === null || _o$items === void 0 ? void 0 : _o$items.map(function (i) {
+                    return i.examName;
+                  });
+                }));
+                var matchingOrder = orders.find(function (o) {
+                  return (o.status === 'completed' || Number(o.status) === 9) && (o.items || []).some(function (i) {
+                    return String(i.examName).toLowerCase() === String(exam.type || exam).toLowerCase();
+                  });
+                });
+                var rawUrl = (matchingOrder === null || matchingOrder === void 0 ? void 0 : matchingOrder.resultPdfUrl) || null;
+                var pdfUrl = rawUrl ? rawUrl.startsWith('http') ? rawUrl : "https://inulab-backend-production.up.railway.app".concat(rawUrl) : null;
+                return _objectSpread(_objectSpread({}, exam), {}, {
+                  pdfData: pdfUrl
+                });
+              });
+            });
+            db = {
+              pets: pets || [],
+              orders: orders || [],
+              addresses: addresses || [],
+              results: []
+            };
+            console.log("database armado", db);
+            setDatabase({
+              pets: (db === null || db === void 0 ? void 0 : db.pets) || [],
+              orders: (db === null || db === void 0 ? void 0 : db.orders) || [],
+              addresses: (db === null || db === void 0 ? void 0 : db.addresses) || [],
+              results: (db === null || db === void 0 ? void 0 : db.results) || [],
+              users: (db === null || db === void 0 ? void 0 : db.users) || [],
+              invoices: (db === null || db === void 0 ? void 0 : db.invoices) || [],
+              exams: (db === null || db === void 0 ? void 0 : db.exams) || []
+            });
+            _context12.n = 6;
+            break;
           case 5:
+            _context12.p = 5;
+            _t3 = _context12.v;
+            console.error("ERROR API:", _t3);
+            setDatabase({
+              pets: [],
+              orders: [],
+              addresses: []
+            });
+          case 6:
+            _context12.p = 6;
+            console.log("FIN LOAD DATABASE");
+            console.log("orders en render:", database.orders, Array.isArray(database.orders)); // ← agrega esto
+            console.log("freshUser.id:", freshUser.id);
+            console.log("orders userId:", (_database$orders$ = database.orders[0]) === null || _database$orders$ === void 0 ? void 0 : _database$orders$.userId);
+            console.log("primer order completo:", database.orders[0]);
+            clearTimeout(loadingTimeout);
+            if (!silent) setLoading(false);
+            return _context12.f(6);
+          case 7:
             return _context12.a(2);
         }
-      }, _callee12, null, [[1, 3, 4, 5]]);
+      }, _callee12, null, [[1, 5, 6, 7]]);
+    }));
+    return function loadDatabase() {
+      return _ref6.apply(this, arguments);
+    };
+  }();
+  useEffect(function () {
+    console.log("DATABASE ACTUALIZADA:", database.orders);
+  }, [database]);
+  var handleLogin = /*#__PURE__*/function () {
+    var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee13(e) {
+      var response, data, _t4;
+      return _regenerator().w(function (_context13) {
+        while (1) switch (_context13.p = _context13.n) {
+          case 0:
+            e.preventDefault();
+            setError('');
+            _context13.p = 1;
+            _context13.n = 2;
+            return fetch(API_BASE + "/Auth/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                username: username,
+                password: password
+              })
+            });
+          case 2:
+            response = _context13.v;
+            if (response.ok) {
+              _context13.n = 3;
+              break;
+            }
+            throw new Error("Usuario o contraseña incorrectos");
+          case 3:
+            _context13.n = 4;
+            return response.json();
+          case 4:
+            data = _context13.v;
+            localStorage.setItem("inulab_token", data.token);
+            if (!(data.user.type === 'admin' || data.user.type === 'motorizado')) {
+              _context13.n = 5;
+              break;
+            }
+            setError('Este portal es solo para clientes. El panel de staff está en otra URL.');
+            return _context13.a(2);
+          case 5:
+            _context13.n = 6;
+            return cargarPreciosDesdeAPI();
+          case 6:
+            setCurrentUser(_objectSpread(_objectSpread({}, data.user), {}, {
+              name: data.user.username
+            }));
+            setUserType(data.user.type);
+            setIsAuthenticated(true);
+            _context13.n = 8;
+            break;
+          case 7:
+            _context13.p = 7;
+            _t4 = _context13.v;
+            setError("Usuario o contraseña incorrectos");
+          case 8:
+            return _context13.a(2);
+        }
+      }, _callee13, null, [[1, 7]]);
     }));
     return function handleLogin(_x) {
-      return _ref5.apply(this, arguments);
+      return _ref7.apply(this, arguments);
     };
   }();
 
@@ -3126,14 +4060,11 @@ var App = function App() {
     var lastName = ownerParts.length > 1 ? ownerParts.slice(1).join(' ') : '';
     return lastName ? "".concat(pet.name, " ").concat(lastName) : pet.name;
   };
-
-  // ─── Logout ───────────────────────────────────────────────────────────────
   var handleLogout = function handleLogout() {
     localStorage.removeItem('inulab_token');
     setIsAuthenticated(false);
     setUserType(null);
     setCurrentUser(null);
-    setDatabase(null);
     setSelectedPet(null);
     setSelectedExam(null);
     setUsername('');
@@ -3186,30 +4117,30 @@ var App = function App() {
     setShowEditProfile(true);
   };
   var saveProfile = /*#__PURE__*/function () {
-    var _ref6 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee13() {
+    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee14() {
       var changingName,
         userIndex,
         user,
         nameChanges,
         changesThisYear,
-        _args13 = arguments,
-        _t2;
-      return _regenerator().w(function (_context13) {
-        while (1) switch (_context13.p = _context13.n) {
+        _args14 = arguments,
+        _t5;
+      return _regenerator().w(function (_context14) {
+        while (1) switch (_context14.p = _context14.n) {
           case 0:
-            changingName = _args13.length > 0 && _args13[0] !== undefined ? _args13[0] : false;
+            changingName = _args14.length > 0 && _args14[0] !== undefined ? _args14[0] : false;
             userIndex = database.users.findIndex(function (u) {
               return u.id === currentUser.id;
             });
             if (!(userIndex === -1)) {
-              _context13.n = 1;
+              _context14.n = 1;
               break;
             }
-            return _context13.a(2);
+            return _context14.a(2);
           case 1:
             user = _objectSpread({}, database.users[userIndex]);
             if (!(changingName && editProfile.name !== user.name)) {
-              _context13.n = 3;
+              _context14.n = 3;
               break;
             }
             nameChanges = user.nameChanges || [];
@@ -3217,11 +4148,11 @@ var App = function App() {
               return new Date(c).getFullYear() === new Date().getFullYear();
             }).length;
             if (!(changesThisYear >= 1)) {
-              _context13.n = 2;
+              _context14.n = 2;
               break;
             }
             alert('Has alcanzado el límite de 1 cambio de nombre por año.');
-            return _context13.a(2);
+            return _context14.a(2);
           case 2:
             user.nameChanges = [].concat(_toConsumableArray(nameChanges), [new Date().toISOString()]);
             user.name = editProfile.name;
@@ -3232,9 +4163,8 @@ var App = function App() {
             user.profileAddress = editProfile.address;
             user.profileDistrict = editProfile.district;
             user.ruc = editProfile.ruc;
-            _context13.p = 4;
-            // TODO: await api.updateProfile(editProfile);
-            setDatabase(function (prev) {
+            _context14.p = 4;
+            saveDatabase(function (prev) {
               return _objectSpread(_objectSpread({}, prev), {}, {
                 users: prev.users.map(function (u, i) {
                   return i === userIndex ? user : u;
@@ -3242,13 +4172,13 @@ var App = function App() {
               });
             });
             setCurrentUser(user);
-            _context13.n = 6;
+            _context14.n = 6;
             break;
           case 5:
-            _context13.p = 5;
-            _t2 = _context13.v;
-            alert(_t2.message);
-            return _context13.a(2);
+            _context14.p = 5;
+            _t5 = _context14.v;
+            alert(_t5.message);
+            return _context14.a(2);
           case 6:
             setShowEditProfile(false);
             setSuccessMessage('Perfil actualizado correctamente');
@@ -3256,17 +4186,17 @@ var App = function App() {
               return setSuccessMessage('');
             }, 3000);
           case 7:
-            return _context13.a(2);
+            return _context14.a(2);
         }
-      }, _callee13, null, [[4, 5]]);
+      }, _callee14, null, [[4, 5]]);
     }));
     return function saveProfile() {
-      return _ref6.apply(this, arguments);
+      return _ref8.apply(this, arguments);
     };
   }();
   var getNameChangesRemaining = function getNameChangesRemaining() {
-    var _database$users;
-    var user = database === null || database === void 0 || (_database$users = database.users) === null || _database$users === void 0 ? void 0 : _database$users.find(function (u) {
+    var _database$users2;
+    var user = database === null || database === void 0 || (_database$users2 = database.users) === null || _database$users2 === void 0 ? void 0 : _database$users2.find(function (u) {
       return u.id === (currentUser === null || currentUser === void 0 ? void 0 : currentUser.id);
     });
     if (!user) return 1;
@@ -3312,12 +4242,18 @@ var App = function App() {
     var isPending = pendingExams.find(function (e) {
       return e.id === exam.id;
     });
-    if (isInCart) removeFromCart(exam.id);else if (isPending) removeFromPending(exam.id);else selectExam(exam);
+    if (isInCart) removeFromCart(exam.id);else if (isPending) {
+      setCurrentExamForPet(exam);
+      setPetSearchTerm('');
+      setShowNewPetForm(false);
+    } // re-entra al flujo
+    else selectExam(exam);
   };
   var assignPetToExam = function assignPetToExam(pet) {
     if (currentExamForPet) {
       setSelectedPetForOrder(pet);
       setShowAddressSelection(true);
+      loadAddresses(); // ← agrega esta línea
       setShowNewPetForm(false);
       setShowNewAddressForm(false);
     }
@@ -3363,10 +4299,10 @@ var App = function App() {
     setShowTomaMuestraStep(false);
     setPendingOrderAddress(null);
   };
-  var _useState139 = useState(false),
-    _useState140 = _slicedToArray(_useState139, 2),
-    gettingLocation = _useState140[0],
-    setGettingLocation = _useState140[1];
+  var _useState175 = useState(false),
+    _useState176 = _slicedToArray(_useState175, 2),
+    gettingLocation = _useState176[0],
+    setGettingLocation = _useState176[1];
   var getMyLocation = function getMyLocation() {
     if (!navigator.geolocation) {
       alert('Tu navegador no soporta geolocalización');
@@ -3374,47 +4310,48 @@ var App = function App() {
     }
     setGettingLocation(true);
     navigator.geolocation.getCurrentPosition(/*#__PURE__*/function () {
-      var _ref7 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee14(position) {
-        var _position$coords, latitude, longitude, response, data, addr, street, number, district, _t3;
-        return _regenerator().w(function (_context14) {
-          while (1) switch (_context14.p = _context14.n) {
+      var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee15(position) {
+        var _position$coords, latitude, longitude, response, data, _addr, street, number, district, _t6;
+        return _regenerator().w(function (_context15) {
+          while (1) switch (_context15.p = _context15.n) {
             case 0:
               _position$coords = position.coords, latitude = _position$coords.latitude, longitude = _position$coords.longitude;
-              _context14.p = 1;
-              _context14.n = 2;
+              _context15.p = 1;
+              _context15.n = 2;
               return fetch("https://nominatim.openstreetmap.org/reverse?format=json&lat=".concat(latitude, "&lon=").concat(longitude, "&addressdetails=1"));
             case 2:
-              response = _context14.v;
-              _context14.n = 3;
+              response = _context15.v;
+              _context15.n = 3;
               return response.json();
             case 3:
-              data = _context14.v;
+              data = _context15.v;
               if (data && data.address) {
-                addr = data.address;
-                street = addr.road || addr.street || '';
-                number = addr.house_number || '';
-                district = addr.suburb || addr.neighbourhood || addr.city_district || addr.town || addr.city || '';
+                _addr = data.address;
+                street = _addr.road || _addr.street || '';
+                number = _addr.house_number || '';
+                district = _addr.suburb || _addr.neighbourhood || _addr.city_district || _addr.town || _addr.city || '';
                 setNewAddress(_objectSpread(_objectSpread({}, newAddress), {}, {
+                  name: newAddress.name || "",
                   address: "".concat(street, " ").concat(number).trim() || data.display_name.split(',')[0],
                   district: district,
                   reference: ''
                 }));
               }
-              _context14.n = 5;
+              _context15.n = 5;
               break;
             case 4:
-              _context14.p = 4;
-              _t3 = _context14.v;
+              _context15.p = 4;
+              _t6 = _context15.v;
               alert('No se pudo obtener la dirección. Intenta de nuevo.');
             case 5:
               setGettingLocation(false);
             case 6:
-              return _context14.a(2);
+              return _context15.a(2);
           }
-        }, _callee14, null, [[1, 4]]);
+        }, _callee15, null, [[1, 4]]);
       }));
       return function (_x2) {
-        return _ref7.apply(this, arguments);
+        return _ref9.apply(this, arguments);
       };
     }(), function (error) {
       setGettingLocation(false);
@@ -3429,113 +4366,102 @@ var App = function App() {
     });
   };
   var addNewAddress = /*#__PURE__*/function () {
-    var _ref8 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee15() {
-      var addrToSave;
-      return _regenerator().w(function (_context15) {
-        while (1) switch (_context15.n) {
+    var _ref0 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee16() {
+      var response, savedAddress, _t7;
+      return _regenerator().w(function (_context16) {
+        while (1) switch (_context16.p = _context16.n) {
           case 0:
-            if (!(!newAddress.name || !newAddress.address || !newAddress.district)) {
-              _context15.n = 1;
-              break;
-            }
-            alert('Por favor completa los campos obligatorios');
-            return _context15.a(2);
-          case 1:
-            addrToSave = _objectSpread({
-              id: 'ADDR' + Date.now()
-            }, newAddress); // TODO: const { address } = await api.createAddress(newAddress); addrToSave = address;
-            setDatabase(function (prev) {
-              var userIndex = prev.users.findIndex(function (u) {
-                return u.id === currentUser.id;
-              });
-              var user = prev.users[userIndex];
-              var updatedUser = _objectSpread(_objectSpread({}, user), {}, {
-                addresses: [].concat(_toConsumableArray(user.addresses || []), [addrToSave])
-              });
-              return _objectSpread(_objectSpread({}, prev), {}, {
-                users: prev.users.map(function (u, i) {
-                  return i === userIndex ? updatedUser : u;
-                })
-              });
+            console.log("SE PRESIONO GUARDAR DIRECCION");
+            _context16.p = 1;
+            _context16.n = 2;
+            return fetch("".concat(API_BASE, "/Addresses"), {
+              method: "POST",
+              headers: _objectSpread(_objectSpread({}, api._headers()), {}, {
+                "Content-Type": "application/json"
+              }),
+              body: JSON.stringify({
+                name: newAddress.name || "Casa",
+                street: newAddress.address,
+                district: newAddress.district,
+                reference: newAddress.reference
+              })
             });
-            if ((freshUser === null || freshUser === void 0 ? void 0 : freshUser.type) === 'dueño') {
-              handleDuenoAddressSelect(addrToSave);
-            } else {
-              assignAddressAndComplete(addrToSave);
-            }
-            setNewAddress({
-              name: '',
-              address: '',
-              district: '',
-              reference: ''
+          case 2:
+            response = _context16.v;
+            console.log("STATUS:", response.status);
+            _context16.n = 3;
+            return response.json();
+          case 3:
+            savedAddress = _context16.v;
+            console.log("RESPUESTA:", savedAddress);
+
+            // 🔥 Agrega la nueva dirección directamente al estado
+            setDatabase(function (prev) {
+              return _objectSpread(_objectSpread({}, prev), {}, {
+                addresses: [].concat(_toConsumableArray(prev.addresses || []), [savedAddress])
+              });
             });
             setShowNewAddressForm(false);
-          case 2:
-            return _context15.a(2);
+            assignAddressAndComplete(savedAddress);
+            _context16.n = 5;
+            break;
+          case 4:
+            _context16.p = 4;
+            _t7 = _context16.v;
+            console.error("Error:", _t7);
+          case 5:
+            return _context16.a(2);
         }
-      }, _callee15);
+      }, _callee16, null, [[1, 4]]);
     }));
     return function addNewAddress() {
-      return _ref8.apply(this, arguments);
+      return _ref0.apply(this, arguments);
     };
   }();
   var addNewPet = /*#__PURE__*/function () {
-    var _ref9 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee16() {
-      var freshUser, petIcon, petToSave;
-      return _regenerator().w(function (_context16) {
-        while (1) switch (_context16.n) {
+    var _ref1 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee17() {
+      var petData, response, pet, _t8;
+      return _regenerator().w(function (_context17) {
+        while (1) switch (_context17.p = _context17.n) {
           case 0:
-            freshUser = database.users.find(function (u) {
-              return u.id === currentUser.id;
-            });
             if (!(!newPet.name || !newPet.animalType || !newPet.breed || !newPet.sex)) {
-              _context16.n = 1;
+              _context17.n = 1;
               break;
             }
             alert('Por favor completa todos los campos');
-            return _context16.a(2);
+            return _context17.a(2);
           case 1:
             if (!(!newPet.ageValue || parseInt(newPet.ageValue) < 0)) {
-              _context16.n = 2;
+              _context17.n = 2;
               break;
             }
             alert('Por favor ingresa la edad');
-            return _context16.a(2);
+            return _context17.a(2);
           case 2:
-            if (!(freshUser.type === 'medico' && !newPet.owner)) {
-              _context16.n = 3;
-              break;
-            }
-            alert('Por favor ingresa el nombre del dueño');
-            return _context16.a(2);
-          case 3:
-            petIcon = newPet.animalType === 'perro' ? '🐶' : newPet.animalType === 'gato' ? '🐱' : newPet.animalType === 'ave' ? '🦜' : newPet.animalType === 'conejo' ? '🐰' : '🐾';
-            petToSave = {
-              id: 'PET' + Date.now(),
+            _context17.p = 2;
+            // Datos que se enviarán al backend
+            petData = {
               name: newPet.name,
-              owner: freshUser.type === 'medico' ? newPet.owner : "".concat(freshUser.name, " ").concat(freshUser.lastName),
-              animalType: newPet.animalType,
+              species: newPet.animalType,
               breed: newPet.breed,
-              ageValue: parseInt(newPet.ageValue) || 0,
-              ageUnit: newPet.ageUnit,
-              sex: newPet.sex,
-              photo: petIcon,
-              exams: []
-            }; // TODO: const { pet } = await api.createPet(petToSave); petToSave = pet;
+              age: parseInt(newPet.ageValue)
+            }; // Llamada a la API
+            _context17.n = 3;
+            return api.createPet(petData);
+          case 3:
+            response = _context17.v;
+            // Algunas APIs devuelven { pet: {...} } y otras directamente el objeto
+            pet = (response === null || response === void 0 ? void 0 : response.data) || (response === null || response === void 0 ? void 0 : response.pet) || response; // Agregar al estado del frontend
             setDatabase(function (prev) {
-              var userIndex = prev.users.findIndex(function (u) {
-                return u.id === currentUser.id;
-              });
-              var user = prev.users[userIndex];
-              var petsArr = user.type === 'medico' ? 'patients' : 'pets';
-              var updatedUser = _objectSpread(_objectSpread({}, user), {}, _defineProperty({}, petsArr, [].concat(_toConsumableArray(user[petsArr] || []), [petToSave])));
               return _objectSpread(_objectSpread({}, prev), {}, {
-                users: prev.users.map(function (u, i) {
-                  return i === userIndex ? updatedUser : u;
-                })
+                pets: Array.isArray(prev.pets) ? [].concat(_toConsumableArray(prev.pets), [pet]) : [pet]
               });
             });
-            assignPetToExam(petToSave);
+
+            // Seleccionar automáticamente la mascota
+            assignPetToExam(pet);
+
+            // Limpiar formulario
             setNewPet({
               name: '',
               owner: '',
@@ -3545,68 +4471,78 @@ var App = function App() {
               ageUnit: 'años',
               sex: ''
             });
+
+            // Cerrar formulario
             setShowNewPetForm(false);
+            _context17.n = 5;
+            break;
           case 4:
-            return _context16.a(2);
+            _context17.p = 4;
+            _t8 = _context17.v;
+            console.error("Error creando mascota:", _t8);
+            alert("Error al guardar la mascota");
+          case 5:
+            return _context17.a(2);
         }
-      }, _callee16);
+      }, _callee17, null, [[2, 4]]);
     }));
     return function addNewPet() {
-      return _ref9.apply(this, arguments);
+      return _ref1.apply(this, arguments);
     };
   }();
   var submitOrder = /*#__PURE__*/function () {
-    var _ref0 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee17() {
-      var freshUser, newOrder;
-      return _regenerator().w(function (_context17) {
-        while (1) switch (_context17.n) {
+    var _ref10 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee18() {
+      var _cart$, _cart$2, _cart$3, total, addressId, response, text, _order, _t9;
+      return _regenerator().w(function (_context18) {
+        while (1) switch (_context18.p = _context18.n) {
           case 0:
-            freshUser = database.users.find(function (u) {
-              return u.id === currentUser.id;
-            }) || currentUser;
-            newOrder = {
-              id: 'ORD' + Date.now(),
-              userId: currentUser.id,
-              userName: "".concat(freshUser.name, " ").concat(freshUser.lastName || '').trim(),
-              userType: freshUser.type,
-              date: new Date().toISOString(),
-              status: 'pending',
-              documentType: invoiceType,
-              comment: orderComment.trim() || null,
-              invoiceRequested: true,
-              invoiceStatus: 'pending',
-              items: cart.map(function (item) {
-                return {
-                  exam: {
-                    id: item.exam.id,
-                    name: item.exam.name,
-                    subtitle: item.exam.subtitle,
-                    icon: item.exam.icon,
-                    color: item.exam.color,
-                    bg: item.exam.bg,
-                    price: item.exam.price || null,
-                    turnaround: item.exam.turnaround || null
-                  },
-                  pet: {
-                    id: item.pet.id,
-                    name: item.pet.name,
-                    photo: item.pet.photo,
-                    breed: item.pet.breed,
-                    owner: item.pet.owner
-                  },
-                  address: item.address
-                };
+            _context18.p = 0;
+            total = cart.reduce(function (sum, item) {
+              return sum + (item.exam.price || 0);
+            }, 0);
+            addressId = (_cart$ = cart[0]) === null || _cart$ === void 0 || (_cart$ = _cart$.address) === null || _cart$ === void 0 ? void 0 : _cart$.id;
+            console.log("CART COMPLETO:", JSON.stringify((_cart$2 = cart[0]) === null || _cart$2 === void 0 ? void 0 : _cart$2.address));
+            console.log("ADDRESS ID:", addressId);
+            _context18.n = 1;
+            return fetch("".concat(API_BASE, "/Orders"), {
+              method: "POST",
+              headers: _objectSpread(_objectSpread({}, api._headers()), {}, {
+                "Content-Type": "application/json"
+              }),
+              body: JSON.stringify({
+                total: total,
+                addressId: addressId || '00000000-0000-0000-0000-000000000000',
+                examName: cart.map(function (item) {
+                  return item.exam.name;
+                }).join(', '),
+                petId: ((_cart$3 = cart[0]) === null || _cart$3 === void 0 || (_cart$3 = _cart$3.pet) === null || _cart$3 === void 0 ? void 0 : _cart$3.id) || '00000000-0000-0000-0000-000000000000'
               })
-            }; // TODO: const { order } = await api.createOrder(newOrder); use order.id from backend
-            setDatabase(function (prev) {
-              return _objectSpread(_objectSpread({}, prev), {}, {
-                orders: [newOrder].concat(_toConsumableArray(prev.orders || []))
-              });
             });
+          case 1:
+            response = _context18.v;
+            if (response.ok) {
+              _context18.n = 3;
+              break;
+            }
+            _context18.n = 2;
+            return response.text();
+          case 2:
+            text = _context18.v;
+            console.error("ERROR BACKEND:", text);
+            throw new Error("Error en backend");
+          case 3:
+            _context18.n = 4;
+            return response.json();
+          case 4:
+            _order = _context18.v;
+            console.log("ORDER CREADO:", _order);
             if ('Notification' in window && Notification.permission === 'default') {
               Notification.requestPermission();
             }
-            alert('¡Pedido enviado exitosamente! Te notificaremos cuando el motorizado esté en camino.');
+            alert('¡Pedido enviado exitosamente!');
+            _context18.n = 5;
+            return loadDatabase();
+          case 5:
             setCart([]);
             setPendingExams([]);
             setCurrentExamForPet(null);
@@ -3615,13 +4551,20 @@ var App = function App() {
             setOrderComment('');
             setTermsAccepted(false);
             setMedicoView('inicio');
-          case 1:
-            return _context17.a(2);
+            _context18.n = 7;
+            break;
+          case 6:
+            _context18.p = 6;
+            _t9 = _context18.v;
+            console.error(_t9);
+            alert("Error al enviar pedido");
+          case 7:
+            return _context18.a(2);
         }
-      }, _callee17);
+      }, _callee18, null, [[0, 6]]);
     }));
     return function submitOrder() {
-      return _ref0.apply(this, arguments);
+      return _ref10.apply(this, arguments);
     };
   }();
   var getStatusInfo = function getStatusInfo(status) {
@@ -3690,14 +4633,13 @@ var App = function App() {
     return statusMap[status] || statusMap['pending'];
   };
   var markExamAsSeen = /*#__PURE__*/function () {
-    var _ref1 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee18(exam, pet) {
-      return _regenerator().w(function (_context18) {
-        while (1) switch (_context18.n) {
+    var _ref11 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee19(exam, pet) {
+      return _regenerator().w(function (_context19) {
+        while (1) switch (_context19.n) {
           case 0:
             if (exam.seen === false) {
               try {
-                // TODO: await api.markExamSeen(exam.id);
-                setDatabase(function (prev) {
+                saveDatabase(function (prev) {
                   var userIndex = prev.users.findIndex(function (u) {
                     return u.id === currentUser.id;
                   });
@@ -3708,20 +4650,21 @@ var App = function App() {
                     return p.id === pet.id;
                   });
                   if (petIndex === -1) return prev;
-                  var updatedExams = user[petsArray][petIndex].exams.map(function (e) {
+                  var updatedExams = (user[petsArray][petIndex].exams || []).map(function (e) {
                     return e.id === exam.id ? _objectSpread(_objectSpread({}, e), {}, {
                       seen: true
                     }) : e;
                   });
-                  var updatedPets = user[petsArray].map(function (p, i) {
+                  var updatedPets = (user[petsArray] || []).map(function (p, i) {
                     return i === petIndex ? _objectSpread(_objectSpread({}, p), {}, {
                       exams: updatedExams
                     }) : p;
                   });
                   return _objectSpread(_objectSpread({}, prev), {}, {
-                    users: prev.users.map(function (u, i) {
+                    users: (prev.users || []).map(function (u, i) {
                       return i === userIndex ? _objectSpread(_objectSpread({}, u), {}, _defineProperty({}, petsArray, updatedPets)) : u;
-                    })
+                    }),
+                    nightMode: getCurrentNightMode()
                   });
                 });
               } catch (err) {
@@ -3733,23 +4676,23 @@ var App = function App() {
             }
             setSelectedExam(exam);
           case 1:
-            return _context18.a(2);
+            return _context19.a(2);
         }
-      }, _callee18);
+      }, _callee19);
     }));
     return function markExamAsSeen(_x3, _x4) {
-      return _ref1.apply(this, arguments);
+      return _ref11.apply(this, arguments);
     };
   }();
   var countUnseenExams = function countUnseenExams(pets) {
-    return pets.reduce(function (total, pet) {
-      return total + pet.exams.filter(function (e) {
+    return (pets || []).reduce(function (total, pet) {
+      return total + (pet.exams || []).filter(function (e) {
         return e.seen === false;
       }).length;
     }, 0);
   };
   var countUnseenExamsForPet = function countUnseenExamsForPet(pet) {
-    return pet.exams.filter(function (e) {
+    return (pet.exams || []).filter(function (e) {
       return e.seen === false;
     }).length;
   };
@@ -3790,16 +4733,16 @@ var App = function App() {
     }
   };
   var handleSubmitExam = /*#__PURE__*/function () {
-    var _ref10 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee19() {
+    var _ref12 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee20() {
       var newExam;
-      return _regenerator().w(function (_context19) {
-        while (1) switch (_context19.n) {
+      return _regenerator().w(function (_context20) {
+        while (1) switch (_context20.n) {
           case 0:
             if (!(!selectedUserForUpload || !selectedPetForUpload || !uploadedFile || !examTitle)) {
-              _context19.n = 1;
+              _context20.n = 1;
               break;
             }
-            return _context19.a(2);
+            return _context20.a(2);
           case 1:
             newExam = {
               id: 'EX' + Date.now(),
@@ -3809,15 +4752,8 @@ var App = function App() {
               pdfData: uploadedFile.data,
               pdfName: uploadedFile.name,
               uploadedAt: new Date().toISOString()
-            }; // TODO: Enviar al backend via FormData:
-            // const formData = new FormData();
-            // formData.append('pdf', uploadedFile.file);
-            // formData.append('userId', selectedUserForUpload.id);
-            // formData.append('petId', selectedPetForUpload.id);
-            // formData.append('title', examTitle);
-            // formData.append('date', examDate);
-            // await fetch(`${API_BASE}/exams`, { method:'POST', headers:{'Authorization':`Bearer ${getToken()}`}, body: formData });
-            setDatabase(function (prev) {
+            };
+            saveDatabase(function (prev) {
               var userIndex = prev.users.findIndex(function (u) {
                 return u.id === selectedUserForUpload.id;
               });
@@ -3835,7 +4771,8 @@ var App = function App() {
               return _objectSpread(_objectSpread({}, prev), {}, {
                 users: prev.users.map(function (u, i) {
                   return i === userIndex ? _objectSpread(_objectSpread({}, u), {}, _defineProperty({}, petsArray, updatedPets)) : u;
-                })
+                }),
+                nightMode: getCurrentNightMode()
               });
             });
             setSuccessMessage("\u2705 Resultado subido para ".concat(selectedPetForUpload.name));
@@ -3847,12 +4784,12 @@ var App = function App() {
               return setSuccessMessage('');
             }, 4000);
           case 2:
-            return _context19.a(2);
+            return _context20.a(2);
         }
-      }, _callee19);
+      }, _callee20);
     }));
     return function handleSubmitExam() {
-      return _ref10.apply(this, arguments);
+      return _ref12.apply(this, arguments);
     };
   }();
   var filteredPerfiles = searchTerm.trim() === '' ? perfiles : perfiles.filter(function (p) {
@@ -3868,16 +4805,88 @@ var App = function App() {
     return cat.examenes.length > 0;
   });
   var hayResultados = filteredPerfiles.length > 0 || filteredCategorias.length > 0;
-  if (loading) return /*#__PURE__*/React.createElement("div", {
-    className: "min-h-screen bg-gray-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent"
-  }));
 
-  // LOGIN
+  // LOGIN PRIMERO
   if (!isAuthenticated) {
+    var handleRegister = /*#__PURE__*/function () {
+      var _ref13 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee21(e) {
+        var response, msg, _t0;
+        return _regenerator().w(function (_context21) {
+          while (1) switch (_context21.p = _context21.n) {
+            case 0:
+              e.preventDefault();
+              setRegError('');
+              if (!(regData.password !== regData.confirmPassword)) {
+                _context21.n = 1;
+                break;
+              }
+              setRegError('Las contraseñas no coinciden');
+              return _context21.a(2);
+            case 1:
+              if (!(regData.password.length < 6)) {
+                _context21.n = 2;
+                break;
+              }
+              setRegError('La contraseña debe tener al menos 6 caracteres');
+              return _context21.a(2);
+            case 2:
+              setRegLoading(true);
+              _context21.p = 3;
+              _context21.n = 4;
+              return fetch(API_BASE + "/Auth/registrarse", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                  username: regData.username,
+                  email: regData.email,
+                  phone: regData.phone,
+                  password: regData.password,
+                  type: regData.type
+                })
+              });
+            case 4:
+              response = _context21.v;
+              if (response.ok) {
+                _context21.n = 6;
+                break;
+              }
+              _context21.n = 5;
+              return response.text();
+            case 5:
+              msg = _context21.v;
+              throw new Error(msg || 'Error al registrarse');
+            case 6:
+              setRegSuccess('¡Cuenta creada exitosamente! Ya puedes ingresar.');
+              setTimeout(function () {
+                setAuthMode('login');
+                setRegSuccess('');
+              }, 2500);
+              _context21.n = 8;
+              break;
+            case 7:
+              _context21.p = 7;
+              _t0 = _context21.v;
+              setRegError(_t0.message);
+            case 8:
+              _context21.p = 8;
+              setRegLoading(false);
+              return _context21.f(8);
+            case 9:
+              return _context21.a(2);
+          }
+        }, _callee21, null, [[3, 7, 8, 9]]);
+      }));
+      return function handleRegister(_x5) {
+        return _ref13.apply(this, arguments);
+      };
+    }();
     return /*#__PURE__*/React.createElement("div", {
-      className: "min-h-screen flex items-center justify-center p-4 login-wrapper"
+      className: "min-h-screen flex items-start justify-center p-4 pt-8 login-wrapper",
+      style: {
+        overflowY: 'auto'
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "w-full max-w-md"
     }, /*#__PURE__*/React.createElement("div", {
@@ -3896,7 +4905,22 @@ var App = function App() {
       className: "hidden w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl items-center justify-center text-white font-bold text-2xl mb-2"
     }, "I"), /*#__PURE__*/React.createElement("span", {
       className: "text-base font-light text-gray-600 tracking-wide"
-    }, "INULABORATORIOS")), /*#__PURE__*/React.createElement("form", {
+    }, "INULABORATORIOS")), /*#__PURE__*/React.createElement("div", {
+      className: "flex rounded-xl bg-gray-100 p-1 mb-5"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setAuthMode('login');
+        setRegError('');
+        setRegSuccess('');
+      },
+      className: "flex-1 py-2 rounded-lg text-sm font-semibold transition-all ".concat(authMode === 'login' ? 'bg-white shadow text-cyan-600' : 'text-gray-500 hover:text-gray-700')
+    }, "Ingresar"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setAuthMode('register');
+        setError('');
+      },
+      className: "flex-1 py-2 rounded-lg text-sm font-semibold transition-all ".concat(authMode === 'register' ? 'bg-white shadow text-cyan-600' : 'text-gray-500 hover:text-gray-700')
+    }, "Crear cuenta")), authMode === 'login' && /*#__PURE__*/React.createElement("form", {
       onSubmit: handleLogin,
       className: "space-y-3"
     }, /*#__PURE__*/React.createElement("input", {
@@ -3922,28 +4946,244 @@ var App = function App() {
     }, error)), /*#__PURE__*/React.createElement("button", {
       type: "submit",
       className: "w-full py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-md"
-    }, "Iniciar Sesi\xF3n")))));
+    }, "Ingresar")), authMode === 'register' && /*#__PURE__*/React.createElement("form", {
+      onSubmit: handleRegister,
+      className: "space-y-3"
+    }, /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: regData.username,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          username: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Nombre de usuario",
+      required: true
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "email",
+      value: regData.email,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          email: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Correo electr\xF3nico",
+      required: true
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "tel",
+      value: regData.phone,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          phone: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Tel\xE9fono"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: regData.type,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          type: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm focus:border-cyan-500 focus:bg-white focus:outline-none appearance-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: "due\xF1o"
+    }, "\uD83D\uDC3E Due\xF1o de mascota"), /*#__PURE__*/React.createElement("option", {
+      value: "medico"
+    }, "\uD83C\uDFE5 M\xE9dico / Cl\xEDnica")), /*#__PURE__*/React.createElement("div", {
+      className: "absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down text-xs"
+    }))), regData.type === 'medico' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: regData.clinicName || '',
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          clinicName: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Nombre de la cl\xEDnica"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: regData.ruc || '',
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          ruc: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "RUC (opcional)",
+      maxLength: 11
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: regData.district || '',
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          district: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Distrito"
+    })), /*#__PURE__*/React.createElement("input", {
+      type: "password",
+      value: regData.password,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          password: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Contrase\xF1a",
+      required: true
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "password",
+      value: regData.confirmPassword,
+      onChange: function onChange(e) {
+        return setRegData(_objectSpread(_objectSpread({}, regData), {}, {
+          confirmPassword: e.target.value
+        }));
+      },
+      className: "w-full px-3.5 py-3 rounded-xl bg-gray-50 border border-gray-200 text-gray-800 text-sm placeholder-gray-400 focus:border-cyan-500 focus:bg-white focus:outline-none",
+      placeholder: "Confirmar contrase\xF1a",
+      required: true
+    }), regError && /*#__PURE__*/React.createElement("div", {
+      className: "bg-red-50 border border-red-200 p-2.5 rounded-xl"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-red-600"
+    }, regError)), regSuccess && /*#__PURE__*/React.createElement("div", {
+      className: "bg-emerald-50 border border-emerald-200 p-2.5 rounded-xl"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-emerald-600"
+    }, regSuccess)), /*#__PURE__*/React.createElement("button", {
+      type: "submit",
+      disabled: regLoading,
+      className: "w-full py-3 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-cyan-400 to-cyan-500 hover:from-cyan-500 hover:to-cyan-600 transition-all shadow-md disabled:opacity-60"
+    }, regLoading ? 'Creando cuenta...' : 'Crear cuenta')))));
   }
 
-  // Guard: esperar a que database esté cargado
-  if (!database || !database.users) return /*#__PURE__*/React.createElement("div", {
-    className: "min-h-screen bg-gray-100 flex items-center justify-center"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent"
-  }));
+  // SPINNER DESPUÉS DEL LOGIN
+  if (loading) {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "min-h-screen bg-gray-100 flex items-center justify-center"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "animate-spin rounded-full h-12 w-12 border-4 border-cyan-500 border-t-transparent"
+    }));
+  }
 
   // Definir usuario fresco para todo el render
-  var freshUser = database.users.find(function (u) {
-    return u.id === currentUser.id;
-  }) || currentUser;
+  var freshUser = currentUser;
 
   // Vista PDF (solo móvil o usuarios no médicos)
-  if (selectedExam && freshUser.type !== 'medico') {
+  if (selectedExam && freshUser.type !== 'medico' && window.innerWidth < 768) {
     var downloadPdf = function downloadPdf() {
       if (selectedExam.pdfData) {
+        var win = window.open();
+        win.location.href = selectedExam.pdfData;
+      }
+    };
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        display: 'flex',
+        flexDirection: 'column',
+        background: '#f3f4f6',
+        zIndex: 10000
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        background: 'white',
+        borderBottom: '1px solid #e5e7eb',
+        paddingTop: 'env(safe-area-inset-top, 0px)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "px-4 py-3 flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setSelectedExam(null);
+      },
+      className: "w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left text-sm"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm font-bold text-gray-800 leading-tight truncate"
+    }, selectedExam.type), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-400 text-xs"
+    }, new Date(selectedExam.date).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }))))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '12px',
+        gap: '10px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+        border: '1px solid #e5e7eb'
+      }
+    }, selectedExam.pdfData ? /*#__PURE__*/React.createElement("iframe", {
+      src: selectedExam.pdfData,
+      style: {
+        width: '100%',
+        height: '100%',
+        display: 'block',
+        border: 'none',
+        borderRadius: '16px',
+        margin: '8px 0'
+      },
+      title: "PDF"
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col items-center justify-center h-full text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-pdf text-5xl mb-3 text-gray-300"
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm"
+    }, "PDF no disponible"))), selectedExam.pdfData && /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("a", {
+      href: selectedExam.pdfData,
+      target: "_blank",
+      rel: "noopener",
+      className: "flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm shadow-lg"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-download"
+    }), " Descargar PDF"))));
+  }
+
+  // Visor de Comprobante (solo móvil o usuarios no médicos)
+  if (viewingInvoice && freshUser.type !== 'medico' && window.innerWidth < 768) {
+    var docType = viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura';
+    var downloadInvoice = function downloadInvoice() {
+      if (viewingInvoice.invoicePdf) {
         var link = document.createElement('a');
-        link.href = selectedExam.pdfData;
-        link.download = "".concat(selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_'), "_").concat(selectedExam.date, ".pdf");
+        link.href = viewingInvoice.invoicePdf;
+        link.download = "".concat(docType, "_").concat(viewingInvoice.id, ".pdf");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -3956,19 +5196,119 @@ var App = function App() {
         left: 0,
         right: 0,
         bottom: 0,
+        background: '#f3f4f6',
+        zIndex: 10000,
         display: 'flex',
-        flexDirection: 'column',
-        background: 'white'
+        flexDirection: 'column'
       }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "app-header border-b border-gray-100"
+      style: {
+        flexShrink: 0,
+        background: 'white',
+        borderBottom: '1px solid #e5e7eb',
+        paddingTop: 'env(safe-area-inset-top, 0px)'
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "max-w-4xl mx-auto px-4 py-3 flex items-center gap-3"
+      className: "px-4 py-3 flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setViewingInvoice(null);
+      },
+      className: "w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left text-sm"
+    })), /*#__PURE__*/React.createElement("img", {
+      src: "assets/logo_inulaboratorios.jpg",
+      alt: "Logo",
+      className: "h-7",
+      onError: function onError(e) {
+        return e.target.style.display = 'none';
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm font-bold text-gray-800 leading-tight"
+    }, docType), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-400 text-xs"
+    }, new Date(viewingInvoice.completedAt || viewingInvoice.date).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    }))))), /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '12px',
+        gap: '10px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+        border: '1px solid #e5e7eb'
+      }
+    }, viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement(PdfViewer, {
+      url: viewingInvoice.invoicePdf,
+      style: {
+        width: '100%',
+        height: '100%',
+        display: 'block',
+        border: 'none',
+        borderRadius: '16px'
+      }
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col items-center justify-center h-full text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice', " text-5xl mb-3 text-gray-300")
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm"
+    }, docType, " no disponible"))), viewingInvoice.invoicePdf && /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: downloadInvoice,
+      className: "flex items-center gap-2 px-6 py-2.5 ".concat(viewingInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600', " text-white rounded-xl font-semibold text-sm shadow-md")
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-download"
+    }), " Descargar PDF"))));
+  }
+
+  // Vista PDF médico — early return para evitar el transform de mob-content
+  if (selectedExam && freshUser.type === 'medico' && window.innerWidth < 768) {
+    return /*#__PURE__*/React.createElement("div", {
+      style: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: '#f3f4f6',
+        zIndex: 10000,
+        display: 'flex',
+        flexDirection: 'column'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        background: 'white',
+        borderBottom: '1px solid #e5e7eb',
+        paddingTop: 'env(safe-area-inset-top, 0px)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "px-4 py-3 flex items-center gap-3"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return setSelectedExam(null);
       },
-      className: "w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-600"
+      className: "w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 flex-shrink-0"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-arrow-left text-sm"
     })), /*#__PURE__*/React.createElement("div", {
@@ -3977,121 +5317,163 @@ var App = function App() {
       className: "text-sm font-bold text-gray-800 leading-tight truncate"
     }, selectedExam.type), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-400 text-xs"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-calendar mr-1"
-    }), new Date(selectedExam.date).toLocaleDateString('es-ES', {
+    }, new Date(selectedExam.date).toLocaleDateString('es-ES', {
       day: 'numeric',
-      month: 'short',
+      month: 'long',
       year: 'numeric'
-    }))), selectedExam.pdfData && /*#__PURE__*/React.createElement("button", {
-      onClick: downloadPdf,
-      className: "flex items-center gap-1.5 px-3 py-2 bg-cyan-500 text-white rounded-lg text-xs font-semibold"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-download text-xs"
-    }), "PDF"))), /*#__PURE__*/React.createElement("div", {
+    }))))), /*#__PURE__*/React.createElement("div", {
       style: {
         flex: 1,
-        paddingTop: 'calc(56px + env(safe-area-inset-top, 0px))',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '12px',
+        gap: '10px'
       }
-    }, selectedExam.pdfData ? /*#__PURE__*/React.createElement("iframe", {
-      src: selectedExam.pdfData,
-      className: "w-full h-full",
-      title: "PDF"
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+        border: '1px solid #e5e7eb'
+      }
+    }, selectedExam.pdfData ? /*#__PURE__*/React.createElement(PdfViewer, {
+      url: selectedExam.pdfData,
+      style: {
+        width: '100%',
+        height: '100%',
+        display: 'block',
+        border: 'none',
+        borderRadius: '16px'
+      }
     }) : /*#__PURE__*/React.createElement("div", {
       className: "flex flex-col items-center justify-center h-full text-gray-400"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-file-pdf text-5xl mb-3 text-gray-300"
     }), /*#__PURE__*/React.createElement("p", {
       className: "text-sm"
-    }, "PDF no disponible"))));
-  }
-
-  // Visor de Comprobante (solo móvil o usuarios no médicos)
-  if (viewingInvoice && freshUser.type !== 'medico') {
-    var docType = viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura';
-    var downloadInvoice = function downloadInvoice() {
-      if (viewingInvoice.invoicePdf) {
+    }, "PDF no disponible"))), selectedExam.pdfData && /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        display: 'flex',
+        justifyContent: 'center'
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
         var link = document.createElement('a');
-        link.href = viewingInvoice.invoicePdf;
-        link.download = "".concat(docType, "_").concat(viewingInvoice.id, ".pdf");
+        link.href = selectedExam.pdfData;
+        link.download = "".concat(selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_'), ".pdf");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-      }
-    };
-    if (!isAuthenticated) {
-      return renderLogin();
-    }
+      },
+      className: "flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold text-sm shadow-md"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-download"
+    }), " Descargar PDF"))));
+  }
+
+  // Vista Comprobante médico — early return
+  if (viewingInvoice && freshUser.type === 'medico' && window.innerWidth < 768) {
     return /*#__PURE__*/React.createElement("div", {
-      className: "min-h-screen bg-gray-100"
+      style: {
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: '#f3f4f6',
+        zIndex: 10000,
+        display: 'flex',
+        flexDirection: 'column'
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "app-header"
+      style: {
+        flexShrink: 0,
+        background: 'white',
+        borderBottom: '1px solid #e5e7eb',
+        paddingTop: 'env(safe-area-inset-top, 0px)'
+      }
     }, /*#__PURE__*/React.createElement("div", {
-      className: "max-w-4xl mx-auto px-4 py-3 flex items-center gap-4"
+      className: "px-4 py-3 flex items-center gap-3"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return setViewingInvoice(null);
       },
-      className: "text-gray-600 hover:text-gray-800"
+      className: "w-9 h-9 bg-gray-100 rounded-full flex items-center justify-center text-gray-600 flex-shrink-0"
     }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-arrow-left text-lg"
-    })), /*#__PURE__*/React.createElement("img", {
-      src: "assets/logo_inulaboratorios.jpg",
-      alt: "Logo",
-      className: "h-8",
-      onError: function onError(e) {
-        return e.target.style.display = 'none';
-      }
-    }))), /*#__PURE__*/React.createElement("div", {
-      className: "app-content"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "px-4 max-w-4xl mx-auto"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-2xl shadow-lg p-4"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "mb-3"
-    }, /*#__PURE__*/React.createElement("h1", {
-      className: "text-lg font-bold text-gray-800 mb-1"
-    }, docType), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500 text-sm"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-calendar mr-1"
-    }), new Date(viewingInvoice.completedAt || viewingInvoice.date).toLocaleDateString('es-ES', {
-      year: 'numeric',
+      className: "fas fa-arrow-left text-sm"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-sm font-bold text-gray-800 leading-tight"
+    }, viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-400 text-xs"
+    }, new Date(viewingInvoice.completedAt || viewingInvoice.date).toLocaleDateString('es-ES', {
+      day: 'numeric',
       month: 'long',
-      day: 'numeric'
-    })), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-600 text-sm mt-1"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-user mr-1"
-    }), viewingInvoice.userName)), viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
-      src: viewingInvoice.invoicePdf,
-      className: "w-full rounded-xl border border-gray-200",
+      year: 'numeric'
+    }))))), /*#__PURE__*/React.createElement("div", {
       style: {
-        height: 'calc(100vh - 300px)'
+        flex: 1,
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        padding: '12px',
+        gap: '10px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        flex: 1,
+        overflow: 'hidden',
+        background: 'white',
+        borderRadius: '16px',
+        boxShadow: '0 2px 12px rgba(0,0,0,0.10)',
+        border: '1px solid #e5e7eb'
+      }
+    }, viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement("iframe", {
+      src: viewingInvoice.invoicePdf,
+      style: {
+        width: '100%',
+        height: '100%',
+        display: 'block',
+        border: 'none',
+        borderRadius: '16px'
       },
-      title: "".concat(docType, " PDF")
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "mt-3 flex justify-center"
+      title: "Comprobante PDF"
+    }) : /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col items-center justify-center h-full text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice', " text-5xl mb-3 text-gray-300")
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm"
+    }, viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura', " no disponible"))), viewingInvoice.invoicePdf && /*#__PURE__*/React.createElement("div", {
+      style: {
+        flexShrink: 0,
+        display: 'flex',
+        justifyContent: 'center'
+      }
     }, /*#__PURE__*/React.createElement("button", {
-      onClick: downloadInvoice,
-      className: "flex items-center gap-2 px-6 py-2.5 ".concat(viewingInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700' : 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700', " text-white rounded-xl font-semibold transition-colors shadow-lg text-sm")
+      onClick: function onClick() {
+        var link = document.createElement('a');
+        link.href = viewingInvoice.invoicePdf;
+        link.download = "".concat(viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura', "_").concat(viewingInvoice.id, ".pdf");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      className: "flex items-center gap-2 px-6 py-2.5 ".concat(viewingInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600', " text-white rounded-xl font-semibold text-sm shadow-md")
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-download"
-    }), "Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
-      className: "bg-gray-100 rounded-xl p-12 text-center"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice', " text-4xl text-gray-400 mb-2")
-    }), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500"
-    }, docType, " no disponible"))))));
+    }), " Descargar PDF"))));
   }
 
   // Helper functions for dueño shell (header + sidebar)
-  var petsOrPatients = freshUser.type === 'medico' ? freshUser.patients || [] : freshUser.pets || [];
+  var petsOrPatients = freshUser.type === 'medico' ? (database === null || database === void 0 ? void 0 : database.pets) || [] : (database === null || database === void 0 ? void 0 : database.pets) || [];
   var entityName = freshUser.type === 'medico' ? 'paciente' : 'mascota';
-  var filteredPets = petSearchTerm.trim() === '' ? petsOrPatients : petsOrPatients.filter(function (p) {
+  var filteredPets = petSearchTerm.trim() === '' ? (database === null || database === void 0 ? void 0 : database.pets) || [] : ((database === null || database === void 0 ? void 0 : database.pets) || []).filter(function (p) {
     return p.name.toLowerCase().includes(petSearchTerm.toLowerCase());
   });
   var resetDuenoState = function resetDuenoState() {
@@ -4100,6 +5482,10 @@ var App = function App() {
     setShowEditProfile(false);
     setSelectedPaqueteDetail(null);
     setViewingOrderTracking(null);
+    setSelectedExam(null);
+    setViewingInvoice(null);
+    setShowAllPending(false);
+    setFacturacionInvoice(null);
     setCurrentExamForPet(null);
     setPendingExams([]);
     setCart([]);
@@ -4300,6 +5686,18 @@ var App = function App() {
     }, "Pedidos")), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         resetDuenoState();
+        setActiveTab('facturacion');
+      },
+      className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(activeTab === 'facturacion' ? 'bg-amber-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-50')
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-8 h-8 rounded-lg flex items-center justify-center ".concat(activeTab === 'facturacion' ? 'bg-amber-400' : 'bg-amber-100')
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice-dollar text-sm ".concat(activeTab === 'facturacion' ? 'text-white' : 'text-amber-600')
+    })), /*#__PURE__*/React.createElement("span", {
+      className: "font-medium"
+    }, "Facturaci\xF3n")), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        resetDuenoState();
         setActiveTab('resultados');
       },
       className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(activeTab === 'resultados' && duenoView !== 'config' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700')
@@ -4335,12 +5733,12 @@ var App = function App() {
 
   // Vista de Tracking de Pedido (para clientes)
   // Vista de Tracking de Pedido (solo mobile - para clientes y médicos)
-  if (viewingOrderTracking) {
+  if (viewingOrderTracking && window.innerWidth < 768) {
     // Obtener datos frescos del pedido desde la base de datos
-    var order = (database.orders || []).find(function (o) {
+    var _order2 = (database.orders || []).find(function (o) {
       return o.id === viewingOrderTracking.id;
     }) || viewingOrderTracking;
-    var orderDate = new Date(order.date);
+    var orderDate = new Date(_order2.createdAt || _order2.date);
     var formatDateTime = function formatDateTime(date) {
       if (!date) return '';
       var d = new Date(date);
@@ -4359,60 +5757,60 @@ var App = function App() {
       label: 'Pedido realizado',
       subtitle: 'Tu pedido ha sido registrado',
       icon: 'fa-clipboard-check',
-      date: order.date
+      date: _order2.createdAt || _order2.date
     }, {
       id: 'confirmed',
       label: 'Pedido confirmado',
       subtitle: 'El laboratorio confirmó tu pedido',
       icon: 'fa-check-circle',
-      date: order.date
+      date: _order2.createdAt || _order2.date
     }, {
       id: 'moto_en_camino',
       label: 'Motorizado en camino',
       subtitle: 'El motorizado va hacia tu ubicación',
       icon: 'fa-motorcycle',
-      date: order.status === 'moto_en_camino' || ['moto_arrived', 'sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: _order2.status === 'moto_en_camino' || ['moto_arrived', 'sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'moto_arrived',
       label: 'Motorizado llegó',
       subtitle: 'Por favor entrega la muestra',
       icon: 'fa-map-marker-alt',
-      date: ['moto_arrived', 'sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: ['moto_arrived', 'sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'sample_received',
       label: 'Muestra recogida',
       subtitle: 'Tu muestra va camino al laboratorio',
       icon: 'fa-vial',
-      date: ['sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: ['sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'arrived_at_lab',
       label: 'En laboratorio',
       subtitle: 'La muestra llegó al laboratorio',
       icon: 'fa-flask',
-      date: ['arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: ['arrived_at_lab', 'processing', 'results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'processing',
       label: 'Procesando muestra',
       subtitle: 'Estamos analizando tu muestra',
       icon: 'fa-cog',
-      date: ['processing', 'results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: ['processing', 'results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'results_uploaded',
       label: 'Resultados listos',
       subtitle: 'Realiza el pago para ver los resultados',
       icon: 'fa-file-medical',
-      date: ['results_uploaded', 'completed'].includes(order.status) ? order.statusUpdatedAt : null
+      date: ['results_uploaded', 'completed'].includes(_order2.status) ? _order2.statusUpdatedAt : null
     }, {
       id: 'completed',
       label: 'Entregado',
       subtitle: '¡Ya puedes ver tus resultados!',
       icon: 'fa-check-double',
-      date: order.status === 'completed' ? order.completedAt : null
+      date: _order2.status === 'completed' ? _order2.completedAt : null
     }];
 
     // Determinar qué pasos están completados
     var statusOrder = ['pending', 'confirmed', 'moto_en_camino', 'moto_arrived', 'sample_received', 'arrived_at_lab', 'processing', 'results_uploaded', 'completed'];
-    var currentIndex = statusOrder.indexOf(order.status === 'pending' ? 'confirmed' : order.status);
+    var currentIndex = statusOrder.indexOf(_order2.status === 'pending' ? 'confirmed' : _order2.status);
 
     // Solo mostrar esta vista en mobile, en desktop se maneja dentro del layout del médico
     if (userType === 'medico') {
@@ -4420,7 +5818,6 @@ var App = function App() {
     } else if (freshUser.type === 'dueño') {
       // Para dueños, no retornamos aquí - dejamos que el código del dueño maneje el tracking
     } else {
-      var _order$items$, _order$items$2;
       // Para otros clientes, mostramos la vista de tracking
       return /*#__PURE__*/React.createElement("div", {
         className: "min-h-screen bg-gray-100"
@@ -4510,21 +5907,22 @@ var App = function App() {
         className: "font-bold text-gray-800 mb-3"
       }, "Detalle del pedido"), /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, order.items.map(function (item, idx) {
+      }, (_order2.items || []).map(function (item, idx) {
+        var _item$exam, _item$exam2, _item$exam3, _item$exam4, _item$pet;
         return /*#__PURE__*/React.createElement("div", {
           key: idx,
           className: "flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
         }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center")
+          className: "w-10 h-10 ".concat((item === null || item === void 0 || (_item$exam = item.exam) === null || _item$exam === void 0 ? void 0 : _item$exam.bg) || 'bg-cyan-100', " rounded-lg flex items-center justify-center")
         }, /*#__PURE__*/React.createElement("i", {
-          className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color)
+          className: "fas ".concat((item === null || item === void 0 || (_item$exam2 = item.exam) === null || _item$exam2 === void 0 ? void 0 : _item$exam2.icon) || 'fa-vial', " ").concat((item === null || item === void 0 || (_item$exam3 = item.exam) === null || _item$exam3 === void 0 ? void 0 : _item$exam3.color) || 'text-cyan-600')
         })), /*#__PURE__*/React.createElement("div", {
           className: "flex-1"
         }, /*#__PURE__*/React.createElement("p", {
           className: "font-medium text-gray-800 text-sm"
-        }, item.exam.name), /*#__PURE__*/React.createElement("p", {
+        }, (item === null || item === void 0 || (_item$exam4 = item.exam) === null || _item$exam4 === void 0 ? void 0 : _item$exam4.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), /*#__PURE__*/React.createElement("p", {
           className: "text-gray-500 text-xs"
-        }, item.pet.photo, " ", getPetFullName(item.pet))));
+        }, (item === null || item === void 0 || (_item$pet = item.pet) === null || _item$pet === void 0 ? void 0 : _item$pet.name) || '')));
       })), /*#__PURE__*/React.createElement("div", {
         className: "mt-3 pt-3 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
@@ -4535,7 +5933,7 @@ var App = function App() {
         className: "text-gray-500 text-xs"
       }, "Direcci\xF3n de recojo"), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-800"
-      }, ((_order$items$ = order.items[0]) === null || _order$items$ === void 0 || (_order$items$ = _order$items$.address) === null || _order$items$ === void 0 ? void 0 : _order$items$.address) || 'Sin dirección', ", ", ((_order$items$2 = order.items[0]) === null || _order$items$2 === void 0 || (_order$items$2 = _order$items$2.address) === null || _order$items$2 === void 0 ? void 0 : _order$items$2.district) || '')))), order.comment && /*#__PURE__*/React.createElement("div", {
+      }, addr ? "".concat(addr.street, ", ").concat(addr.district) : 'Sin dirección')))), _order2.comment && /*#__PURE__*/React.createElement("div", {
         className: "mt-3 pt-3 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-start gap-2 text-sm"
@@ -4545,7 +5943,7 @@ var App = function App() {
         className: "text-gray-500 text-xs"
       }, "Comentario"), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-800 text-sm"
-      }, order.comment))))))))));
+      }, _order2.comment))))))))));
     }
   }
 
@@ -4554,9 +5952,9 @@ var App = function App() {
 
   // Perfil mascota
   if (selectedPet && activeTab === 'resultados' && freshUser.type !== 'dueño') {
-    var currentPet = petsOrPatients.find(function (p) {
-      return p.id === selectedPet.id;
-    }) || selectedPet;
+    var currentPet = (petsOrPatients || []).find(function (p) {
+      return p.id === (selectedPet === null || selectedPet === void 0 ? void 0 : selectedPet.id);
+    }) || selectedPet || {};
     var petProfileContent = /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return setSelectedPet(null);
@@ -4572,9 +5970,9 @@ var App = function App() {
       className: "flex items-center gap-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "text-5xl"
-    }, currentPet.photo), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
+    }, currentPet === null || currentPet === void 0 ? void 0 : currentPet.photo), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
       className: "text-2xl font-bold text-gray-800"
-    }, currentPet.name), currentPet.owner && /*#__PURE__*/React.createElement("p", {
+    }, currentPet === null || currentPet === void 0 ? void 0 : currentPet.name), (currentPet === null || currentPet === void 0 ? void 0 : currentPet.owner) && /*#__PURE__*/React.createElement("p", {
       className: "text-gray-500 text-sm"
     }, "Due\xF1o: ", currentPet.owner), /*#__PURE__*/React.createElement("div", {
       className: "flex flex-wrap gap-2 mt-2"
@@ -4586,7 +5984,7 @@ var App = function App() {
       className: "bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs"
     }, currentPet.sex))))), /*#__PURE__*/React.createElement("h2", {
       className: "text-lg font-bold text-gray-800 mb-4"
-    }, "Resultados"), currentPet.exams.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, "Resultados"), ((currentPet === null || currentPet === void 0 ? void 0 : currentPet.exams) || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-2xl p-10 text-center shadow"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-folder-open text-4xl text-gray-300 mb-2"
@@ -4594,7 +5992,7 @@ var App = function App() {
       className: "text-gray-500"
     }, "No hay resultados disponibles")) : /*#__PURE__*/React.createElement("div", {
       className: "space-y-3"
-    }, currentPet.exams.map(function (exam) {
+    }, ((currentPet === null || currentPet === void 0 ? void 0 : currentPet.exams) || []).map(function (exam) {
       return /*#__PURE__*/React.createElement("div", {
         key: exam.id,
         onClick: function onClick() {
@@ -4654,7 +6052,7 @@ var App = function App() {
 
   // Selección de mascota y dirección (solo móvil o usuarios no médicos)
   if (currentExamForPet && freshUser.type !== 'medico' && freshUser.type !== 'dueño') {
-    var userAddresses = freshUser.addresses || [];
+    var userAddresses = database.addresses || [];
     var backHandler = function backHandler() {
       if (showAddressSelection && !showNewAddressForm) {
         setShowAddressSelection(false);
@@ -4718,11 +6116,11 @@ var App = function App() {
       className: "bg-white rounded-2xl shadow overflow-hidden mb-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "max-h-64 overflow-y-auto hide-scrollbar"
-    }, filteredPets.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (filteredPets || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "p-8 text-center text-gray-500"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search text-3xl mb-2 text-gray-300"
-    }), /*#__PURE__*/React.createElement("p", null, "No se encontr\xF3 ning\xFAn ", entityName)) : filteredPets.map(function (pet) {
+    }), /*#__PURE__*/React.createElement("p", null, "No se encontr\xF3 ning\xFAn ", entityName)) : (filteredPets || []).map(function (pet) {
       return /*#__PURE__*/React.createElement("div", {
         key: pet.id,
         onClick: function onClick() {
@@ -4731,7 +6129,7 @@ var App = function App() {
         className: "p-4 border-b border-gray-100 last:border-0 flex items-center gap-4 cursor-pointer hover:bg-gray-50"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-3xl"
-      }, pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, "\uD83D\uDC36"), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-semibold text-gray-800"
@@ -4902,15 +6300,15 @@ var App = function App() {
       className: "bg-white rounded-2xl shadow overflow-hidden mb-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "max-h-64 overflow-y-auto hide-scrollbar"
-    }, (freshUser.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (database.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "p-8 text-center text-gray-500"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-map-marker-alt text-3xl mb-2 text-gray-300"
-    }), /*#__PURE__*/React.createElement("p", null, "No tienes direcciones guardadas")) : (freshUser.addresses || []).map(function (addr) {
+    }), /*#__PURE__*/React.createElement("p", null, "No tienes direcciones guardadas")) : (database.addresses || []).map(function (addr) {
       return /*#__PURE__*/React.createElement("div", {
         key: addr.id,
         onClick: function onClick() {
-          return assignAddressAndComplete(addr);
+          return setSelectedAddressId(addr.id);
         },
         className: "p-4 border-b border-gray-100 last:border-0 cursor-pointer hover:bg-gray-50"
       }, /*#__PURE__*/React.createElement("div", {
@@ -4925,9 +6323,7 @@ var App = function App() {
         className: "font-semibold text-gray-800"
       }, addr.name), /*#__PURE__*/React.createElement("p", {
         className: "text-sm text-gray-600"
-      }, addr.address), /*#__PURE__*/React.createElement("p", {
-        className: "text-xs text-gray-500"
-      }, addr.district, addr.reference ? " \u2022 ".concat(addr.reference) : '')), /*#__PURE__*/React.createElement("i", {
+      }, addr.street, " \u2022 ", addr.district)), /*#__PURE__*/React.createElement("i", {
         className: "fas fa-chevron-right text-gray-300 mt-3"
       })));
     }))), /*#__PURE__*/React.createElement("button", {
@@ -5015,9 +6411,11 @@ var App = function App() {
       },
       className: "flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-semibold hover:bg-gray-50"
     }, "Cancelar"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
       onClick: addNewAddress,
       className: "flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold"
     }, "Guardar y usar"))))));
+    console.log("RENDER STATE:", database.addresses);
     return /*#__PURE__*/React.createElement("div", {
       className: "min-h-screen bg-gray-100"
     }, /*#__PURE__*/React.createElement("div", {
@@ -5047,7 +6445,7 @@ var App = function App() {
   if (freshUser.type === 'medico') {
     // Filtrar mascotas según búsqueda
     var filteredMascotas = mascotaSearchTerm.trim() === '' ? petsOrPatients : petsOrPatients.filter(function (p) {
-      return p.name.toLowerCase().includes(mascotaSearchTerm.toLowerCase()) || p.owner && p.owner.toLowerCase().includes(mascotaSearchTerm.toLowerCase());
+      return (p.name || p.Name).toLowerCase().includes(mascotaSearchTerm.toLowerCase()) || p.owner && p.owner.toLowerCase().includes(mascotaSearchTerm.toLowerCase());
     });
 
     // Filtrar exámenes de una mascota según filtros
@@ -5080,24 +6478,28 @@ var App = function App() {
 
     // Obtener todos los pedidos completados para historial
     var completedOrders = (database.orders || []).filter(function (o) {
-      return o.userId === freshUser.id && o.status === 'completed';
+      return (o.status === 9 || o.status === 'completed' || Number(o.status) === 9) && (o.items || []).length > 0;
     }).sort(function (a, b) {
-      return new Date(b.completedAt || b.date) - new Date(a.completedAt || a.date);
+      return new Date(b.completedAt || b.createdAt) - new Date(a.completedAt || a.createdAt);
     });
 
     // Obtener pedidos en curso
     var pendingOrders = (database.orders || []).filter(function (o) {
-      return o.userId === freshUser.id && o.status !== 'completed';
+      return o.status !== 9 && o.status !== 'completed' && Number(o.status) !== 9 && (o.items || []).length > 0;
     }).sort(function (a, b) {
-      return new Date(b.date) - new Date(a.date);
+      return new Date(b.date || b.createdAt) - new Date(a.date || a.createdAt);
+    });
+    (database.orders || []).forEach(function (o) {
+      console.log("ORDER:", o);
+      console.log("ADDRESS ID:", o === null || o === void 0 ? void 0 : o.addressId);
     });
 
     // Obtener tipos de examen únicos para el filtro
-    var allExamTypes = _toConsumableArray(new Set(petsOrPatients.flatMap(function (p) {
-      return p.exams.map(function (e) {
-        return e.type;
-      });
-    })));
+    var allExamTypes = _toConsumableArray(new Set((Array.isArray(petsOrPatients) ? petsOrPatients : []).flatMap(function (p) {
+      return Array.isArray(p === null || p === void 0 ? void 0 : p.exams) ? p.exams : [];
+    }).map(function (e) {
+      return e === null || e === void 0 ? void 0 : e.type;
+    }).filter(Boolean)));
     return /*#__PURE__*/React.createElement("div", {
       className: "min-h-screen bg-gray-100"
     }, renderTermsModal(), /*#__PURE__*/React.createElement("div", {
@@ -5110,6 +6512,7 @@ var App = function App() {
       className: "mob-header-logo cursor-pointer",
       onClick: function onClick() {
         setMedicoView('inicio');
+        setShowAllPending(false);
         setSelectedMascota(null);
         setMenuOpen(false);
         setSelectedExam(null);
@@ -5204,32 +6607,6 @@ var App = function App() {
       className: "font-medium"
     }, "Editar Perfil"), /*#__PURE__*/React.createElement("i", {
       className: "fas fa-chevron-right text-gray-300 ml-auto text-xs"
-    })), /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        setMedicoView('facturacion');
-        setMenuOpen(false);
-        setSelectedMascota(null);
-        setSelectedExam(null);
-        setViewingInvoice(null);
-        setCurrentExamForPet(null);
-        setPendingExams([]);
-        setCart([]);
-        setShowNewPetForm(false);
-        setShowAddressSelection(false);
-        setShowNewAddressForm(false);
-        setSelectedPetForOrder(null);
-        setShowEditProfile(false);
-        setViewingOrderTracking(null);
-      },
-      className: "w-full flex items-center gap-3 px-4 py-3.5 rounded-xl hover:bg-gray-50 text-gray-700 transition-colors"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-file-invoice-dollar text-amber-600"
-    })), /*#__PURE__*/React.createElement("span", {
-      className: "font-medium"
-    }, "Facturaci\xF3n"), /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-chevron-right text-gray-300 ml-auto text-xs"
     }))), /*#__PURE__*/React.createElement("div", {
       className: "mx-4 border-t border-gray-100 my-1"
     }), /*#__PURE__*/React.createElement("div", {
@@ -5270,14 +6647,19 @@ var App = function App() {
     })), /*#__PURE__*/React.createElement("span", {
       className: "font-medium"
     }, "Cerrar Sesi\xF3n"))))), /*#__PURE__*/React.createElement("div", {
-      className: "mob-content"
+      className: "mob-content",
+      style: medicoView === 'inicio' && !viewingOrderTracking && !selectedExam && !viewingInvoice && !currentExamForPet && !showOrderSummary ? {
+        overflow: 'hidden',
+        minHeight: 'unset',
+        height: 'calc(100vh - 56px - 64px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))'
+      } : {}
     }, /*#__PURE__*/React.createElement("div", {
       className: "max-w-4xl mx-auto px-4 py-5"
     }, successMessage && /*#__PURE__*/React.createElement("div", {
       className: "bg-emerald-50 border border-emerald-300 text-emerald-700 p-4 rounded-xl mb-4 flex items-center gap-3"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-check-circle text-emerald-500"
-    }), successMessage), viewingOrderTracking && function (_trackingOrder$items$, _trackingOrder$items$2, _trackingOrder$items$3, _trackingOrder$items$4) {
+    }), successMessage), viewingOrderTracking && function (_trackingOrder$items, _trackingOrder$items2, _trackingOrder$items3, _trackingOrder$items4) {
       var trackingOrder = (database.orders || []).find(function (o) {
         return o.id === viewingOrderTracking.id;
       }) || viewingOrderTracking;
@@ -5297,13 +6679,13 @@ var App = function App() {
         label: 'Pedido realizado',
         subtitle: 'Tu pedido ha sido registrado',
         icon: 'fa-clipboard-check',
-        date: trackingOrder.date
+        date: trackingOrder.createdAt || trackingOrder.date
       }, {
         id: 'confirmed',
         label: 'Pedido confirmado',
         subtitle: 'El laboratorio confirmó tu pedido',
         icon: 'fa-check-circle',
-        date: trackingOrder.date
+        date: trackingOrder.createdAt || trackingOrder.date
       }, {
         id: 'moto_en_camino',
         label: 'Motorizado en camino',
@@ -5368,27 +6750,28 @@ var App = function App() {
         className: "text-sm font-bold text-gray-800 leading-tight"
       }, "Tracking del Pedido"), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-500 text-xs truncate"
-      }, getPetFullName((_trackingOrder$items$ = trackingOrder.items[0]) === null || _trackingOrder$items$ === void 0 ? void 0 : _trackingOrder$items$.pet), " \xB7 ", (_trackingOrder$items$2 = trackingOrder.items[0]) === null || _trackingOrder$items$2 === void 0 ? void 0 : _trackingOrder$items$2.exam.name))), /*#__PURE__*/React.createElement("div", {
+      }, getPetFullName(trackingOrder === null || trackingOrder === void 0 || (_trackingOrder$items = trackingOrder.items) === null || _trackingOrder$items === void 0 || (_trackingOrder$items = _trackingOrder$items[0]) === null || _trackingOrder$items === void 0 ? void 0 : _trackingOrder$items.pet), " \xB7 ", (trackingOrder === null || trackingOrder === void 0 || (_trackingOrder$items2 = trackingOrder.items) === null || _trackingOrder$items2 === void 0 || (_trackingOrder$items2 = _trackingOrder$items2[0]) === null || _trackingOrder$items2 === void 0 ? void 0 : _trackingOrder$items2.examName) || ''))), /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-2xl shadow-sm border border-gray-100 p-4"
       }, /*#__PURE__*/React.createElement("h3", {
         className: "font-semibold text-xs uppercase tracking-wide text-gray-400 mb-3"
       }, "Detalle del pedido"), /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, trackingOrder.items.map(function (item, idx) {
+      }, ((trackingOrder === null || trackingOrder === void 0 ? void 0 : trackingOrder.items) || []).map(function (step, index, arr) {
+        var _step$exam, _step$exam2, _step$exam3, _step$exam4, _step$pet;
         return /*#__PURE__*/React.createElement("div", {
-          key: idx,
+          key: step.id || index,
           className: "flex items-center gap-3 p-2.5 bg-gray-50 rounded-xl"
         }, /*#__PURE__*/React.createElement("div", {
-          className: "w-9 h-9 ".concat(item.exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+          className: "w-9 h-9 ".concat(step === null || step === void 0 || (_step$exam = step.exam) === null || _step$exam === void 0 ? void 0 : _step$exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
         }, /*#__PURE__*/React.createElement("i", {
-          className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color, " text-sm")
+          className: "fas ".concat(step === null || step === void 0 || (_step$exam2 = step.exam) === null || _step$exam2 === void 0 ? void 0 : _step$exam2.icon, " ").concat(step === null || step === void 0 || (_step$exam3 = step.exam) === null || _step$exam3 === void 0 ? void 0 : _step$exam3.color, " text-sm")
         })), /*#__PURE__*/React.createElement("div", {
           className: "flex-1 min-w-0"
         }, /*#__PURE__*/React.createElement("p", {
           className: "font-medium text-gray-800 text-sm leading-tight truncate"
-        }, item.exam.name), /*#__PURE__*/React.createElement("p", {
+        }, step === null || step === void 0 || (_step$exam4 = step.exam) === null || _step$exam4 === void 0 ? void 0 : _step$exam4.name), /*#__PURE__*/React.createElement("p", {
           className: "text-gray-500 text-xs"
-        }, item.pet.photo, " ", getPetFullName(item.pet))));
+        }, step === null || step === void 0 || (_step$pet = step.pet) === null || _step$pet === void 0 ? void 0 : _step$pet.photo, " ", getPetFullName(step.pet))));
       })), /*#__PURE__*/React.createElement("div", {
         className: "mt-3 pt-3 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
@@ -5397,7 +6780,7 @@ var App = function App() {
         className: "fas fa-map-marker-alt text-cyan-500 mt-0.5 text-xs"
       }), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-600 text-xs leading-snug"
-      }, ((_trackingOrder$items$3 = trackingOrder.items[0]) === null || _trackingOrder$items$3 === void 0 || (_trackingOrder$items$3 = _trackingOrder$items$3.address) === null || _trackingOrder$items$3 === void 0 ? void 0 : _trackingOrder$items$3.address) || 'Sin dirección', ", ", ((_trackingOrder$items$4 = trackingOrder.items[0]) === null || _trackingOrder$items$4 === void 0 || (_trackingOrder$items$4 = _trackingOrder$items$4.address) === null || _trackingOrder$items$4 === void 0 ? void 0 : _trackingOrder$items$4.district) || ''))), trackingOrder.comment && /*#__PURE__*/React.createElement("div", {
+      }, (trackingOrder === null || trackingOrder === void 0 || (_trackingOrder$items3 = trackingOrder.items) === null || _trackingOrder$items3 === void 0 || (_trackingOrder$items3 = _trackingOrder$items3[0]) === null || _trackingOrder$items3 === void 0 || (_trackingOrder$items3 = _trackingOrder$items3.address) === null || _trackingOrder$items3 === void 0 ? void 0 : _trackingOrder$items3.address) || 'Sin dirección', ", ", (trackingOrder === null || trackingOrder === void 0 || (_trackingOrder$items4 = trackingOrder.items) === null || _trackingOrder$items4 === void 0 || (_trackingOrder$items4 = _trackingOrder$items4[0]) === null || _trackingOrder$items4 === void 0 || (_trackingOrder$items4 = _trackingOrder$items4.address) === null || _trackingOrder$items4 === void 0 ? void 0 : _trackingOrder$items4.district) || ''))), (trackingOrder === null || trackingOrder === void 0 ? void 0 : trackingOrder.comment) && /*#__PURE__*/React.createElement("div", {
         className: "mt-2 pt-2 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-start gap-2"
@@ -5405,15 +6788,15 @@ var App = function App() {
         className: "fas fa-comment-alt text-cyan-500 mt-0.5 text-xs"
       }), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-600 text-xs leading-snug"
-      }, trackingOrder.comment)))), /*#__PURE__*/React.createElement("div", {
+      }, trackingOrder === null || trackingOrder === void 0 ? void 0 : trackingOrder.comment)))), /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-2xl shadow-sm border border-gray-100 p-4"
       }, /*#__PURE__*/React.createElement("h3", {
         className: "font-semibold text-xs uppercase tracking-wide text-gray-400 mb-4"
       }, "Estado del pedido"), /*#__PURE__*/React.createElement("div", {
         className: "space-y-0"
-      }, trackingSteps.map(function (step, index) {
+      }, (trackingSteps || []).map(function (step, index, arr) {
         var isCompleted = index <= trackingCurrentIndex;
-        var isLast = index === trackingSteps.length - 1;
+        var isLast = index === arr.length - 1;
         return /*#__PURE__*/React.createElement("div", {
           key: step.id,
           className: "flex gap-3"
@@ -5437,103 +6820,7 @@ var App = function App() {
           className: "text-cyan-600 text-xs mt-0.5"
         }, formatTrackingDateTime(step.date))));
       })))));
-    }(), selectedExam && /*#__PURE__*/React.createElement("div", {
-      className: "-mx-4 -mt-5"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-2xl shadow-lg p-4 m-4"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center gap-3 mb-4"
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return setSelectedExam(null);
-      },
-      className: "w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-arrow-left"
-    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
-      className: "text-lg font-bold text-gray-800"
-    }, selectedExam.type), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500 text-sm"
-    }, new Date(selectedExam.date).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })))), selectedExam.pdfData ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
-      src: selectedExam.pdfData,
-      className: "w-full rounded-xl border border-gray-200",
-      style: {
-        height: 'calc(100vh - 250px)'
-      },
-      title: "PDF"
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "mt-3 flex justify-center"
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        var link = document.createElement('a');
-        link.href = selectedExam.pdfData;
-        link.download = "".concat(selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_'), ".pdf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      },
-      className: "flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-xl font-semibold text-sm"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-download"
-    }), " Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
-      className: "bg-gray-100 rounded-xl p-12 text-center"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-file-pdf text-4xl text-gray-400 mb-2"
-    }), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500"
-    }, "PDF no disponible")))), !selectedExam && viewingInvoice && /*#__PURE__*/React.createElement("div", {
-      className: "-mx-4 -mt-5"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-2xl shadow-lg p-4 m-4"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center gap-3 mb-4"
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return setViewingInvoice(null);
-      },
-      className: "w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-arrow-left"
-    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
-      className: "text-lg font-bold text-gray-800"
-    }, viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500 text-sm"
-    }, new Date(viewingInvoice.completedAt || viewingInvoice.date).toLocaleDateString('es-ES', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    })))), viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("iframe", {
-      src: viewingInvoice.invoicePdf,
-      className: "w-full rounded-xl border border-gray-200",
-      style: {
-        height: 'calc(100vh - 280px)'
-      },
-      title: "Comprobante PDF"
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "mt-3 flex justify-center"
-    }, /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        var link = document.createElement('a');
-        link.href = viewingInvoice.invoicePdf;
-        link.download = "".concat(viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura', "_").concat(viewingInvoice.id, ".pdf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      },
-      className: "flex items-center gap-2 px-6 py-2.5 ".concat(viewingInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600', " text-white rounded-xl font-semibold text-sm")
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-download"
-    }), " Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
-      className: "bg-gray-100 rounded-xl p-12 text-center"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice', " text-4xl text-gray-400 mb-2")
-    }), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500"
-    }, viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura', " no disponible")))), currentExamForPet && !viewingOrderTracking && !viewingInvoice && !selectedExam && function () {
+    }(), currentExamForPet && !viewingOrderTracking && !viewingInvoice && !selectedExam && function () {
       var mobBackHandler = function mobBackHandler() {
         if (showAddressSelection && !showNewAddressForm) {
           setShowAddressSelection(false);
@@ -5638,9 +6925,9 @@ var App = function App() {
         }
       }, !showAddressSelection && /*#__PURE__*/React.createElement(React.Fragment, null, !showNewPetForm ? /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, filteredPets.length === 0 ? /*#__PURE__*/React.createElement("div", {
+      }, (filteredPets || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-xl p-6 text-center text-gray-400 text-sm shadow-sm border border-gray-100"
-      }, "No se encontr\xF3 ning\xFAn paciente") : filteredPets.map(function (pet) {
+      }, "No se encontr\xF3 ning\xFAn paciente") : (filteredPets || []).map(function (pet) {
         return /*#__PURE__*/React.createElement("div", {
           key: pet.id,
           onClick: function onClick() {
@@ -5649,7 +6936,7 @@ var App = function App() {
           className: "bg-white rounded-xl px-3 py-2.5 shadow-sm cursor-pointer active:opacity-75 border-2 border-transparent flex items-center gap-3"
         }, /*#__PURE__*/React.createElement("div", {
           className: "text-2xl leading-none"
-        }, pet.photo), /*#__PURE__*/React.createElement("div", {
+        }, pet === null || pet === void 0 ? void 0 : pet.photo), /*#__PURE__*/React.createElement("div", {
           className: "flex-1 min-w-0"
         }, /*#__PURE__*/React.createElement("p", {
           className: "font-semibold text-gray-800 text-sm leading-tight truncate"
@@ -5797,9 +7084,9 @@ var App = function App() {
         className: "fas fa-check mr-1.5"
       }), "Guardar y Seleccionar"))), showAddressSelection && /*#__PURE__*/React.createElement(React.Fragment, null, !showNewAddressForm ? /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, (freshUser.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      }, (database.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-xl p-6 text-center text-gray-400 text-sm shadow-sm border border-gray-100"
-      }, "No hay direcciones guardadas") : (freshUser.addresses || []).map(function (addr) {
+      }, "No hay direcciones guardadas") : (database.addresses || []).map(function (addr) {
         return /*#__PURE__*/React.createElement("div", {
           key: addr.id,
           onClick: function onClick() {
@@ -5816,7 +7103,7 @@ var App = function App() {
           className: "font-semibold text-gray-800 text-sm leading-tight"
         }, addr.name), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-400 truncate"
-        }, addr.address, ", ", addr.district)), /*#__PURE__*/React.createElement("i", {
+        }, addr.street, ", ", addr.district)), /*#__PURE__*/React.createElement("i", {
           className: "fas fa-chevron-right text-gray-300 text-xs"
         }));
       })) : /*#__PURE__*/React.createElement("div", {
@@ -5959,7 +7246,11 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-arrow-left mr-2"
     }), "Volver al Inicio")), !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'configuracion' && showEditProfile && /*#__PURE__*/React.createElement("div", {
-      className: "max-w-md mx-auto"
+      className: "max-w-md mx-auto",
+      style: {
+        overflowY: 'auto',
+        height: '100vh'
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-2xl shadow-lg p-6"
     }, /*#__PURE__*/React.createElement("div", {
@@ -6123,24 +7414,25 @@ var App = function App() {
         overflowY: 'auto',
         padding: '12px 16px'
       }
-    }, cart.map(function (item) {
-      var _item$address;
+    }, (cart || []).map(function (item) {
+      var _item$exam5, _item$exam6, _item$exam7, _item$exam8, _item$pet2;
       return /*#__PURE__*/React.createElement("div", {
         key: item.exam.id,
         className: "bg-white rounded-xl p-3 shadow-sm border border-gray-100 mb-2 flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-9 h-9 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center flex-shrink-0")
+        className: "w-9 h-9 ".concat((item === null || item === void 0 || (_item$exam5 = item.exam) === null || _item$exam5 === void 0 ? void 0 : _item$exam5.bg) || 'bg-cyan-100', " rounded-lg flex items-center justify-center flex-shrink-0")
       }, /*#__PURE__*/React.createElement("i", {
-        className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color, " text-sm")
+        className: "fas ".concat(item === null || item === void 0 || (_item$exam6 = item.exam) === null || _item$exam6 === void 0 ? void 0 : _item$exam6.icon, " ").concat(item === null || item === void 0 || (_item$exam7 = item.exam) === null || _item$exam7 === void 0 ? void 0 : _item$exam7.color, " text-sm")
       })), /*#__PURE__*/React.createElement("div", {
         className: "flex-1 min-w-0"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-semibold text-gray-800 text-sm leading-tight truncate"
-      }, item.exam.name), /*#__PURE__*/React.createElement("p", {
-        className: "text-xs text-gray-400 truncate mt-0.5"
-      }, item.pet.photo, " ", getPetFullName(item.pet), " \xB7 ", /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-map-marker-alt text-cyan-400 text-xs"
-      }), " ", (_item$address = item.address) === null || _item$address === void 0 ? void 0 : _item$address.district)), /*#__PURE__*/React.createElement("div", {
+      }, (item === null || item === void 0 || (_item$exam8 = item.exam) === null || _item$exam8 === void 0 ? void 0 : _item$exam8.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-gray-400 truncate mt-0.5 flex items-center gap-1"
+      }, safeImage(item === null || item === void 0 || (_item$pet2 = item.pet) === null || _item$pet2 === void 0 ? void 0 : _item$pet2.photo) && /*#__PURE__*/React.createElement("img", {
+        src: item.petPhoto,
+        className: "w-5 h-5 rounded-full"
+      }), item.petName)), /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-2.5 flex-shrink-0"
       }, item.exam.price && /*#__PURE__*/React.createElement("span", {
         className: "text-cyan-600 font-bold text-sm"
@@ -6228,8 +7520,9 @@ var App = function App() {
       },
       className: "text-cyan-600 font-semibold underline"
     }, "t\xE9rminos y condiciones"), " de entrega y procesamiento de muestras."))), /*#__PURE__*/React.createElement("button", {
-      onClick: submitOrder,
-      disabled: !termsAccepted,
+      onClick: function onClick() {
+        return submitOrder(selectedAddressId);
+      },
       className: "w-full py-2.5 rounded-xl font-semibold text-sm ".concat(termsAccepted ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-md' : 'bg-gray-200 text-gray-400 cursor-not-allowed')
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-paper-plane mr-2"
@@ -6274,7 +7567,7 @@ var App = function App() {
     }, function () {
       var pendingInvoiceMap = {};
       (database.orders || []).filter(function (o) {
-        return o.userId === freshUser.id && o.invoiceRequested && o.invoiceStatus === 'pending';
+        return o.invoiceRequested && o.invoiceStatus === 'pending';
       }).forEach(function (o) {
         pendingInvoiceMap[o.id] = o;
       });
@@ -6310,8 +7603,8 @@ var App = function App() {
       }, "No hay pendientes"));
       return /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, items.map(function (item, idx) {
-        var _order$items$3, _order$items$4;
+      }, (items || []).map(function (item, idx) {
+        var _order$items, _order$items2, _firstItem$pet, _firstItem$exam;
         var order = item.order;
         if (item.type === 'invoice') return /*#__PURE__*/React.createElement("div", {
           key: "inv-".concat(order.id, "-").concat(idx),
@@ -6326,11 +7619,10 @@ var App = function App() {
           className: "text-sm font-semibold text-gray-800 leading-tight"
         }, order.documentType === 'boleta' ? 'Boleta' : 'Factura', " solicitada"), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-500"
-        }, order.items.map(function (i) {
-          return getPetFullName(i.pet);
-        }).join(', ')))), /*#__PURE__*/React.createElement("span", {
+        }, (order === null || order === void 0 || (_order$items = order.items) === null || _order$items === void 0 || (_order$items = _order$items[0]) === null || _order$items === void 0 ? void 0 : _order$items.examName) || 'Pedido'))), /*#__PURE__*/React.createElement("span", {
           className: "bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
         }, "Pendiente"));
+        var firstItem = order === null || order === void 0 || (_order$items2 = order.items) === null || _order$items2 === void 0 ? void 0 : _order$items2[0];
         return /*#__PURE__*/React.createElement("div", {
           key: "tr-".concat(order.id),
           onClick: function onClick() {
@@ -6342,31 +7634,19 @@ var App = function App() {
           className: "flex items-center gap-2.5"
         }, /*#__PURE__*/React.createElement("div", {
           className: "w-9 h-9 flex items-center justify-center flex-shrink-0 text-2xl leading-none"
-        }, (_order$items$3 = order.items[0]) === null || _order$items$3 === void 0 ? void 0 : _order$items$3.pet.photo), /*#__PURE__*/React.createElement("div", {
+        }, typeof (firstItem === null || firstItem === void 0 || (_firstItem$pet = firstItem.pet) === null || _firstItem$pet === void 0 ? void 0 : _firstItem$pet.photo) === "string" ? firstItem.petPhoto : "🐾"), /*#__PURE__*/React.createElement("div", {
           className: "flex-1 min-w-0"
         }, /*#__PURE__*/React.createElement("p", {
           className: "font-semibold text-gray-800 text-sm leading-tight truncate"
-        }, order.items.map(function (i) {
-          return getPetFullName(i.pet);
-        }).join(', ')), /*#__PURE__*/React.createElement("p", {
+        }, ((order === null || order === void 0 ? void 0 : order.items) || []).map(function (i) {
+          return i !== null && i !== void 0 && i.pet ? getPetFullName(i.pet) : null;
+        }).filter(Boolean).join(', ')), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-500 truncate"
-        }, (_order$items$4 = order.items[0]) === null || _order$items$4 === void 0 ? void 0 : _order$items$4.exam.name)), /*#__PURE__*/React.createElement("div", {
-          className: "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(order.status === 'moto_arrived' || order.status === 'results_uploaded' ? 'bg-red-500' : 'bg-cyan-500')
+        }, typeof (firstItem === null || firstItem === void 0 || (_firstItem$exam = firstItem.exam) === null || _firstItem$exam === void 0 ? void 0 : _firstItem$exam.name) === "string" ? firstItem.exam.name : typeof (firstItem === null || firstItem === void 0 ? void 0 : firstItem.examName) === "string" ? firstItem.examName : "Examen")), /*#__PURE__*/React.createElement("div", {
+          className: "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(order.status === 3 || order.status === 8 ? 'bg-red-500' : 'bg-cyan-500')
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas fa-route text-white text-sm"
-        }))), order.status === 'moto_arrived' && /*#__PURE__*/React.createElement("div", {
-          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-2 animate-pulse"
-        }, /*#__PURE__*/React.createElement("i", {
-          className: "fas fa-map-marker-alt text-red-600 text-xs"
-        }), /*#__PURE__*/React.createElement("p", {
-          className: "text-red-800 font-medium text-xs"
-        }, "\xA1El motorizado lleg\xF3! Entrega la muestra")), order.status === 'results_uploaded' && /*#__PURE__*/React.createElement("div", {
-          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-2 animate-pulse"
-        }, /*#__PURE__*/React.createElement("i", {
-          className: "fas fa-credit-card text-red-600 text-xs"
-        }), /*#__PURE__*/React.createElement("p", {
-          className: "text-red-800 font-medium text-xs"
-        }, "\xA1Resultados listos! Pendiente de pago")));
+        }))));
       }));
     }())), !showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'inicio' && /*#__PURE__*/React.createElement("div", {
       style: {
@@ -6391,9 +7671,7 @@ var App = function App() {
         maxHeight: '16px'
       }
     }), function () {
-      var pendingInvoices = completedOrders.filter(function (o) {
-        return o.invoiceRequested && o.invoiceStatus === 'pending';
-      });
+      var pendingInvoices = [];
       var totalPending = pendingOrders.length + pendingInvoices.length;
       return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-2 mb-2.5"
@@ -6412,7 +7690,7 @@ var App = function App() {
       }, function () {
         var pendingInvoiceMap = {};
         (database.orders || []).filter(function (o) {
-          return o.userId === freshUser.id && o.invoiceRequested && o.invoiceStatus === 'pending';
+          return o.invoiceRequested && o.invoiceStatus === 'pending';
         }).forEach(function (o) {
           pendingInvoiceMap[o.id] = o;
         });
@@ -6438,7 +7716,7 @@ var App = function App() {
           });
         });
         return items.slice(0, 2).map(function (item, idx) {
-          var _order$items$5, _order$items$6;
+          var _order$items3, _order$items4, _order$items5, _order$items6;
           var order = item.order;
           if (item.type === 'invoice') return /*#__PURE__*/React.createElement("div", {
             key: "inv-".concat(order.id, "-").concat(idx),
@@ -6453,9 +7731,7 @@ var App = function App() {
             className: "text-sm font-semibold text-gray-800 leading-tight"
           }, order.documentType === 'boleta' ? 'Boleta' : 'Factura', " solicitada"), /*#__PURE__*/React.createElement("p", {
             className: "text-xs text-gray-500"
-          }, order.items.map(function (i) {
-            return getPetFullName(i.pet);
-          }).join(', ')))), /*#__PURE__*/React.createElement("span", {
+          }, (order === null || order === void 0 || (_order$items3 = order.items) === null || _order$items3 === void 0 || (_order$items3 = _order$items3[0]) === null || _order$items3 === void 0 ? void 0 : _order$items3.examName) || 'Pedido'))), /*#__PURE__*/React.createElement("span", {
             className: "bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0"
           }, "Pendiente"));
           return /*#__PURE__*/React.createElement("div", {
@@ -6468,15 +7744,13 @@ var App = function App() {
             className: "flex items-center gap-2.5"
           }, /*#__PURE__*/React.createElement("div", {
             className: "w-8 h-8 flex items-center justify-center flex-shrink-0 text-2xl leading-none"
-          }, (_order$items$5 = order.items[0]) === null || _order$items$5 === void 0 ? void 0 : _order$items$5.pet.photo), /*#__PURE__*/React.createElement("div", {
+          }, (order === null || order === void 0 || (_order$items4 = order.items) === null || _order$items4 === void 0 || (_order$items4 = _order$items4[0]) === null || _order$items4 === void 0 || (_order$items4 = _order$items4.pet) === null || _order$items4 === void 0 ? void 0 : _order$items4.photo) || '🐾'), /*#__PURE__*/React.createElement("div", {
             className: "flex-1 min-w-0"
           }, /*#__PURE__*/React.createElement("p", {
             className: "font-semibold text-gray-800 text-sm leading-tight truncate"
-          }, order.items.map(function (i) {
-            return getPetFullName(i.pet);
-          }).join(', ')), /*#__PURE__*/React.createElement("p", {
+          }, (order === null || order === void 0 || (_order$items5 = order.items) === null || _order$items5 === void 0 || (_order$items5 = _order$items5[0]) === null || _order$items5 === void 0 ? void 0 : _order$items5.examName) || 'Pedido'), /*#__PURE__*/React.createElement("p", {
             className: "text-xs text-gray-500 truncate"
-          }, (_order$items$6 = order.items[0]) === null || _order$items$6 === void 0 ? void 0 : _order$items$6.exam.name)), /*#__PURE__*/React.createElement("div", {
+          }, (order === null || order === void 0 || (_order$items6 = order.items) === null || _order$items6 === void 0 || (_order$items6 = _order$items6[0]) === null || _order$items6 === void 0 ? void 0 : _order$items6.examName) || '')), /*#__PURE__*/React.createElement("div", {
             className: "w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(order.status === 'moto_arrived' || order.status === 'results_uploaded' ? 'bg-red-500' : 'bg-cyan-500')
           }, /*#__PURE__*/React.createElement("i", {
             className: "fas fa-route text-white text-sm"
@@ -6518,39 +7792,46 @@ var App = function App() {
       className: "text-xs font-bold text-gray-400 uppercase tracking-widest"
     }, "\xDAltimo resultado"), newResultHighlight && /*#__PURE__*/React.createElement("span", {
       className: "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full animate-pulse"
-    }, "\xA1NUEVO!")), completedOrders.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, "\xA1NUEVO!")), (completedOrders || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-gray-100 rounded-xl p-4 text-center"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-gray-500 text-sm"
-    }, "No hay resultados a\xFAn")) : function (_petsOrPatients$find) {
-      var lastOrder = completedOrders[0];
-      var lastItem = lastOrder.items[0];
-      var petExams = ((_petsOrPatients$find = petsOrPatients.find(function (p) {
-        return p.id === lastItem.pet.id;
-      })) === null || _petsOrPatients$find === void 0 ? void 0 : _petsOrPatients$find.exams) || [];
+    }, "No hay resultados a\xFAn")) : function (_lastOrder$items, _firstItem$pet2, _firstItem$pet3, _firstItem$exam2) {
+      var lastOrder = completedOrders === null || completedOrders === void 0 ? void 0 : completedOrders[0];
+      var firstItem = lastOrder === null || lastOrder === void 0 || (_lastOrder$items = lastOrder.items) === null || _lastOrder$items === void 0 ? void 0 : _lastOrder$items[0];
+      if (!firstItem) {
+        return /*#__PURE__*/React.createElement("div", {
+          className: "bg-gray-100 rounded-xl p-4 text-center"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "text-gray-500 text-sm"
+        }, "No hay resultados a\xFAn"));
+      }
+      var petId = (firstItem === null || firstItem === void 0 || (_firstItem$pet2 = firstItem.pet) === null || _firstItem$pet2 === void 0 ? void 0 : _firstItem$pet2.id) || (firstItem === null || firstItem === void 0 ? void 0 : firstItem.petId);
+      var pet = (petsOrPatients || []).find(function (p) {
+        return p.id === petId;
+      });
+      var petExams = (database === null || database === void 0 ? void 0 : database.results) || [];
       var relatedExam = petExams.find(function (e) {
-        return e.orderId === lastOrder.id;
+        return String(e.orderId) === String(lastOrder.id);
       });
       return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
         onClick: function onClick() {
-          return (relatedExam === null || relatedExam === void 0 ? void 0 : relatedExam.pdfData) && markExamAsSeen(relatedExam, petsOrPatients.find(function (p) {
-            return p.id === lastItem.pet.id;
-          }));
+          if (lastOrder !== null && lastOrder !== void 0 && lastOrder.resultPdfUrl) window.open(lastOrder.resultPdfUrl, '_blank');
         },
-        className: "bg-white rounded-xl p-4 shadow-sm ".concat(relatedExam !== null && relatedExam !== void 0 && relatedExam.pdfData ? 'cursor-pointer' : '', " ").concat(newResultHighlight ? 'highlight-green-pulse' : '')
+        className: "bg-white rounded-xl p-4 shadow-sm cursor-pointer ".concat(newResultHighlight ? 'highlight-green-pulse' : '')
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center justify-between"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-2xl leading-none"
-      }, lastItem.pet.photo), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+      }, typeof (firstItem === null || firstItem === void 0 || (_firstItem$pet3 = firstItem.pet) === null || _firstItem$pet3 === void 0 ? void 0 : _firstItem$pet3.photo) === "string" ? firstItem.petPhoto : "🐾"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
         className: "font-semibold text-gray-800 text-sm"
-      }, getPetFullName(lastItem.pet)), /*#__PURE__*/React.createElement("p", {
+      }, getPetFullName(firstItem.pet)), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-500"
-      }, lastItem.exam.name), /*#__PURE__*/React.createElement("p", {
+      }, typeof (firstItem === null || firstItem === void 0 || (_firstItem$exam2 = firstItem.exam) === null || _firstItem$exam2 === void 0 ? void 0 : _firstItem$exam2.name) === "string" ? firstItem.exam.name : (firstItem === null || firstItem === void 0 ? void 0 : firstItem.examName) || "Examen"), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-400"
-      }, new Date(lastOrder.completedAt || lastOrder.date).toLocaleDateString('es-ES', {
+      }, new Date(lastOrder.completedAt || lastOrder.createdAt).toLocaleDateString('es-ES', {
         day: 'numeric',
         month: 'short',
         year: 'numeric'
@@ -6597,7 +7878,7 @@ var App = function App() {
           className: "text-gray-500 text-sm"
         }, "No hay comprobantes emitidos"));
       }
-      var lastComprobante = comprobantesEmitidos[0];
+      var lastComprobante = comprobantesEmitidos === null || comprobantesEmitidos === void 0 ? void 0 : comprobantesEmitidos[0];
       return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
         onClick: function onClick() {
           return setViewingInvoice(lastComprobante);
@@ -6615,8 +7896,8 @@ var App = function App() {
         className: "font-semibold text-gray-800 text-sm"
       }, lastComprobante.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-500"
-      }, lastComprobante.items.map(function (i) {
-        return getPetFullName(i.pet);
+      }, ((lastComprobante === null || lastComprobante === void 0 ? void 0 : lastComprobante.items) || []).map(function (i) {
+        return getPetFullName(i === null || i === void 0 ? void 0 : i.pet);
       }).join(', ')), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-400"
       }, new Date(lastComprobante.completedAt || lastComprobante.date).toLocaleDateString('es-ES', {
@@ -6638,9 +7919,24 @@ var App = function App() {
         className: "fas fa-chevron-right text-sm"
       }))));
     }())), !showOrderSummary && !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'pedidos' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-      className: "relative mb-4"
+      className: "flex items-center bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl px-4 py-3 mb-3"
     }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+      className: "fas fa-clipboard-list text-white text-base mr-2"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-semibold text-sm flex-1"
+    }, "Pedidos"), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(showMobileSearch ? 'fa-times' : 'fa-search', " text-sm")
+    }))), showMobileSearch && /*#__PURE__*/React.createElement("div", {
+      className: "relative mb-3"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
     }), /*#__PURE__*/React.createElement("input", {
       type: "text",
       value: searchTerm,
@@ -6648,14 +7944,14 @@ var App = function App() {
         return setSearchTerm(e.target.value);
       },
       placeholder: "Buscar examen o perfil...",
-      className: "w-full pl-11 pr-10 py-3.5 rounded-2xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white shadow-sm"
+      className: "w-full pl-11 pr-10 py-3 rounded-2xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white text-sm"
     }), searchTerm && /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return setSearchTerm('');
       },
       className: "absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
     }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-times"
+      className: "fas fa-times text-sm"
     }))), (cart.length > 0 || pendingExams.length > 0) && /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-4 mb-4 text-xs text-gray-500"
     }, /*#__PURE__*/React.createElement("span", {
@@ -6684,7 +7980,7 @@ var App = function App() {
       className: "fas fa-boxes-stacked text-blue-500"
     }), " Perfiles (Paquetes)"), /*#__PURE__*/React.createElement("div", {
       className: "grid grid-cols-1 sm:grid-cols-2 gap-2"
-    }, filteredPerfiles.map(function (exam) {
+    }, (filteredPerfiles || []).map(function (exam) {
       var isInCart = cart.find(function (c) {
         return c.exam.id === exam.id;
       });
@@ -6698,7 +7994,7 @@ var App = function App() {
         },
         className: "bg-white rounded-2xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-11 h-11 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+        className: "w-11 h-11 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-lg")
       })), /*#__PURE__*/React.createElement("div", {
@@ -6710,7 +8006,7 @@ var App = function App() {
       }, exam.subtitle)), exam.price && /*#__PURE__*/React.createElement("span", {
         className: "text-cyan-600 font-bold text-sm flex-shrink-0"
       }, "S/ ", exam.price));
-    }))), filteredCategorias.map(function (cat) {
+    }))), (filteredCategorias || []).map(function (cat) {
       return /*#__PURE__*/React.createElement("div", {
         key: cat.nombre
       }, /*#__PURE__*/React.createElement("h3", {
@@ -6719,7 +8015,7 @@ var App = function App() {
         className: "fas ".concat(cat.icon, " ").concat(cat.color)
       }), " ", cat.nombre), /*#__PURE__*/React.createElement("div", {
         className: "grid grid-cols-1 sm:grid-cols-2 gap-2"
-      }, cat.examenes.map(function (exam) {
+      }, (cat.examenes || []).map(function (exam) {
         var isInCart = cart.find(function (c) {
           return c.exam.id === exam.id;
         });
@@ -6733,7 +8029,7 @@ var App = function App() {
           },
           className: "bg-white rounded-2xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
         }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+          className: "w-10 h-10 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-base")
         })), /*#__PURE__*/React.createElement("div", {
@@ -6751,15 +8047,24 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel-inner"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2"
+      className: "bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-paw text-white text-sm"
     }), /*#__PURE__*/React.createElement("span", {
-      className: "text-white font-semibold text-sm"
+      className: "text-white font-semibold text-sm flex-1"
     }, "Pacientes"), /*#__PURE__*/React.createElement("span", {
-      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto"
-    }, petsOrPatients.length)), /*#__PURE__*/React.createElement("div", {
-      className: "relative"
+      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full"
+    }, petsOrPatients.length), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(showMobileSearch ? 'fa-times' : 'fa-search', " text-xs")
+    }))), showMobileSearch && /*#__PURE__*/React.createElement("div", {
+      className: "relative mt-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
     }), /*#__PURE__*/React.createElement("input", {
@@ -6779,7 +8084,7 @@ var App = function App() {
       className: "fas fa-times text-xs"
     }))))), /*#__PURE__*/React.createElement("div", {
       className: "list-spacer-small"
-    }), filteredMascotas.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }), (filteredMascotas || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-2xl p-10 text-center shadow"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-paw text-4xl text-gray-300 mb-2"
@@ -6787,7 +8092,7 @@ var App = function App() {
       className: "text-gray-500"
     }, "No se encontraron pacientes")) : /*#__PURE__*/React.createElement("div", {
       className: "grid grid-cols-1 sm:grid-cols-2 gap-2"
-    }, filteredMascotas.map(function (pet) {
+    }, (filteredMascotas || []).map(function (pet) {
       return /*#__PURE__*/React.createElement("div", {
         key: pet.id,
         onClick: function onClick() {
@@ -6801,7 +8106,7 @@ var App = function App() {
         className: "bg-white rounded-xl px-3 py-2.5 shadow-sm cursor-pointer hover:shadow-md border-2 border-transparent hover:border-emerald-400 transition-all flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-2xl leading-none"
-      }, pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, pet === null || pet === void 0 ? void 0 : pet.photo), /*#__PURE__*/React.createElement("div", {
         className: "flex-1 min-w-0"
       }, /*#__PURE__*/React.createElement("p", {
         className: "text-sm font-semibold text-gray-800 leading-tight truncate"
@@ -6813,27 +8118,41 @@ var App = function App() {
         className: "w-5 h-5 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold"
       }, countUnseenExamsForPet(pet)), /*#__PURE__*/React.createElement("div", {
         className: "bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs font-semibold"
-      }, pet.exams.length)));
+      }, (pet.exams || []).length)));
     }))), !showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'mascotas' && selectedMascota && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel-inner"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2"
-    }, /*#__PURE__*/React.createElement("span", {
+      className: "bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setSelectedMascota(null);
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left text-xs"
+    })), /*#__PURE__*/React.createElement("span", {
       className: "text-xl"
     }, selectedMascota.photo), /*#__PURE__*/React.createElement("div", {
-      className: "flex-1"
+      className: "flex-1 min-w-0"
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-white font-semibold text-sm"
     }, getPetFullName(selectedMascota)), /*#__PURE__*/React.createElement("span", {
       className: "text-white/70 text-xs ml-2"
-    }, selectedMascota.breed), selectedMascota.owner && /*#__PURE__*/React.createElement("span", {
-      className: "text-white/70 text-xs ml-2"
-    }, "\u2022 ", selectedMascota.owner)), /*#__PURE__*/React.createElement("span", {
+    }, selectedMascota.breed)), /*#__PURE__*/React.createElement("span", {
       className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full"
-    }, selectedMascota.exams.length, " ex\xE1m.")), /*#__PURE__*/React.createElement("div", {
-      className: "relative mb-2"
+    }, selectedMascota.exams.length, " ex\xE1m."), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(showMobileSearch ? 'fa-times' : 'fa-search', " text-xs")
+    }))), showMobileSearch && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "relative mt-2 mb-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
     }), /*#__PURE__*/React.createElement("input", {
@@ -6844,24 +8163,16 @@ var App = function App() {
       },
       placeholder: "Buscar examen...",
       className: "w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm"
-    })), /*#__PURE__*/React.createElement("div", {
-      className: "grid grid-cols-4 gap-2"
-    }, /*#__PURE__*/React.createElement("select", {
-      value: examFilterType,
-      onChange: function onChange(e) {
-        return setExamFilterType(e.target.value);
+    }), examSearchTerm && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setExamSearchTerm('');
       },
-      className: "p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"
-    }, /*#__PURE__*/React.createElement("option", {
-      value: ""
-    }, "Tipo"), _toConsumableArray(new Set(selectedMascota.exams.map(function (e) {
-      return e.type;
-    }))).map(function (type) {
-      return /*#__PURE__*/React.createElement("option", {
-        key: type,
-        value: type
-      }, type);
-    })), /*#__PURE__*/React.createElement("select", {
+      className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times text-xs"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-3 gap-2"
+    }, /*#__PURE__*/React.createElement("select", {
       value: examFilterDay,
       onChange: function onChange(e) {
         return setExamFilterDay(e.target.value);
@@ -6908,7 +8219,7 @@ var App = function App() {
         key: y,
         value: y
       }, y);
-    }))))), /*#__PURE__*/React.createElement("div", {
+    })))))), /*#__PURE__*/React.createElement("div", {
       className: "list-spacer-medium"
     }), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center justify-between mb-3"
@@ -6928,7 +8239,8 @@ var App = function App() {
       return /*#__PURE__*/React.createElement("div", {
         key: exam.id,
         onClick: function onClick() {
-          return markExamAsSeen(exam, selectedMascota);
+          markExamAsSeen(exam, selectedMascota);
+          if (exam.pdfData) setSelectedExam(exam);
         },
         className: "bg-white rounded-xl p-4 shadow cursor-pointer hover:shadow-lg flex items-center justify-between ".concat(exam.seen === false ? 'border-l-4 border-red-500' : '')
       }, /*#__PURE__*/React.createElement("div", {
@@ -6950,27 +8262,29 @@ var App = function App() {
       }, "NUEVO")), /*#__PURE__*/React.createElement("i", {
         className: "fas fa-chevron-right text-gray-400"
       }));
-    })), /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return setSelectedMascota(null);
-      },
-      className: "mt-6 w-full py-3 rounded-xl border-2 border-gray-200 text-gray-600 font-medium hover:bg-gray-50"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-arrow-left mr-2"
-    }), "Volver a pacientes")), !showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'resultados' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    }))), !showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'resultados' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel"
     }, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel-inner"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2"
+      className: "bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-2 flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-file-medical text-white text-sm"
     }), /*#__PURE__*/React.createElement("span", {
-      className: "text-white font-semibold text-sm"
+      className: "text-white font-semibold text-sm flex-1"
     }, "Resultados"), /*#__PURE__*/React.createElement("span", {
-      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto"
-    }, completedOrders.length)), /*#__PURE__*/React.createElement("div", {
-      className: "relative mb-2"
+      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full"
+    }, completedOrders.length), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(showMobileSearch ? 'fa-times' : 'fa-search', " text-xs")
+    }))), showMobileSearch && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "relative mt-2 mb-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
     }), /*#__PURE__*/React.createElement("input", {
@@ -7029,8 +8343,8 @@ var App = function App() {
         key: y,
         value: y
       }, y);
-    }))))), /*#__PURE__*/React.createElement("div", {
-      className: "list-spacer-medium"
+    })))))), /*#__PURE__*/React.createElement("div", {
+      className: "list-spacer-small"
     }), function () {
       var filteredCompletedOrders = completedOrders.filter(function (order) {
         if (resultadosSearch) {
@@ -7039,7 +8353,7 @@ var App = function App() {
           });
           if (!matchesPet) return false;
         }
-        var orderDate = new Date(order.completedAt || order.date);
+        var orderDate = new Date(order.createdAt || order.completedAt || order.date);
         var orderDay = String(orderDate.getDate()).padStart(2, '0');
         var orderMonth = String(orderDate.getMonth() + 1).padStart(2, '0');
         var orderYear = String(orderDate.getFullYear());
@@ -7048,36 +8362,45 @@ var App = function App() {
         if (resultadosFilterYear && orderYear !== resultadosFilterYear) return false;
         return true;
       });
-      return /*#__PURE__*/React.createElement("div", null, filteredCompletedOrders.length === 0 ? /*#__PURE__*/React.createElement("div", {
+      var filtered = filteredCompletedOrders || []; // ← agrega aquí
+
+      return /*#__PURE__*/React.createElement("div", null, (filtered || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-xl p-8 text-center shadow"
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas fa-inbox text-4xl text-gray-300 mb-2"
       }), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-500"
-      }, completedOrders.length === 0 ? 'No hay pedidos completados' : 'No hay resultados con estos filtros')) : /*#__PURE__*/React.createElement("div", {
+      }, Array.isArray(completedOrders) && completedOrders.length === 0 ? 'No hay pedidos completados' : 'No hay resultados con estos filtros')) : /*#__PURE__*/React.createElement("div", {
         className: "space-y-3"
-      }, filteredCompletedOrders.map(function (order) {
-        var _petsOrPatients$find2;
-        var firstItem = order.items[0];
-        var petExams = ((_petsOrPatients$find2 = petsOrPatients.find(function (p) {
-          return p.id === (firstItem === null || firstItem === void 0 ? void 0 : firstItem.pet.id);
-        })) === null || _petsOrPatients$find2 === void 0 ? void 0 : _petsOrPatients$find2.exams) || [];
+      }, (filtered || []).map(function (order) {
+        var _order$items7;
+        var firstItem = order === null || order === void 0 || (_order$items7 = order.items) === null || _order$items7 === void 0 ? void 0 : _order$items7[0];
+        var pet = (petsOrPatients || []).find(function (p) {
+          var _firstItem$pet4;
+          return p.id === (firstItem === null || firstItem === void 0 || (_firstItem$pet4 = firstItem.pet) === null || _firstItem$pet4 === void 0 ? void 0 : _firstItem$pet4.id);
+        });
+        var petExams = (pet === null || pet === void 0 ? void 0 : pet.exams) || [];
         var relatedExam = petExams.find(function (e) {
           return e.orderId === order.id;
         });
         return /*#__PURE__*/React.createElement("div", {
           key: order.id,
           onClick: function onClick() {
-            return relatedExam !== null && relatedExam !== void 0 && relatedExam.pdfData ? markExamAsSeen(relatedExam, petsOrPatients.find(function (p) {
-              return p.id === firstItem.pet.id;
-            })) : alert('Este resultado aún no está disponible');
+            var _order$items8;
+            var pdfUrl = (_order$items8 = order.items) === null || _order$items8 === void 0 || (_order$items8 = _order$items8[0]) === null || _order$items8 === void 0 ? void 0 : _order$items8.pdfData;
+            if (pdfUrl) {
+              var win = window.open();
+              win.location.href = pdfUrl;
+            } else {
+              alert('El PDF de este resultado aún no está disponible');
+            }
           },
           className: "bg-white rounded-xl shadow p-4 cursor-pointer hover:shadow-lg hover:bg-purple-50 transition-all"
         }, /*#__PURE__*/React.createElement("div", {
           className: "flex items-center justify-between mb-3"
         }, /*#__PURE__*/React.createElement("span", {
           className: "text-xs text-gray-500"
-        }, new Date(order.completedAt || order.date).toLocaleDateString('es-ES', {
+        }, new Date(order.createdAt || order.completedAt || order.date).toLocaleDateString('es-ES', {
           day: 'numeric',
           month: 'long',
           year: 'numeric'
@@ -7087,17 +8410,18 @@ var App = function App() {
           className: "fas fa-eye text-sm"
         }))), /*#__PURE__*/React.createElement("div", {
           className: "space-y-2"
-        }, order.items.map(function (item, idx) {
+        }, (order.items || []).map(function (item, idx) {
+          var _item$pet3, _item$pet4, _item$exam9;
           return /*#__PURE__*/React.createElement("div", {
             key: idx,
             className: "flex items-center gap-2 text-sm"
-          }, /*#__PURE__*/React.createElement("span", null, item.pet.photo), /*#__PURE__*/React.createElement("span", {
+          }, /*#__PURE__*/React.createElement("span", null, item === null || item === void 0 || (_item$pet3 = item.pet) === null || _item$pet3 === void 0 ? void 0 : _item$pet3.photo), /*#__PURE__*/React.createElement("span", {
             className: "font-medium text-gray-800"
-          }, getPetFullName(item.pet)), /*#__PURE__*/React.createElement("span", {
+          }, (item === null || item === void 0 || (_item$pet4 = item.pet) === null || _item$pet4 === void 0 ? void 0 : _item$pet4.name) || ''), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-300"
           }, "\u2022"), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-600"
-          }, item.exam.name));
+          }, (item === null || item === void 0 || (_item$exam9 = item.exam) === null || _item$exam9 === void 0 ? void 0 : _item$exam9.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'));
         })));
       })));
     }()), !showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'facturacion' && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
@@ -7105,17 +8429,26 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("div", {
       className: "filters-panel-inner"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-2 flex items-center gap-2 mb-2"
+      className: "bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-2 flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-file-invoice-dollar text-white text-sm"
     }), /*#__PURE__*/React.createElement("span", {
-      className: "text-white font-semibold text-sm"
+      className: "text-white font-semibold text-sm flex-1"
     }, "Facturaci\xF3n"), /*#__PURE__*/React.createElement("span", {
-      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto"
+      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full"
     }, completedOrders.filter(function (o) {
       return o.invoicePdf;
-    }).length)), /*#__PURE__*/React.createElement("div", {
-      className: "relative mb-2"
+    }).length), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(showMobileSearch ? 'fa-times' : 'fa-search', " text-xs")
+    }))), showMobileSearch && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+      className: "relative mt-2 mb-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
     }), /*#__PURE__*/React.createElement("input", {
@@ -7174,13 +8507,13 @@ var App = function App() {
         key: y,
         value: y
       }, y);
-    }))))), /*#__PURE__*/React.createElement("div", {
-      className: "list-spacer-medium"
+    })))))), /*#__PURE__*/React.createElement("div", {
+      className: "list-spacer-small"
     }), function () {
-      var pendingInvoices = completedOrders.filter(function (o) {
+      var pendingInvoices = (completedOrders || []).filter(function (o) {
         return o.invoiceRequested && o.invoiceStatus === 'pending';
       });
-      if (pendingInvoices.length === 0) return null;
+      if ((pendingInvoices || []).length === 0) return null;
       return /*#__PURE__*/React.createElement("div", {
         className: "mb-4"
       }, /*#__PURE__*/React.createElement("p", {
@@ -7205,7 +8538,7 @@ var App = function App() {
           className: "font-semibold text-gray-800"
         }, order.documentType === 'boleta' ? 'Boleta' : 'Factura', " Solicitada"), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-500"
-        }, new Date(order.completedAt || order.date).toLocaleDateString('es-ES', {
+        }, new Date(order.createdAt || order.completedAt || order.date).toLocaleDateString('es-ES', {
           day: 'numeric',
           month: 'long',
           year: 'numeric'
@@ -7213,17 +8546,18 @@ var App = function App() {
           className: "bg-red-100 text-red-700 px-2 py-1 rounded-full text-xs font-medium"
         }, "Pendiente")), /*#__PURE__*/React.createElement("div", {
           className: "border-t pt-3 space-y-2"
-        }, order.items.map(function (item, idx) {
+        }, (order.items || []).map(function (item, idx) {
+          var _item$pet5, _item$pet6, _item$exam0;
           return /*#__PURE__*/React.createElement("div", {
             key: idx,
             className: "flex items-center gap-2 text-sm"
-          }, /*#__PURE__*/React.createElement("span", null, item.pet.photo), /*#__PURE__*/React.createElement("span", {
+          }, /*#__PURE__*/React.createElement("span", null, item === null || item === void 0 || (_item$pet5 = item.pet) === null || _item$pet5 === void 0 ? void 0 : _item$pet5.photo), /*#__PURE__*/React.createElement("span", {
             className: "font-medium text-gray-800"
-          }, getPetFullName(item.pet)), /*#__PURE__*/React.createElement("span", {
+          }, (item === null || item === void 0 || (_item$pet6 = item.pet) === null || _item$pet6 === void 0 ? void 0 : _item$pet6.name) || ''), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-300"
           }, "\u2022"), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-600"
-          }, item.exam.name));
+          }, (item === null || item === void 0 || (_item$exam0 = item.exam) === null || _item$exam0 === void 0 ? void 0 : _item$exam0.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'));
         })));
       })));
     }(), function () {
@@ -7241,7 +8575,7 @@ var App = function App() {
         }
 
         // Filtro por fecha
-        var orderDate = new Date(order.completedAt || order.date);
+        var orderDate = new Date(order.createdAt || order.completedAt || order.date);
         var orderDay = String(orderDate.getDate()).padStart(2, '0');
         var orderMonth = String(orderDate.getMonth() + 1).padStart(2, '0');
         var orderYear = String(orderDate.getFullYear());
@@ -7250,7 +8584,7 @@ var App = function App() {
         if (facturacionFilterYear && orderYear !== facturacionFilterYear) return false;
         return true;
       });
-      return /*#__PURE__*/React.createElement("div", null, filteredFacturas.length === 0 ? /*#__PURE__*/React.createElement("div", {
+      return /*#__PURE__*/React.createElement("div", null, (filteredFacturas || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-xl p-8 text-center shadow"
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas fa-receipt text-4xl text-gray-300 mb-2"
@@ -7258,7 +8592,7 @@ var App = function App() {
         className: "text-gray-500"
       }, completedOrders.length === 0 ? 'No hay comprobantes emitidos' : 'No hay comprobantes con estos filtros')) : /*#__PURE__*/React.createElement("div", {
         className: "space-y-3"
-      }, filteredFacturas.map(function (order, index) {
+      }, (filteredFacturas || []).map(function (order, index) {
         return /*#__PURE__*/React.createElement("div", {
           key: order.id,
           onClick: function onClick() {
@@ -7277,7 +8611,7 @@ var App = function App() {
           className: "font-semibold text-gray-800"
         }, order.documentType === 'boleta' ? 'Boleta' : 'Factura', " #", String(completedOrders.indexOf(order) + 1).padStart(4, '0')), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-500"
-        }, new Date(order.completedAt || order.date).toLocaleDateString('es-ES', {
+        }, new Date(order.createdAt || order.completedAt || order.date).toLocaleDateString('es-ES', {
           day: 'numeric',
           month: 'long',
           year: 'numeric'
@@ -7291,17 +8625,18 @@ var App = function App() {
           className: "bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full text-xs font-medium"
         }, "Pagado"))), /*#__PURE__*/React.createElement("div", {
           className: "border-t pt-3 space-y-2"
-        }, order.items.map(function (item, idx) {
+        }, (order.items || []).map(function (item, idx) {
+          var _item$pet7, _item$pet8, _item$exam1;
           return /*#__PURE__*/React.createElement("div", {
             key: idx,
             className: "flex items-center gap-2 text-sm"
-          }, /*#__PURE__*/React.createElement("span", null, item.pet.photo), /*#__PURE__*/React.createElement("span", {
+          }, /*#__PURE__*/React.createElement("span", null, item === null || item === void 0 || (_item$pet7 = item.pet) === null || _item$pet7 === void 0 ? void 0 : _item$pet7.photo), /*#__PURE__*/React.createElement("span", {
             className: "font-medium text-gray-800"
-          }, getPetFullName(item.pet)), /*#__PURE__*/React.createElement("span", {
+          }, (item === null || item === void 0 || (_item$pet8 = item.pet) === null || _item$pet8 === void 0 ? void 0 : _item$pet8.name) || ''), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-300"
           }, "\u2022"), /*#__PURE__*/React.createElement("span", {
             className: "text-gray-600"
-          }, item.exam.name));
+          }, (item === null || item === void 0 || (_item$exam1 = item.exam) === null || _item$exam1 === void 0 ? void 0 : _item$exam1.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'));
         })));
       })));
     }()))), /*#__PURE__*/React.createElement("div", {
@@ -7425,6 +8760,7 @@ var App = function App() {
         setSelectedPetForOrder(null);
         setShowEditProfile(false);
         setViewingOrderTracking(null);
+        setMedicoFacInvoice(null);
       }
     }, /*#__PURE__*/React.createElement("img", {
       src: "assets/logo_inulaboratorios.jpg",
@@ -7482,6 +8818,7 @@ var App = function App() {
     }, "Inicio")), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         setMedicoView('pedidos');
+        setShowAllPending(false);
         setSelectedMascota(null);
         setSelectedExam(null);
         setViewingInvoice(null);
@@ -7494,6 +8831,7 @@ var App = function App() {
         setSelectedPetForOrder(null);
         setShowEditProfile(false);
         setViewingOrderTracking(null);
+        setMedicoFacInvoice(null);
       },
       className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(medicoView === 'pedidos' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700')
     }, /*#__PURE__*/React.createElement("div", {
@@ -7505,6 +8843,7 @@ var App = function App() {
     }, "Pedidos")), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         setMedicoView('mascotas');
+        setShowAllPending(false);
         setSelectedMascota(null);
         setSelectedExam(null);
         setViewingInvoice(null);
@@ -7517,6 +8856,7 @@ var App = function App() {
         setSelectedPetForOrder(null);
         setShowEditProfile(false);
         setViewingOrderTracking(null);
+        setMedicoFacInvoice(null);
       },
       className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(medicoView === 'mascotas' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-gradient-to-r from-emerald-500 to-green-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700')
     }, /*#__PURE__*/React.createElement("div", {
@@ -7527,9 +8867,10 @@ var App = function App() {
       className: "font-medium"
     }, "Pacientes"), /*#__PURE__*/React.createElement("span", {
       className: "ml-auto text-xs px-2 py-0.5 rounded-full ".concat(medicoView === 'mascotas' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-white/20' : 'bg-emerald-100 text-emerald-600')
-    }, petsOrPatients.length)), /*#__PURE__*/React.createElement("button", {
+    }, (petsOrPatients || []).length)), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         setMedicoView('resultados');
+        setShowAllPending(false);
         setSelectedMascota(null);
         setSelectedExam(null);
         setViewingInvoice(null);
@@ -7542,6 +8883,7 @@ var App = function App() {
         setSelectedPetForOrder(null);
         setShowEditProfile(false);
         setViewingOrderTracking(null);
+        setMedicoFacInvoice(null);
       },
       className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(medicoView === 'resultados' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700')
     }, /*#__PURE__*/React.createElement("div", {
@@ -7550,11 +8892,12 @@ var App = function App() {
       className: "fas fa-file-medical ".concat(medicoView === 'resultados' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'text-white' : 'text-purple-600')
     })), /*#__PURE__*/React.createElement("span", {
       className: "font-medium"
-    }, "Resultados"), completedOrders.length > 0 && /*#__PURE__*/React.createElement("span", {
+    }, "Resultados"), (completedOrders || []).length > 0 && /*#__PURE__*/React.createElement("span", {
       className: "ml-auto text-xs px-2 py-0.5 rounded-full ".concat(medicoView === 'resultados' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-white/20' : 'bg-purple-100 text-purple-600')
     }, completedOrders.length)), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         setMedicoView('facturacion');
+        setShowAllPending(false);
         setSelectedMascota(null);
         setSelectedExam(null);
         setViewingInvoice(null);
@@ -7567,6 +8910,7 @@ var App = function App() {
         setSelectedPetForOrder(null);
         setShowEditProfile(false);
         setViewingOrderTracking(null);
+        setMedicoFacInvoice(null);
       },
       className: "w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ".concat(medicoView === 'facturacion' && !selectedExam && !viewingInvoice && !currentExamForPet ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700')
     }, /*#__PURE__*/React.createElement("div", {
@@ -7600,7 +8944,7 @@ var App = function App() {
       className: "bg-emerald-50 border border-emerald-300 text-emerald-700 p-4 rounded-xl mb-4 flex items-center gap-3 -mt-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-check-circle text-emerald-500"
-    }), successMessage), viewingOrderTracking && function (_trackingOrder$items$5, _trackingOrder$items$6) {
+    }), successMessage), viewingOrderTracking && function () {
       var trackingOrder = (database.orders || []).find(function (o) {
         return o.id === viewingOrderTracking.id;
       }) || viewingOrderTracking;
@@ -7620,13 +8964,13 @@ var App = function App() {
         label: 'Pedido realizado',
         subtitle: 'Tu pedido ha sido registrado',
         icon: 'fa-clipboard-check',
-        date: trackingOrder.date
+        date: trackingOrder.createdAt || order.date
       }, {
         id: 'confirmed',
         label: 'Pedido confirmado',
         subtitle: 'El laboratorio confirmó tu pedido',
         icon: 'fa-check-circle',
-        date: trackingOrder.date
+        date: trackingOrder.createdAt || order.date
       }, {
         id: 'moto_en_camino',
         label: 'Motorizado en camino',
@@ -7692,15 +9036,15 @@ var App = function App() {
       }), /*#__PURE__*/React.createElement("span", {
         className: "text-cyan-600 font-semibold"
       }, "Tracking del Pedido")))), /*#__PURE__*/React.createElement("div", {
-        className: "flex-1 p-6 overflow-hidden"
+        className: "flex-1 p-6 overflow-y-auto"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "flex gap-6 h-full"
+        className: "flex gap-6"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-1/2 bg-white rounded-2xl shadow-lg p-5 flex flex-col"
+        className: "w-1/2 bg-white rounded-2xl shadow-lg p-5"
       }, /*#__PURE__*/React.createElement("h3", {
         className: "font-bold text-gray-800 mb-4"
       }, "Estado del pedido"), /*#__PURE__*/React.createElement("div", {
-        className: "flex-1 flex flex-col justify-between"
+        className: "flex-1 space-y-0"
       }, trackingSteps.map(function (step, index) {
         var isCompleted = index <= trackingCurrentIndex;
         var isLast = index === trackingSteps.length - 1;
@@ -7716,7 +9060,7 @@ var App = function App() {
         }) : /*#__PURE__*/React.createElement("i", {
           className: "fas ".concat(step.icon, " text-xs")
         })), !isLast && /*#__PURE__*/React.createElement("div", {
-          className: "w-0.5 flex-1 ".concat(index < trackingCurrentIndex ? 'bg-cyan-500' : 'bg-gray-200')
+          className: "w-0.5 h-10 ".concat(index < trackingCurrentIndex ? 'bg-cyan-500' : 'bg-gray-200')
         })), /*#__PURE__*/React.createElement("div", {
           className: "flex-1"
         }, /*#__PURE__*/React.createElement("p", {
@@ -7734,21 +9078,22 @@ var App = function App() {
         className: "font-bold text-gray-800 mb-3"
       }, "Detalle del pedido"), /*#__PURE__*/React.createElement("div", {
         className: "space-y-2"
-      }, trackingOrder.items.map(function (item, idx) {
+      }, (trackingOrder.items || []).map(function (item, idx) {
+        var _item$exam10, _item$exam11, _item$exam12, _item$exam13, _item$pet9, _item$pet0;
         return /*#__PURE__*/React.createElement("div", {
           key: idx,
           className: "flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
         }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center")
+          className: "w-10 h-10 ".concat((item === null || item === void 0 || (_item$exam10 = item.exam) === null || _item$exam10 === void 0 ? void 0 : _item$exam10.bg) || 'bg-cyan-100', " rounded-lg flex items-center justify-center")
         }, /*#__PURE__*/React.createElement("i", {
-          className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color)
+          className: "fas ".concat((item === null || item === void 0 || (_item$exam11 = item.exam) === null || _item$exam11 === void 0 ? void 0 : _item$exam11.icon) || 'fa-vial', " ").concat((item === null || item === void 0 || (_item$exam12 = item.exam) === null || _item$exam12 === void 0 ? void 0 : _item$exam12.color) || 'text-cyan-600')
         })), /*#__PURE__*/React.createElement("div", {
           className: "flex-1"
         }, /*#__PURE__*/React.createElement("p", {
           className: "font-medium text-gray-800 text-sm"
-        }, item.exam.name), /*#__PURE__*/React.createElement("p", {
+        }, (item === null || item === void 0 || (_item$exam13 = item.exam) === null || _item$exam13 === void 0 ? void 0 : _item$exam13.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), /*#__PURE__*/React.createElement("p", {
           className: "text-gray-500 text-xs"
-        }, item.pet.photo, " ", getPetFullName(item.pet))));
+        }, item === null || item === void 0 || (_item$pet9 = item.pet) === null || _item$pet9 === void 0 ? void 0 : _item$pet9.photo, " ", (item === null || item === void 0 || (_item$pet0 = item.pet) === null || _item$pet0 === void 0 ? void 0 : _item$pet0.name) || '')));
       })), /*#__PURE__*/React.createElement("div", {
         className: "mt-4 pt-4 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
@@ -7759,7 +9104,12 @@ var App = function App() {
         className: "text-gray-500 text-xs"
       }, "Direcci\xF3n de recojo"), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-800"
-      }, ((_trackingOrder$items$5 = trackingOrder.items[0]) === null || _trackingOrder$items$5 === void 0 || (_trackingOrder$items$5 = _trackingOrder$items$5.address) === null || _trackingOrder$items$5 === void 0 ? void 0 : _trackingOrder$items$5.address) || 'Sin dirección', ", ", ((_trackingOrder$items$6 = trackingOrder.items[0]) === null || _trackingOrder$items$6 === void 0 || (_trackingOrder$items$6 = _trackingOrder$items$6.address) === null || _trackingOrder$items$6 === void 0 ? void 0 : _trackingOrder$items$6.district) || '')))), trackingOrder.comment && /*#__PURE__*/React.createElement("div", {
+      }, function () {
+        var addr = (database.addresses || []).find(function (a) {
+          return String(a.id) === String(trackingOrder === null || trackingOrder === void 0 ? void 0 : trackingOrder.addressId);
+        });
+        return addr ? "".concat(addr.street, ", ").concat(addr.district) : 'Sin dirección';
+      }())))), trackingOrder.comment && /*#__PURE__*/React.createElement("div", {
         className: "mt-3 pt-3 border-t border-gray-100"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-start gap-2 text-sm"
@@ -7809,20 +9159,15 @@ var App = function App() {
       day: 'numeric'
     }))), selectedExam.pdfData ? /*#__PURE__*/React.createElement("div", {
       className: "flex-1 flex flex-col min-h-0"
-    }, /*#__PURE__*/React.createElement("iframe", {
-      src: selectedExam.pdfData,
-      className: "flex-1 w-full rounded-xl border border-gray-200",
-      title: "PDF"
+    }, /*#__PURE__*/React.createElement(PdfViewer, {
+      url: selectedExam.pdfData,
+      originalUrl: selectedExam.pdfData,
+      className: "flex-1 w-full rounded-xl border border-gray-200 min-h-0"
     }), /*#__PURE__*/React.createElement("div", {
       className: "mt-3 flex justify-center flex-shrink-0"
     }, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
-        var link = document.createElement('a');
-        link.href = selectedExam.pdfData;
-        link.download = "".concat(selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_'), "_").concat(selectedExam.date, ".pdf");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        window.open(selectedExam.pdfData, '_blank');
       },
       className: "flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold transition-colors shadow-lg text-sm"
     }, /*#__PURE__*/React.createElement("i", {
@@ -7876,10 +9221,9 @@ var App = function App() {
       className: "fas fa-user mr-1"
     }), viewingInvoice.userName)), viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement("div", {
       className: "flex-1 flex flex-col min-h-0"
-    }, /*#__PURE__*/React.createElement("iframe", {
-      src: viewingInvoice.invoicePdf,
-      className: "flex-1 w-full rounded-xl border border-gray-200",
-      title: "Comprobante PDF"
+    }, /*#__PURE__*/React.createElement(PdfViewer, {
+      url: viewingInvoice.invoicePdf,
+      className: "flex-1 w-full rounded-xl border border-gray-200 min-h-0"
     }), /*#__PURE__*/React.createElement("div", {
       className: "mt-3 flex justify-center flex-shrink-0"
     }, /*#__PURE__*/React.createElement("button", {
@@ -7947,13 +9291,13 @@ var App = function App() {
       className: "text-xs text-gray-500"
     }, currentExamForPet.subtitle), /*#__PURE__*/React.createElement("p", {
       className: "text-sm text-cyan-600 mt-1"
-    }, showAddressSelection ? "".concat(selectedPetForOrder === null || selectedPetForOrder === void 0 ? void 0 : selectedPetForOrder.name, " - Selecciona direcci\xF3n") : "Selecciona ".concat(entityName)))), pendingExams.length > 1 && /*#__PURE__*/React.createElement("div", {
+    }, showAddressSelection ? "".concat(selectedPetForOrder === null || selectedPetForOrder === void 0 ? void 0 : selectedPetForOrder.name, " - Selecciona direcci\xF3n") : "Selecciona ".concat(entityName)))), (pendingExams || []).length > 1 && /*#__PURE__*/React.createElement("div", {
       className: "bg-blue-50 rounded-xl p-3 mb-4 text-center"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-sm text-blue-700"
     }, "Examen ", pendingExams.findIndex(function (e) {
       return e.id === currentExamForPet.id;
-    }) + 1, " de ", pendingExams.length)), /*#__PURE__*/React.createElement("div", {
+    }) + 1, " de ", (pendingExams || []).length)), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center justify-center gap-2 mb-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ".concat(!showAddressSelection ? 'bg-cyan-500 text-white' : 'bg-emerald-100 text-emerald-700')
@@ -7981,11 +9325,11 @@ var App = function App() {
       className: "bg-white rounded-2xl shadow overflow-hidden mb-4"
     }, /*#__PURE__*/React.createElement("div", {
       className: "max-h-64 overflow-y-auto hide-scrollbar"
-    }, filteredPets.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (filteredPets || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "p-8 text-center text-gray-500"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search text-3xl mb-2 text-gray-300"
-    }), /*#__PURE__*/React.createElement("p", null, "No se encontr\xF3 ning\xFAn ", entityName)) : filteredPets.map(function (pet) {
+    }), /*#__PURE__*/React.createElement("p", null, "No se encontr\xF3 ning\xFAn ", entityName)) : (filteredPets || []).map(function (pet) {
       return /*#__PURE__*/React.createElement("div", {
         key: pet.id,
         onClick: function onClick() {
@@ -7994,7 +9338,7 @@ var App = function App() {
         className: "p-4 border-b border-gray-100 last:border-0 flex items-center gap-4 cursor-pointer hover:bg-gray-50"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-3xl"
-      }, pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, pet === null || pet === void 0 ? void 0 : pet.photo), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-semibold text-gray-800"
@@ -8153,11 +9497,11 @@ var App = function App() {
       className: "text-xs text-emerald-600"
     }, selectedPetForOrder === null || selectedPetForOrder === void 0 ? void 0 : selectedPetForOrder.breed))), /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-2xl shadow overflow-hidden mb-4"
-    }, (freshUser.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (database.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "p-8 text-center text-gray-500"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-map-marker-alt text-3xl mb-2 text-gray-300"
-    }), /*#__PURE__*/React.createElement("p", null, "No tienes direcciones guardadas")) : (freshUser.addresses || []).map(function (addr) {
+    }), /*#__PURE__*/React.createElement("p", null, "No tienes direcciones guardadas")) : (database.addresses || []).map(function (addr) {
       return /*#__PURE__*/React.createElement("div", {
         key: addr.id,
         onClick: function onClick() {
@@ -8290,7 +9634,10 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-sign-out-alt"
     }), "Cerrar Sesi\xF3n"))), !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'configuracion' && showEditProfile && /*#__PURE__*/React.createElement("div", {
-      className: "max-w-lg mx-auto"
+      className: "max-w-lg mx-auto pb-20 overflow-y-auto",
+      style: {
+        maxHeight: 'calc(100vh - 80px)'
+      }
     }, /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-2xl shadow p-6"
     }, /*#__PURE__*/React.createElement("div", {
@@ -8413,7 +9760,107 @@ var App = function App() {
       className: "flex-1 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-600 text-white font-semibold transition-colors flex items-center justify-center gap-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-save"
-    }), "Guardar")))), !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'inicio' && /*#__PURE__*/React.createElement("div", {
+    }), "Guardar")))), !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'inicio' && showAllPending && /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col h-full -mx-6 -mt-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex-shrink-0 bg-white shadow-md border-b border-gray-200 p-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowAllPending(false);
+      },
+      className: "w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left"
+    })), /*#__PURE__*/React.createElement("h2", {
+      className: "font-bold text-gray-800 text-lg"
+    }, "Pendientes"))), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 overflow-y-auto p-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "max-w-4xl mx-auto"
+    }, function () {
+      var pendingInvoiceOrders = pendingOrders;
+      if ((pendingInvoiceOrders || []).length === 0) return /*#__PURE__*/React.createElement("div", {
+        className: "text-center py-16 bg-white rounded-xl shadow"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-check-circle text-4xl text-emerald-400 mb-3 block"
+      }), /*#__PURE__*/React.createElement("p", {
+        className: "text-gray-500"
+      }, "No hay pendientes"));
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        className: "grid grid-cols-2 gap-4 mb-3"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 px-1"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-route text-cyan-500 text-sm"
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-bold text-gray-400 uppercase tracking-widest"
+      }, "Pedidos")), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 px-1"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-file-invoice-dollar text-amber-500 text-sm"
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-bold text-gray-400 uppercase tracking-widest"
+      }, "Comprobantes"))), /*#__PURE__*/React.createElement("div", {
+        className: "space-y-3"
+      }, (pendingInvoiceOrders || []).map(function (order, idx) {
+        var _order$items9, _order$items0;
+        var invoice = pendingInvoiceOrders[idx];
+        return /*#__PURE__*/React.createElement("div", {
+          key: order.id,
+          className: "grid grid-cols-2 gap-4"
+        }, /*#__PURE__*/React.createElement("div", {
+          onClick: function onClick() {
+            setViewingOrderTracking(order);
+            setShowAllPending(false);
+          },
+          className: "bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-3"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "text-3xl leading-none flex-shrink-0"
+        }, "\uD83D\uDC3E"), /*#__PURE__*/React.createElement("div", {
+          className: "flex-1 min-w-0"
+        }, /*#__PURE__*/React.createElement("p", {
+          className: "font-semibold text-gray-800 truncate"
+        }, (order === null || order === void 0 || (_order$items9 = order.items) === null || _order$items9 === void 0 || (_order$items9 = _order$items9[0]) === null || _order$items9 === void 0 ? void 0 : _order$items9.examName) || 'Pedido'), /*#__PURE__*/React.createElement("p", {
+          className: "text-sm text-gray-500 truncate"
+        }, (order === null || order === void 0 || (_order$items0 = order.items) === null || _order$items0 === void 0 || (_order$items0 = _order$items0[0]) === null || _order$items0 === void 0 ? void 0 : _order$items0.examName) || '')), /*#__PURE__*/React.createElement("div", {
+          className: "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(order.status === 'moto_arrived' || order.status === 'results_uploaded' ? 'bg-red-500' : 'bg-cyan-500')
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas fa-route text-white"
+        }))), order.status === 'moto_arrived' && /*#__PURE__*/React.createElement("div", {
+          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-2 animate-pulse"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas fa-map-marker-alt text-red-600 text-xs"
+        }), /*#__PURE__*/React.createElement("p", {
+          className: "text-red-800 font-medium text-xs"
+        }, "\xA1El motorizado lleg\xF3! Entrega la muestra")), order.status === 'results_uploaded' && /*#__PURE__*/React.createElement("div", {
+          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-2 animate-pulse"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas fa-credit-card text-red-600 text-xs"
+        }), /*#__PURE__*/React.createElement("p", {
+          className: "text-red-800 font-medium text-xs"
+        }, "\xA1Resultados listos! Pendiente de pago"))), invoice && /*#__PURE__*/React.createElement("div", {
+          className: "bg-white rounded-xl p-4 shadow flex items-center justify-between"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-3"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas ".concat(invoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice-dollar', " text-amber-600")
+        })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+          className: "font-semibold text-gray-800"
+        }, invoice.documentType === 'boleta' ? 'Boleta' : 'Factura', " solicitada"), /*#__PURE__*/React.createElement("p", {
+          className: "text-sm text-gray-500"
+        }, invoice.items.map(function (i) {
+          return getPetFullName(i.pet);
+        }).join(', ')))), /*#__PURE__*/React.createElement("span", {
+          className: "bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-sm font-medium flex-shrink-0"
+        }, "Pendiente")));
+      })));
+    }()))), !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'inicio' && !showAllPending && /*#__PURE__*/React.createElement("div", {
       className: "h-full overflow-y-auto -mx-6 -mt-6 px-6 pt-6"
     }, /*#__PURE__*/React.createElement("h1", {
       className: "text-2xl font-bold text-gray-800 mb-1"
@@ -8421,63 +9868,110 @@ var App = function App() {
       className: "text-gray-500 mb-6"
     }, "Resumen de tu actividad"), /*#__PURE__*/React.createElement("div", {
       className: "mb-6"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center justify-between mb-3"
-    }, /*#__PURE__*/React.createElement("h2", {
-      className: "text-lg font-bold text-gray-800 flex items-center gap-2"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-clock text-amber-500"
-    }), " Pendientes"), /*#__PURE__*/React.createElement("button", {
-      onClick: function onClick() {
-        return setMedicoView('pedidos');
-      },
-      className: "text-cyan-600 text-sm font-medium hover:underline"
-    }, "Ver todos \u2192")), pendingOrders.length === 0 ? /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-xl p-6 text-center shadow"
-    }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-check-circle text-3xl text-emerald-400 mb-2"
-    }), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500"
-    }, "No existen pendientes")) : /*#__PURE__*/React.createElement("div", {
-      className: "grid grid-cols-2 gap-4"
-    }, pendingOrders.slice(0, 4).map(function (order) {
-      return /*#__PURE__*/React.createElement("div", {
-        key: order.id,
+    }, function () {
+      var pendingInvoiceMap = {};
+      (database.orders || []).filter(function (o) {
+        return o.invoiceRequested && o.invoiceStatus === 'pending';
+      }).forEach(function (o) {
+        pendingInvoiceMap[o.id] = o;
+      });
+      var items = [];
+      var usedIds = new Set();
+      pendingOrders.forEach(function (order) {
+        items.push({
+          type: 'tracking',
+          order: order
+        });
+        if (pendingInvoiceMap[order.id]) {
+          items.push({
+            type: 'invoice',
+            order: pendingInvoiceMap[order.id]
+          });
+          usedIds.add(order.id);
+        }
+      });
+      Object.values(pendingInvoiceMap).forEach(function (o) {
+        if (!usedIds.has(o.id)) items.push({
+          type: 'invoice',
+          order: o
+        });
+      });
+      var totalPending = items.length;
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center justify-between mb-3"
+      }, /*#__PURE__*/React.createElement("h2", {
+        className: "text-lg font-bold text-gray-800 flex items-center gap-2"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-clock text-amber-500"
+      }), " Pendientes", totalPending > 0 && /*#__PURE__*/React.createElement("span", {
+        className: "bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-sm font-bold"
+      }, totalPending)), totalPending > 2 && /*#__PURE__*/React.createElement("button", {
         onClick: function onClick() {
-          return setViewingOrderTracking(order);
+          return setShowAllPending(true);
         },
-        className: "bg-white rounded-xl p-4 shadow hover:shadow-lg transition-all cursor-pointer group"
-      }, order.items.map(function (item, idx) {
+        className: "text-cyan-600 text-sm font-medium hover:underline"
+      }, "Ver todos \u2192")), totalPending === 0 ? /*#__PURE__*/React.createElement("div", {
+        className: "bg-white rounded-xl p-6 text-center shadow"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-check-circle text-3xl text-emerald-400 mb-2"
+      }), /*#__PURE__*/React.createElement("p", {
+        className: "text-gray-500"
+      }, "No existen pendientes")) : /*#__PURE__*/React.createElement("div", {
+        className: "grid grid-cols-2 gap-3"
+      }, items.slice(0, 4).map(function (item, idx) {
+        var _order$items1, _order$items10, _order$items11;
+        var order = item.order;
+        if (item.type === 'invoice') return /*#__PURE__*/React.createElement("div", {
+          key: "inv-".concat(order.id, "-").concat(idx),
+          className: "bg-white rounded-xl p-4 shadow flex flex-col gap-2"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "flex items-center gap-2.5"
+        }, /*#__PURE__*/React.createElement("div", {
+          className: "w-9 h-9 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas ".concat(order.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice-dollar', " text-amber-600")
+        })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+          className: "font-semibold text-gray-800 text-sm leading-tight"
+        }, order.documentType === 'boleta' ? 'Boleta' : 'Factura', " solicitada"), /*#__PURE__*/React.createElement("p", {
+          className: "text-xs text-gray-500"
+        }, (order === null || order === void 0 || (_order$items1 = order.items) === null || _order$items1 === void 0 || (_order$items1 = _order$items1[0]) === null || _order$items1 === void 0 ? void 0 : _order$items1.examName) || 'Pedido'))), /*#__PURE__*/React.createElement("span", {
+          className: "self-start bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full text-xs font-medium"
+        }, "Pendiente"));
         return /*#__PURE__*/React.createElement("div", {
-          key: idx,
+          key: "tr-".concat(order.id),
+          onClick: function onClick() {
+            return setViewingOrderTracking(order);
+          },
+          className: "bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all group"
+        }, /*#__PURE__*/React.createElement("div", {
           className: "flex items-center gap-3"
         }, /*#__PURE__*/React.createElement("span", {
           className: "text-3xl"
-        }, item.pet.photo), /*#__PURE__*/React.createElement("div", {
-          className: "flex-1"
+        }, "\uD83D\uDC3E"), /*#__PURE__*/React.createElement("div", {
+          className: "flex-1 min-w-0"
         }, /*#__PURE__*/React.createElement("p", {
-          className: "font-semibold text-gray-800"
-        }, getPetFullName(item.pet)), /*#__PURE__*/React.createElement("p", {
-          className: "text-sm text-gray-500"
-        }, item.exam.name)), /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 rounded-xl flex items-center justify-center transition-all group-hover:scale-110 ".concat(order.status === 'moto_arrived' || order.status === 'results_uploaded' ? 'bg-red-500' : 'bg-cyan-500')
+          className: "font-semibold text-gray-800 truncate"
+        }, (order === null || order === void 0 || (_order$items10 = order.items) === null || _order$items10 === void 0 || (_order$items10 = _order$items10[0]) === null || _order$items10 === void 0 ? void 0 : _order$items10.examName) || 'Pedido'), /*#__PURE__*/React.createElement("p", {
+          className: "text-sm text-gray-500 truncate"
+        }, (order === null || order === void 0 || (_order$items11 = order.items) === null || _order$items11 === void 0 || (_order$items11 = _order$items11[0]) === null || _order$items11 === void 0 ? void 0 : _order$items11.examName) || '')), /*#__PURE__*/React.createElement("div", {
+          className: "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(order.status === 'moto_arrived' || order.status === 'results_uploaded' ? 'bg-red-500' : 'bg-cyan-500')
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas fa-route text-white"
-        })));
-      }), order.status === 'moto_arrived' && /*#__PURE__*/React.createElement("div", {
-        className: "mt-3 bg-red-50 border border-red-300 rounded-lg p-2 flex items-center gap-2 animate-pulse"
-      }, /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-map-marker-alt text-red-600"
-      }), /*#__PURE__*/React.createElement("p", {
-        className: "text-red-800 font-medium text-xs"
-      }, "\xA1El motorizado lleg\xF3! Entrega la muestra")), order.status === 'results_uploaded' && /*#__PURE__*/React.createElement("div", {
-        className: "mt-3 bg-red-50 border border-red-300 rounded-lg p-2 flex items-center gap-2 animate-pulse"
-      }, /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-credit-card text-red-600"
-      }), /*#__PURE__*/React.createElement("p", {
-        className: "text-red-800 font-medium text-xs"
-      }, "\xA1Resultados listos! Pendiente de pago")));
-    }))), /*#__PURE__*/React.createElement("div", {
+        }))), order.status === 'moto_arrived' && /*#__PURE__*/React.createElement("div", {
+          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-1.5 animate-pulse"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas fa-map-marker-alt text-red-600 text-xs"
+        }), /*#__PURE__*/React.createElement("p", {
+          className: "text-red-800 font-medium text-xs"
+        }, "\xA1El motorizado lleg\xF3! Entrega la muestra")), order.status === 'results_uploaded' && /*#__PURE__*/React.createElement("div", {
+          className: "mt-2 bg-red-50 border border-red-300 rounded-lg p-1.5 flex items-center gap-1.5 animate-pulse"
+        }, /*#__PURE__*/React.createElement("i", {
+          className: "fas fa-credit-card text-red-600 text-xs"
+        }), /*#__PURE__*/React.createElement("p", {
+          className: "text-red-800 font-medium text-xs"
+        }, "\xA1Resultados listos! Pendiente de pago")));
+      })));
+    }()), /*#__PURE__*/React.createElement("div", {
       className: "mb-6"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center justify-between mb-3"
@@ -8492,17 +9986,20 @@ var App = function App() {
         return setMedicoView('resultados');
       },
       className: "text-cyan-600 text-sm font-medium hover:underline"
-    }, "Ver todos \u2192")), completedOrders.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, "Ver todos \u2192")), (completedOrders || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-xl p-6 text-center shadow"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-folder-open text-3xl text-gray-300 mb-2"
     }), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-500"
-    }, "No hay resultados a\xFAn")) : function (_pet$exams) {
-      var lastOrder = completedOrders[0];
-      var pet = petsOrPatients.find(function (p) {
-        var _lastOrder$items$;
-        return p.id === ((_lastOrder$items$ = lastOrder.items[0]) === null || _lastOrder$items$ === void 0 ? void 0 : _lastOrder$items$.pet.id);
+    }, "No hay resultados a\xFAn")) : function (_lastOrder$items2, _pet$exams, _firstItem$pet6, _lastOrder$items3, _lastOrder$items4) {
+      var lastOrder = completedOrders === null || completedOrders === void 0 ? void 0 : completedOrders[0];
+      if (!lastOrder) return null;
+      var firstItem = lastOrder === null || lastOrder === void 0 || (_lastOrder$items2 = lastOrder.items) === null || _lastOrder$items2 === void 0 ? void 0 : _lastOrder$items2[0];
+      if (!firstItem) return null;
+      var pet = (petsOrPatients || []).find(function (p) {
+        var _firstItem$pet5;
+        return p.id === ((_firstItem$pet5 = firstItem.pet) === null || _firstItem$pet5 === void 0 ? void 0 : _firstItem$pet5.id);
       });
       var exam = pet === null || pet === void 0 || (_pet$exams = pet.exams) === null || _pet$exams === void 0 ? void 0 : _pet$exams.find(function (e) {
         return e.orderId === lastOrder.id;
@@ -8516,24 +10013,26 @@ var App = function App() {
         className: "flex items-center gap-4"
       }, /*#__PURE__*/React.createElement("span", {
         className: "text-3xl"
-      }, lastOrder.items[0].pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, (firstItem === null || firstItem === void 0 || (_firstItem$pet6 = firstItem.pet) === null || _firstItem$pet6 === void 0 ? void 0 : _firstItem$pet6.photo) || '🐾'), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-medium text-gray-800"
-      }, getPetFullName(lastOrder.items[0].pet)), /*#__PURE__*/React.createElement("p", {
+      }, lastOrder !== null && lastOrder !== void 0 && (_lastOrder$items3 = lastOrder.items) !== null && _lastOrder$items3 !== void 0 && (_lastOrder$items3 = _lastOrder$items3[0]) !== null && _lastOrder$items3 !== void 0 && _lastOrder$items3.pet ? getPetFullName(lastOrder.items[0].pet) : "Sin mascota"), /*#__PURE__*/React.createElement("p", {
         className: "text-sm text-gray-500"
-      }, lastOrder.items[0].exam.name), /*#__PURE__*/React.createElement("p", {
+      }, (lastOrder === null || lastOrder === void 0 || (_lastOrder$items4 = lastOrder.items) === null || _lastOrder$items4 === void 0 || (_lastOrder$items4 = _lastOrder$items4[0]) === null || _lastOrder$items4 === void 0 ? void 0 : _lastOrder$items4.examName) || '' || "Sin examen"), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-400"
-      }, new Date(lastOrder.completedAt).toLocaleDateString('es-ES', {
+      }, lastOrder !== null && lastOrder !== void 0 && lastOrder.completedAt ? new Date(lastOrder.completedAt).toLocaleDateString('es-ES', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
-      }))), /*#__PURE__*/React.createElement("div", {
+      }) : "")), /*#__PURE__*/React.createElement("div", {
         className: "w-10 h-10 rounded-xl flex items-center justify-center ".concat(newResultHighlight ? 'bg-emerald-100' : 'bg-purple-100')
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas fa-eye ".concat(newResultHighlight ? 'text-emerald-600' : 'text-purple-600')
       }))));
-    }()), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    }()), /*#__PURE__*/React.createElement("div", {
+      className: "mb-8"
+    }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center justify-between mb-3"
     }, /*#__PURE__*/React.createElement("h2", {
       className: "text-lg font-bold text-gray-800 flex items-center gap-2"
@@ -8546,20 +10045,18 @@ var App = function App() {
         return setMedicoView('facturacion');
       },
       className: "text-cyan-600 text-sm font-medium hover:underline"
-    }, "Ver todos \u2192")), function () {
-      var invoicesWithPdf = completedOrders.filter(function (o) {
-        return o.invoicePdf;
+    }, "Ver todos \u2192")), function (_lastInvoice$items, _lastInvoice$items2) {
+      var comprobantesEmitidos = completedOrders.filter(function (o) {
+        return o.invoiceStatus === 'uploaded' && o.invoicePdf;
       });
-      if (invoicesWithPdf.length === 0) {
-        return /*#__PURE__*/React.createElement("div", {
-          className: "bg-white rounded-xl p-6 text-center shadow"
-        }, /*#__PURE__*/React.createElement("i", {
-          className: "fas fa-receipt text-3xl text-gray-300 mb-2"
-        }), /*#__PURE__*/React.createElement("p", {
-          className: "text-gray-500"
-        }, "No hay comprobantes a\xFAn"));
-      }
-      var lastInvoice = invoicesWithPdf[0];
+      if ((comprobantesEmitidos || []).length === 0) return /*#__PURE__*/React.createElement("div", {
+        className: "bg-white rounded-xl p-6 text-center shadow"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-receipt text-3xl text-gray-300 mb-2"
+      }), /*#__PURE__*/React.createElement("p", {
+        className: "text-gray-500"
+      }, "No hay comprobantes a\xFAn"));
+      var lastInvoice = comprobantesEmitidos === null || comprobantesEmitidos === void 0 ? void 0 : comprobantesEmitidos[0];
       return /*#__PURE__*/React.createElement("div", {
         className: "bg-white rounded-xl p-4 shadow hover:shadow-lg transition-all cursor-pointer ".concat(newInvoiceHighlight ? 'highlight-green-pulse' : ''),
         onClick: function onClick() {
@@ -8577,7 +10074,7 @@ var App = function App() {
         className: "font-medium text-gray-800"
       }, lastInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
         className: "text-sm text-gray-500"
-      }, getPetFullName(lastInvoice.items[0].pet), " - ", lastInvoice.items[0].exam.name), /*#__PURE__*/React.createElement("p", {
+      }, getPetFullName(lastInvoice === null || lastInvoice === void 0 || (_lastInvoice$items = lastInvoice.items) === null || _lastInvoice$items === void 0 || (_lastInvoice$items = _lastInvoice$items[0]) === null || _lastInvoice$items === void 0 ? void 0 : _lastInvoice$items.pet), " - ", lastInvoice === null || lastInvoice === void 0 || (_lastInvoice$items2 = lastInvoice.items) === null || _lastInvoice$items2 === void 0 || (_lastInvoice$items2 = _lastInvoice$items2[0]) === null || _lastInvoice$items2 === void 0 || (_lastInvoice$items2 = _lastInvoice$items2.exam) === null || _lastInvoice$items2 === void 0 ? void 0 : _lastInvoice$items2.name), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-400"
       }, new Date(lastInvoice.completedAt).toLocaleDateString('es-ES', {
         day: 'numeric',
@@ -8621,7 +10118,7 @@ var App = function App() {
       className: "fas fa-times"
     }))))), /*#__PURE__*/React.createElement("div", {
       className: "flex-1 overflow-y-auto p-6"
-    }, (cart.length > 0 || pendingExams.length > 0) && /*#__PURE__*/React.createElement("div", {
+    }, ((cart || []).length > 0 || (pendingExams || []).length > 0) && /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-4 mb-4 text-xs text-gray-500"
     }, /*#__PURE__*/React.createElement("span", {
       className: "flex items-center gap-1"
@@ -8643,17 +10140,17 @@ var App = function App() {
       className: "text-gray-400 text-sm mt-1"
     }, "Intenta con otro t\xE9rmino")) : /*#__PURE__*/React.createElement("div", {
       className: "space-y-6 pb-24"
-    }, filteredPerfiles.length > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    }, (filteredPerfiles || []).length > 0 && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
       className: "text-sm font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-boxes-stacked text-blue-500"
     }), " Perfiles (Paquetes)"), /*#__PURE__*/React.createElement("div", {
       className: "grid grid-cols-2 lg:grid-cols-3 gap-3"
-    }, filteredPerfiles.map(function (exam) {
-      var isInCart = cart.find(function (c) {
+    }, (filteredPerfiles || []).map(function (exam) {
+      var isInCart = (cart || []).find(function (c) {
         return c.exam.id === exam.id;
       });
-      var isPending = pendingExams.find(function (e) {
+      var isPending = (pendingExams || []).find(function (e) {
         return e.id === exam.id;
       });
       return /*#__PURE__*/React.createElement("div", {
@@ -8663,7 +10160,7 @@ var App = function App() {
         },
         className: "bg-white rounded-xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-11 h-11 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+        className: "w-11 h-11 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-lg")
       })), /*#__PURE__*/React.createElement("div", {
@@ -8702,7 +10199,7 @@ var App = function App() {
           },
           className: "bg-white rounded-xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
         }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+          className: "w-10 h-10 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-base")
         })), /*#__PURE__*/React.createElement("div", {
@@ -8719,7 +10216,7 @@ var App = function App() {
           className: "fas ".concat(isInCart ? 'fa-check' : 'fa-clock', " text-white text-xs")
         })));
       })));
-    }))), cart.length > 0 && /*#__PURE__*/React.createElement("div", {
+    }))), (cart || []).length > 0 && /*#__PURE__*/React.createElement("div", {
       className: "fixed bottom-6 right-6 bg-slate-800 text-white pl-4 pr-3 py-3 rounded-2xl shadow-2xl z-50"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-4"
@@ -8731,7 +10228,7 @@ var App = function App() {
       className: "font-medium text-sm"
     }, "Pedido listo"), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-gray-400 truncate max-w-[150px]"
-    }, cart.map(function (c) {
+    }, (cart || []).map(function (c) {
       return getPetFullName(c.pet);
     }).join(', '))), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
@@ -8752,7 +10249,7 @@ var App = function App() {
       className: "text-emerald-600 font-semibold"
     }, "Pacientes"), /*#__PURE__*/React.createElement("span", {
       className: "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full"
-    }, petsOrPatients.length)), /*#__PURE__*/React.createElement("div", {
+    }, (petsOrPatients || []).length)), /*#__PURE__*/React.createElement("div", {
       className: "relative flex-1"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
@@ -8773,7 +10270,7 @@ var App = function App() {
       className: "fas fa-times"
     }))))), /*#__PURE__*/React.createElement("div", {
       className: "flex-1 overflow-y-auto p-6"
-    }, filteredMascotas.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (filteredMascotas || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-xl p-8 text-center shadow"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-paw text-4xl text-gray-300 mb-2"
@@ -8781,7 +10278,7 @@ var App = function App() {
       className: "text-gray-500"
     }, "No se encontraron pacientes")) : /*#__PURE__*/React.createElement("div", {
       className: "grid grid-cols-2 gap-4 pb-6"
-    }, filteredMascotas.map(function (pet) {
+    }, (filteredMascotas || []).map(function (pet) {
       return /*#__PURE__*/React.createElement("div", {
         key: pet.id,
         onClick: function onClick() {
@@ -8796,7 +10293,7 @@ var App = function App() {
         className: "flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("span", {
         className: "text-3xl"
-      }, pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, pet === null || pet === void 0 ? void 0 : pet.photo), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-medium text-gray-800"
@@ -8806,7 +10303,7 @@ var App = function App() {
         className: "text-xs text-gray-400"
       }, "Due\xF1o: ", pet.owner)), /*#__PURE__*/React.createElement("span", {
         className: "bg-emerald-100 text-emerald-600 text-xs px-2 py-1 rounded-full"
-      }, pet.exams.length, " ex\xE1m.")));
+      }, (pet.exams || []).length, " ex\xE1m.")));
     })))), !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'mascotas' && selectedMascota && /*#__PURE__*/React.createElement("div", {
       className: "flex flex-col h-full -mx-6 -mt-6"
     }, /*#__PURE__*/React.createElement("div", {
@@ -8832,7 +10329,7 @@ var App = function App() {
       className: "text-xl font-bold text-gray-800"
     }, getPetFullName(selectedMascota)), /*#__PURE__*/React.createElement("span", {
       className: "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full font-medium"
-    }, selectedMascota.exams.length, " ex\xE1menes")), /*#__PURE__*/React.createElement("div", {
+    }, (selectedMascota.exams || []).length, " ex\xE1menes")), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-4 mt-1"
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-sm text-gray-600"
@@ -8937,7 +10434,7 @@ var App = function App() {
       className: "fas fa-times mr-1"
     }), "Limpiar")))), /*#__PURE__*/React.createElement("div", {
       className: "flex-1 overflow-y-auto p-6"
-    }, selectedMascota.exams.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    }, (selectedMascota.exams || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
       className: "bg-white rounded-xl p-8 text-center shadow"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-folder-open text-4xl text-gray-300 mb-2"
@@ -8957,7 +10454,8 @@ var App = function App() {
       return /*#__PURE__*/React.createElement("div", {
         key: exam.id,
         onClick: function onClick() {
-          return exam.pdfData && setSelectedExam(exam);
+          console.log('EXAM:', exam);
+          if (exam.pdfData) setSelectedExam(exam);
         },
         className: "bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ".concat(exam.seen === false ? 'border-l-4 border-red-500' : '')
       }, /*#__PURE__*/React.createElement("div", {
@@ -8999,7 +10497,7 @@ var App = function App() {
       className: "text-purple-600 font-semibold"
     }, "Resultados"), /*#__PURE__*/React.createElement("span", {
       className: "bg-purple-500 text-white text-xs px-2 py-0.5 rounded-full"
-    }, completedOrders.length)), /*#__PURE__*/React.createElement("div", {
+    }, (completedOrders || []).length)), /*#__PURE__*/React.createElement("div", {
       className: "relative flex-1"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
@@ -9075,13 +10573,18 @@ var App = function App() {
       className: "fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
     }))))), /*#__PURE__*/React.createElement("div", {
       className: "flex-1 overflow-y-auto p-6"
-    }, function () {
+    }, function (_database$orders) {
+      console.log("ORDERS RAW:", JSON.stringify((_database$orders = database.orders) === null || _database$orders === void 0 ? void 0 : _database$orders[0]));
+      var completedOrders = (database.orders || []).filter(function (o) {
+        return o.status === 9 || o.status === 'completed' || Number(o.status) === 9;
+      });
       // Filtrar resultados
-      var filtered = completedOrders;
+      var filtered = completedOrders || [];
       if (resultadosSearch) {
         filtered = filtered.filter(function (order) {
           return order.items.some(function (item) {
-            return item.pet.name.toLowerCase().includes(resultadosSearch.toLowerCase()) || item.exam.name.toLowerCase().includes(resultadosSearch.toLowerCase());
+            var _item$pet1, _item$pet10, _item$exam14;
+            return (((_item$pet1 = item.pet) === null || _item$pet1 === void 0 ? void 0 : _item$pet1.name) || ((_item$pet10 = item.pet2) === null || _item$pet10 === void 0 ? void 0 : _item$pet10.name) || '').toLowerCase().includes(resultadosSearch.toLowerCase()) || (((_item$exam14 = item.exam) === null || _item$exam14 === void 0 ? void 0 : _item$exam14.name) || '').toLowerCase().includes(resultadosSearch.toLowerCase());
           });
         });
       }
@@ -9097,7 +10600,7 @@ var App = function App() {
           return true;
         });
       }
-      if (filtered.length === 0) {
+      if ((filtered || []).length === 0) {
         return /*#__PURE__*/React.createElement("div", {
           className: "bg-white rounded-xl p-8 text-center shadow"
         }, /*#__PURE__*/React.createElement("i", {
@@ -9112,15 +10615,14 @@ var App = function App() {
         return /*#__PURE__*/React.createElement("div", {
           key: order.id,
           onClick: function onClick() {
-            var _pet$exams2;
-            var pet = petsOrPatients.find(function (p) {
-              var _order$items$7;
-              return p.id === ((_order$items$7 = order.items[0]) === null || _order$items$7 === void 0 ? void 0 : _order$items$7.pet.id);
-            });
-            var exam = pet === null || pet === void 0 || (_pet$exams2 = pet.exams) === null || _pet$exams2 === void 0 ? void 0 : _pet$exams2.find(function (e) {
-              return e.orderId === order.id;
-            });
-            if (exam !== null && exam !== void 0 && exam.pdfData) setSelectedExam(exam);
+            var _order$items12;
+            if (order.resultPdfUrl) {
+              var win = window.open();
+              win.location.href = "https://inulab-backend-production.up.railway.app".concat(order.resultPdfUrl);
+            } else if ((_order$items12 = order.items) !== null && _order$items12 !== void 0 && (_order$items12 = _order$items12[0]) !== null && _order$items12 !== void 0 && _order$items12.pdfData) {
+              var _win = window.open();
+              _win.location.href = order.items[0].pdfData;
+            } else alert('Este resultado aún no está disponible');
           },
           className: "bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all"
         }, /*#__PURE__*/React.createElement("div", {
@@ -9130,19 +10632,20 @@ var App = function App() {
         }, new Date(order.completedAt).toLocaleDateString('es-ES', {
           day: 'numeric',
           month: 'long'
-        }))), order.items.map(function (item, idx) {
+        }))), (order.items || []).map(function (item, idx) {
+          var _item$pet11, _item$pet12, _item$exam15;
           return /*#__PURE__*/React.createElement("div", {
             key: idx,
             className: "flex items-center gap-3"
           }, /*#__PURE__*/React.createElement("span", {
             className: "text-2xl"
-          }, item.pet.photo), /*#__PURE__*/React.createElement("div", {
+          }, item === null || item === void 0 || (_item$pet11 = item.pet) === null || _item$pet11 === void 0 ? void 0 : _item$pet11.photo), /*#__PURE__*/React.createElement("div", {
             className: "flex-1"
           }, /*#__PURE__*/React.createElement("p", {
             className: "font-medium text-gray-800"
-          }, getPetFullName(item.pet)), /*#__PURE__*/React.createElement("p", {
+          }, (item === null || item === void 0 || (_item$pet12 = item.pet) === null || _item$pet12 === void 0 ? void 0 : _item$pet12.name) || ''), /*#__PURE__*/React.createElement("p", {
             className: "text-sm text-gray-500"
-          }, item.exam.name)), /*#__PURE__*/React.createElement("div", {
+          }, (item === null || item === void 0 || (_item$exam15 = item.exam) === null || _item$exam15 === void 0 ? void 0 : _item$exam15.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen')), /*#__PURE__*/React.createElement("div", {
             className: "w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center"
           }, /*#__PURE__*/React.createElement("i", {
             className: "fas fa-eye text-purple-600 text-sm"
@@ -9265,7 +10768,7 @@ var App = function App() {
           return true;
         });
       }
-      if (invoices.length === 0) {
+      if ((invoices || []).length === 0) {
         return /*#__PURE__*/React.createElement("div", {
           className: "bg-white rounded-xl p-8 text-center shadow"
         }, /*#__PURE__*/React.createElement("i", {
@@ -9277,6 +10780,7 @@ var App = function App() {
       return /*#__PURE__*/React.createElement("div", {
         className: "grid grid-cols-2 gap-4 pb-6"
       }, invoices.map(function (order) {
+        var _order$items13, _order$items14;
         return /*#__PURE__*/React.createElement("div", {
           key: order.id,
           onClick: function onClick() {
@@ -9295,7 +10799,7 @@ var App = function App() {
           className: "font-medium text-gray-800"
         }, order.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
           className: "text-sm text-gray-500"
-        }, getPetFullName(order.items[0].pet), " - ", order.items[0].exam.name), /*#__PURE__*/React.createElement("p", {
+        }, getPetFullName(order === null || order === void 0 || (_order$items13 = order.items) === null || _order$items13 === void 0 || (_order$items13 = _order$items13[0]) === null || _order$items13 === void 0 ? void 0 : _order$items13.pet), " - ", (order === null || order === void 0 || (_order$items14 = order.items) === null || _order$items14 === void 0 || (_order$items14 = _order$items14[0]) === null || _order$items14 === void 0 ? void 0 : _order$items14.examName) || ''), /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-400"
         }, new Date(order.completedAt).toLocaleDateString('es-ES'))), /*#__PURE__*/React.createElement("div", {
           className: "w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center"
@@ -9337,7 +10841,7 @@ var App = function App() {
     }), "Ex\xE1menes (", cart.length, ")"), /*#__PURE__*/React.createElement("div", {
       className: "space-y-3"
     }, cart.map(function (item) {
-      var _item$address2, _item$address3, _item$address4;
+      var _item$exam16, _item$exam17, _item$exam18, _item$exam19, _item$exam20, _item$pet13, _item$pet14, _item$address, _item$address2, _item$address3;
       return /*#__PURE__*/React.createElement("div", {
         key: item.exam.id,
         className: "bg-gray-50 rounded-xl p-4"
@@ -9346,14 +10850,14 @@ var App = function App() {
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-3 flex-1 min-w-0"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center flex-shrink-0")
+        className: "w-10 h-10 ".concat((item === null || item === void 0 || (_item$exam16 = item.exam) === null || _item$exam16 === void 0 ? void 0 : _item$exam16.bg) || 'bg-cyan-100', " rounded-lg flex items-center justify-center flex-shrink-0")
       }, /*#__PURE__*/React.createElement("i", {
-        className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color)
+        className: "fas ".concat((item === null || item === void 0 || (_item$exam17 = item.exam) === null || _item$exam17 === void 0 ? void 0 : _item$exam17.icon) || 'fa-vial', " ").concat((item === null || item === void 0 || (_item$exam18 = item.exam) === null || _item$exam18 === void 0 ? void 0 : _item$exam18.color) || 'text-cyan-600')
       })), /*#__PURE__*/React.createElement("div", {
         className: "min-w-0"
       }, /*#__PURE__*/React.createElement("span", {
         className: "font-medium text-gray-800 text-sm"
-      }, item.exam.name), item.exam.subtitle && /*#__PURE__*/React.createElement("p", {
+      }, (item === null || item === void 0 || (_item$exam19 = item.exam) === null || _item$exam19 === void 0 ? void 0 : _item$exam19.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), (item === null || item === void 0 || (_item$exam20 = item.exam) === null || _item$exam20 === void 0 ? void 0 : _item$exam20.subtitle) && /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-500 truncate"
       }, item.exam.subtitle))), /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-3 flex-shrink-0 ml-3"
@@ -9372,13 +10876,13 @@ var App = function App() {
         className: "flex items-center gap-2"
       }, /*#__PURE__*/React.createElement("span", {
         className: "text-lg"
-      }, item.pet.photo), /*#__PURE__*/React.createElement("span", {
+      }, item === null || item === void 0 || (_item$pet13 = item.pet) === null || _item$pet13 === void 0 ? void 0 : _item$pet13.photo), /*#__PURE__*/React.createElement("span", {
         className: "text-sm text-gray-600"
-      }, getPetFullName(item.pet))), /*#__PURE__*/React.createElement("div", {
+      }, (item === null || item === void 0 || (_item$pet14 = item.pet) === null || _item$pet14 === void 0 ? void 0 : _item$pet14.name) || '')), /*#__PURE__*/React.createElement("div", {
         className: "flex items-start gap-2 text-xs text-gray-500"
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas fa-map-marker-alt mt-0.5 text-cyan-500"
-      }), /*#__PURE__*/React.createElement("span", null, (_item$address2 = item.address) === null || _item$address2 === void 0 ? void 0 : _item$address2.name, ": ", (_item$address3 = item.address) === null || _item$address3 === void 0 ? void 0 : _item$address3.address, ", ", (_item$address4 = item.address) === null || _item$address4 === void 0 ? void 0 : _item$address4.district))));
+      }), /*#__PURE__*/React.createElement("span", null, (_item$address = item.address) === null || _item$address === void 0 ? void 0 : _item$address.name, ": ", (_item$address2 = item.address) === null || _item$address2 === void 0 ? void 0 : _item$address2.address, ", ", safeText(item === null || item === void 0 || (_item$address3 = item.address) === null || _item$address3 === void 0 ? void 0 : _item$address3.district)))));
     }))), /*#__PURE__*/React.createElement("div", {
       className: "lg:w-1/2 p-6"
     }, /*#__PURE__*/React.createElement("p", {
@@ -9424,7 +10928,7 @@ var App = function App() {
       maxLength: "500"
     }), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-gray-400 mt-1 text-right"
-    }, orderComment.length, "/500")), renderTermsCheckbox(), /*#__PURE__*/React.createElement("button", {
+    }, (orderComment || []).length, "/500")), renderTermsCheckbox(), /*#__PURE__*/React.createElement("button", {
       onClick: submitOrder,
       disabled: !termsAccepted,
       className: "w-full py-3.5 rounded-xl font-semibold transition-all ".concat(termsAccepted ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white" : "bg-gray-200 text-gray-400 cursor-not-allowed")
@@ -9439,7 +10943,11 @@ var App = function App() {
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen bg-gray-100"
   }, renderTermsModal(), renderDuenoHeader(), renderDuenoSidebar(), duenoView === 'config' ? /*#__PURE__*/React.createElement("div", {
-    className: "app-content-breadcrumb lg:ml-56 lg:pt-16"
+    className: "app-content-breadcrumb lg:ml-56 lg:pt-16",
+    style: {
+      overflowY: 'auto',
+      height: '100vh'
+    }
   }, /*#__PURE__*/React.createElement("div", {
     className: "max-w-md mx-auto px-4 py-5"
   }, !showEditProfile ? /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
@@ -9570,14 +11078,148 @@ var App = function App() {
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-save mr-2"
   }), "Guardar Cambios"))))) : /*#__PURE__*/React.createElement("div", {
-    className: "app-content-dueno lg:ml-56"
+    className: "app-content-dueno lg:ml-56",
+    style: {
+      overflowY: selectedExam || viewingInvoice || facturacionInvoice ? 'hidden' : 'auto'
+    }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "max-w-5xl mx-auto px-4 py-5 lg:px-6"
-  }, viewingOrderTracking && function (_order$items$8, _order$items$9) {
+    className: "dueno-content-wrapper"
+  }, selectedExam && !viewingOrderTracking && /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col",
+    style: {
+      height: 'calc(100vh - 70px)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setSelectedExam(null);
+    },
+    className: "w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-arrow-left"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 px-2"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-medical text-purple-500 text-lg"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-purple-600 font-semibold"
+  }, "Resultado")), /*#__PURE__*/React.createElement("span", {
+    className: "text-gray-600 font-medium"
+  }, selectedExam.type))), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 overflow-hidden py-8 px-5 flex flex-col min-h-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-4xl mx-auto w-full h-full flex flex-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-white rounded-2xl shadow-lg p-4 flex-1 flex flex-col min-h-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "mb-3 flex-shrink-0"
+  }, /*#__PURE__*/React.createElement("h1", {
+    className: "text-xl font-bold text-gray-800 mb-1"
+  }, selectedExam.type), /*#__PURE__*/React.createElement("p", {
+    className: "text-gray-500 text-sm"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-calendar mr-1"
+  }), new Date(selectedExam.date).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }))), selectedExam.pdfData ? /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 flex flex-col min-h-0"
+  }, /*#__PURE__*/React.createElement("iframe", {
+    src: selectedExam.pdfData,
+    className: "flex-1 w-full rounded-xl border border-gray-200 min-h-0",
+    title: "PDF"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 flex justify-center flex-shrink-0"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      var a = document.createElement('a');
+      a.href = selectedExam.pdfData;
+      a.download = "".concat(selectedExam.type.replace(/[^a-zA-Z0-9]/g, '_'), "_").concat(selectedExam.date, ".pdf");
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+    className: "flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white rounded-xl font-semibold text-sm shadow-lg"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-download"
+  }), " Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 bg-gray-100 rounded-xl flex flex-col items-center justify-center"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-pdf text-4xl text-gray-400 mb-2"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-gray-500"
+  }, "PDF no disponible")))))), viewingInvoice && !selectedExam && !viewingOrderTracking && function () {
+    var docType = viewingInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura';
+    return /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col",
+      style: {
+        height: 'calc(100vh - 70px)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setViewingInvoice(null);
+      },
+      className: "w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 px-2"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt text-cyan-500' : 'fa-file-invoice text-amber-500', " text-lg")
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "font-semibold ".concat(viewingInvoice.documentType === 'boleta' ? 'text-cyan-600' : 'text-amber-600')
+    }, docType)), /*#__PURE__*/React.createElement("span", {
+      className: "text-gray-500 text-sm"
+    }, new Date(viewingInvoice.completedAt || viewingInvoice.date).toLocaleDateString('es-ES', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric'
+    })))), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 overflow-hidden p-6 flex flex-col min-h-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "max-w-4xl mx-auto w-full h-full flex flex-col"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-white rounded-2xl shadow-lg p-5 flex-1 flex flex-col min-h-0"
+    }, viewingInvoice.invoicePdf ? /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 flex flex-col min-h-0"
+    }, /*#__PURE__*/React.createElement("iframe", {
+      src: viewingInvoice.invoicePdf,
+      className: "flex-1 w-full rounded-xl border border-gray-200 min-h-0",
+      title: "".concat(docType, " PDF")
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "mt-3 flex justify-center flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        var a = document.createElement('a');
+        a.href = viewingInvoice.invoicePdf;
+        a.download = "".concat(docType, "_").concat(viewingInvoice.id, ".pdf");
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      },
+      className: "flex items-center gap-2 px-6 py-2.5 ".concat(viewingInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600', " text-white rounded-xl font-semibold text-sm shadow-lg")
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-download"
+    }), " Descargar ", docType))) : /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 bg-gray-100 rounded-xl flex flex-col items-center justify-center"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas ".concat(viewingInvoice.documentType === 'boleta' ? 'fa-receipt' : 'fa-file-invoice', " text-4xl text-gray-400 mb-2")
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-500"
+    }, docType, " no disponible"))))));
+  }(), viewingOrderTracking && function (_order$items15, _order$items16) {
     var order = (database.orders || []).find(function (o) {
       return o.id === viewingOrderTracking.id;
     }) || viewingOrderTracking;
-    var orderDate = new Date(order.date);
+    var orderDate = new Date(order.createdAt || order.date);
     var formatDT = function formatDT(date) {
       if (!date) return '';
       var d = new Date(date);
@@ -9594,13 +11236,13 @@ var App = function App() {
       label: 'Pedido realizado',
       subtitle: 'Tu pedido ha sido registrado',
       icon: 'fa-clipboard-check',
-      date: order.date
+      date: order.createdAt || order.date
     }, {
       id: 'confirmed',
       label: 'Pedido confirmado',
       subtitle: 'El laboratorio confirmó tu pedido',
       icon: 'fa-check-circle',
-      date: order.date
+      date: order.createdAt || order.date
     }, {
       id: 'moto_en_camino',
       label: 'Motorizado en camino',
@@ -9698,21 +11340,22 @@ var App = function App() {
       className: "font-bold text-gray-800 mb-3"
     }, "Detalle del pedido"), /*#__PURE__*/React.createElement("div", {
       className: "space-y-2"
-    }, order.items.map(function (item, idx) {
+    }, (order.items || []).map(function (item, idx) {
+      var _item$exam21, _item$exam22, _item$exam23, _item$exam24, _item$pet15, _item$pet16;
       return /*#__PURE__*/React.createElement("div", {
         key: idx,
         className: "flex items-center gap-3 p-3 bg-gray-50 rounded-xl"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center")
+        className: "w-10 h-10 ".concat((item === null || item === void 0 || (_item$exam21 = item.exam) === null || _item$exam21 === void 0 ? void 0 : _item$exam21.bg) || 'bg-cyan-100' || 'bg-gray-200', " rounded-lg flex items-center justify-center")
       }, /*#__PURE__*/React.createElement("i", {
-        className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color)
+        className: "fas ".concat((item === null || item === void 0 || (_item$exam22 = item.exam) === null || _item$exam22 === void 0 ? void 0 : _item$exam22.icon) || 'fa-vial', " ").concat((item === null || item === void 0 || (_item$exam23 = item.exam) === null || _item$exam23 === void 0 ? void 0 : _item$exam23.color) || 'text-cyan-600')
       })), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
         className: "font-medium text-gray-800 text-sm"
-      }, item.exam.name), /*#__PURE__*/React.createElement("p", {
+      }, (item === null || item === void 0 || (_item$exam24 = item.exam) === null || _item$exam24 === void 0 ? void 0 : _item$exam24.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), /*#__PURE__*/React.createElement("p", {
         className: "text-gray-500 text-xs"
-      }, item.pet.photo, " ", getPetFullName(item.pet))));
+      }, item === null || item === void 0 || (_item$pet15 = item.pet) === null || _item$pet15 === void 0 ? void 0 : _item$pet15.photo, " ", (item === null || item === void 0 || (_item$pet16 = item.pet) === null || _item$pet16 === void 0 ? void 0 : _item$pet16.name) || '')));
     })), /*#__PURE__*/React.createElement("div", {
       className: "mt-3 pt-3 border-t border-gray-100"
     }, /*#__PURE__*/React.createElement("div", {
@@ -9723,7 +11366,7 @@ var App = function App() {
       className: "text-gray-500 text-xs"
     }, "Direcci\xF3n de recojo"), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-800"
-    }, ((_order$items$8 = order.items[0]) === null || _order$items$8 === void 0 || (_order$items$8 = _order$items$8.address) === null || _order$items$8 === void 0 ? void 0 : _order$items$8.address) || 'Sin dirección', ", ", ((_order$items$9 = order.items[0]) === null || _order$items$9 === void 0 || (_order$items$9 = _order$items$9.address) === null || _order$items$9 === void 0 ? void 0 : _order$items$9.district) || '')))), order.comment && /*#__PURE__*/React.createElement("div", {
+    }, (order === null || order === void 0 || (_order$items15 = order.items) === null || _order$items15 === void 0 || (_order$items15 = _order$items15[0]) === null || _order$items15 === void 0 || (_order$items15 = _order$items15.address) === null || _order$items15 === void 0 ? void 0 : _order$items15.address) || 'Sin dirección', ", ", (order === null || order === void 0 || (_order$items16 = order.items) === null || _order$items16 === void 0 || (_order$items16 = _order$items16[0]) === null || _order$items16 === void 0 || (_order$items16 = _order$items16.address) === null || _order$items16 === void 0 ? void 0 : _order$items16.district) || '')))), order.comment && /*#__PURE__*/React.createElement("div", {
       className: "mt-3 pt-3 border-t border-gray-100"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-start gap-2 text-sm"
@@ -9734,72 +11377,419 @@ var App = function App() {
     }, "Comentario"), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-800 text-sm"
     }, order.comment))))))));
-  }(), !viewingOrderTracking && selectedPet && activeTab === 'resultados' && function () {
-    var currentPet = petsOrPatients.find(function (p) {
+  }(), facturacionInvoice && !viewingOrderTracking && /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col",
+    style: {
+      height: 'calc(100vh - 70px)'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 py-3 px-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setFacturacionInvoice(null);
+    },
+    className: "w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-arrow-left"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 px-2"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas ".concat(facturacionInvoice.documentType === 'boleta' ? 'fa-receipt text-cyan-500' : 'fa-file-invoice-dollar text-amber-500', " text-lg")
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-semibold ".concat(facturacionInvoice.documentType === 'boleta' ? 'text-cyan-600' : 'text-amber-600')
+  }, facturacionInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura')), /*#__PURE__*/React.createElement("span", {
+    className: "text-gray-500 text-sm"
+  }, new Date(facturacionInvoice.fecha || facturacionInvoice.createdAt || facturacionInvoice.date).toLocaleDateString('es-PE', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 overflow-hidden py-8 px-5 flex flex-col min-h-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-4xl mx-auto w-full h-full flex flex-col"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-white rounded-2xl shadow-lg p-4 flex-1 flex flex-col min-h-0"
+  }, facturacionInvoice.invoicePdf ? /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center justify-center h-full w-full"
+  }, facturacionInvoice !== null && facturacionInvoice !== void 0 && facturacionInvoice.invoicePdf ? /*#__PURE__*/React.createElement(PdfViewer, {
+    url: facturacionInvoice.invoicePdf,
+    style: {
+      width: '100%',
+      height: '500px'
+    },
+    className: "rounded-xl border"
+  }) : /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col items-center justify-center text-gray-400 h-[400px]"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-invoice text-4xl mb-3"
+  }), /*#__PURE__*/React.createElement("p", null, "Comprobante no disponible")), (facturacionInvoice === null || facturacionInvoice === void 0 ? void 0 : facturacionInvoice.invoicePdf) && /*#__PURE__*/React.createElement("div", {
+    className: "mt-4 flex justify-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      var win = window.open('', '_blank');
+      win.location.href = facturacionInvoice.invoicePdf;
+    },
+    className: "flex items-center gap-2 px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl font-semibold shadow-lg"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-download"
+  }), "Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 bg-gray-100 rounded-xl flex flex-col items-center justify-center"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-invoice text-4xl text-gray-400 mb-3"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-gray-500"
+  }, "Comprobante no disponible")))))), !viewingOrderTracking && !selectedExam && !viewingInvoice && selectedPet && activeTab === 'resultados' && function () {
+    var currentPet = (database.pets || []).find(function (p) {
       return p.id === selectedPet.id;
     }) || selectedPet;
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+      className: "lg:hidden",
+      style: {
+        position: 'fixed',
+        top: 'calc(56px + env(safe-area-inset-top, 0px))',
+        left: 0,
+        right: 0,
+        zIndex: 500,
+        background: '#ffffff',
+        boxShadow: '0 4px 14px -2px rgba(0,0,0,0.1)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '10px 16px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-gray-100 rounded-xl px-3 py-1.5 flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
         return setSelectedPet(null);
       },
-      className: "flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
+      className: "dueno-circle-btn flex items-center justify-center bg-white/95 text-gray-600 flex-shrink-0"
     }, /*#__PURE__*/React.createElement("i", {
-      className: "fas fa-arrow-left"
-    }), /*#__PURE__*/React.createElement("span", {
-      className: "text-sm font-medium"
-    }, "Volver a mascotas")), /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-2xl shadow-lg p-6 mb-6"
+      className: "fas fa-arrow-left text-xs"
+    })), /*#__PURE__*/React.createElement("span", {
+      className: "text-lg"
+    }, currentPet.photo), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-800 font-semibold text-sm leading-tight truncate"
+    }, currentPet.name), /*#__PURE__*/React.createElement("p", {
+      className: "text-cyan-600 truncate",
+      style: {
+        fontSize: '10px'
+      }
+    }, currentPet.breed, " \xB7 ", formatAge(currentPet), " \xB7 ", currentPet.sex)), /*#__PURE__*/React.createElement("span", {
+      className: "bg-cyan-500 text-white text-xs px-2 py-0.5 rounded-full flex-shrink-0"
+    }, (currentPet.exams || []).length), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white rounded-full flex items-center justify-center text-gray-600 flex-shrink-0 shadow-sm"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search text-xs"
+    })))), showMobileSearch && /*#__PURE__*/React.createElement("div", {
+      className: "px-4 pb-3 flex flex-col gap-2"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center gap-4"
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: examSearchTerm,
+      onChange: function onChange(e) {
+        return setExamSearchTerm(e.target.value);
+      },
+      placeholder: "Buscar examen...",
+      className: "w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm"
+    }), examSearchTerm && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setExamSearchTerm('');
+      },
+      className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times text-xs"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: examFilterDay,
+      onChange: function onChange(e) {
+        return setExamFilterDay(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "D\xEDa"), _toConsumableArray(Array(31)).map(function (_, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i + 1,
+        value: String(i + 1).padStart(2, '0')
+      }, i + 1);
+    })), /*#__PURE__*/React.createElement("select", {
+      value: examFilterMonth,
+      onChange: function onChange(e) {
+        return setExamFilterMonth(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Mes"), ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map(function (m, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i,
+        value: String(i + 1).padStart(2, '0')
+      }, m);
+    })), /*#__PURE__*/React.createElement("select", {
+      value: examFilterYear,
+      onChange: function onChange(e) {
+        return setExamFilterYear(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "A\xF1o"), ['2026', '2025', '2024', '2023'].map(function (y) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: y,
+        value: y
+      }, y);
+    }))))), /*#__PURE__*/React.createElement("div", {
+      className: "lg:hidden dueno-normal-content pb-20"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "text-5xl"
-    }, currentPet.photo), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
-      className: "text-2xl font-bold text-gray-800"
-    }, currentPet.name), currentPet.owner && /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500 text-sm"
-    }, "Due\xF1o: ", currentPet.owner), /*#__PURE__*/React.createElement("div", {
-      className: "flex flex-wrap gap-2 mt-2"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: "bg-cyan-100 text-cyan-700 px-2 py-0.5 rounded-full text-xs"
-    }, currentPet.breed), /*#__PURE__*/React.createElement("span", {
-      className: "bg-purple-100 text-purple-700 px-2 py-0.5 rounded-full text-xs"
-    }, formatAge(currentPet)), /*#__PURE__*/React.createElement("span", {
-      className: "bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full text-xs"
-    }, currentPet.sex))))), /*#__PURE__*/React.createElement("h2", {
-      className: "text-lg font-bold text-gray-800 mb-4"
-    }, "Resultados"), currentPet.exams.length === 0 ? /*#__PURE__*/React.createElement("div", {
-      className: "bg-white rounded-2xl p-10 text-center shadow"
+      style: {
+        height: '70px'
+      }
+    }), (currentPet.exams || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "bg-white rounded-2xl p-8 text-center shadow-sm"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-folder-open text-4xl text-gray-300 mb-2"
     }), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-500"
     }, "No hay resultados disponibles")) : /*#__PURE__*/React.createElement("div", {
-      className: "space-y-3"
-    }, currentPet.exams.map(function (exam) {
+      className: "space-y-2"
+    }, (currentPet.exams || []).filter(function (exam) {
+      if (examSearchTerm && !exam.type.toLowerCase().includes(examSearchTerm.toLowerCase())) return false;
+      if (examFilterDay || examFilterMonth || examFilterYear) {
+        var d = new Date(exam.date);
+        if (examFilterDay && String(d.getDate()).padStart(2, '0') !== examFilterDay) return false;
+        if (examFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== examFilterMonth) return false;
+        if (examFilterYear && String(d.getFullYear()) !== examFilterYear) return false;
+      }
+      return true;
+    }).sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    }).map(function (exam) {
       return /*#__PURE__*/React.createElement("div", {
         key: exam.id,
         onClick: function onClick() {
           return markExamAsSeen(exam, currentPet);
         },
-        className: "bg-white rounded-xl p-4 shadow cursor-pointer hover:shadow-lg flex items-center justify-between ".concat(exam.seen === false ? 'border-l-4 border-red-500' : '')
+        className: "bg-white rounded-2xl p-3 shadow-sm cursor-pointer hover:shadow-md ".concat(exam.seen === false ? 'border-l-4 border-red-500' : '')
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 rounded-xl flex items-center justify-center ".concat(exam.seen === false ? 'bg-red-100' : 'bg-cyan-100')
+        className: "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(exam.seen === false ? 'bg-red-100' : 'bg-purple-100')
       }, /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-file-pdf ".concat(exam.seen === false ? 'text-red-600' : 'text-cyan-600')
-      })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
-        className: "font-semibold text-gray-800"
+        className: "fas fa-file-pdf ".concat(exam.seen === false ? 'text-red-600' : 'text-purple-600')
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "font-semibold text-gray-800 text-sm"
       }, exam.type), /*#__PURE__*/React.createElement("p", {
         className: "text-xs text-gray-500"
-      }, new Date(exam.date).toLocaleDateString('es-ES'))), exam.seen === false && /*#__PURE__*/React.createElement("span", {
-        className: "bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold ml-2"
-      }, "NUEVO")), /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-chevron-right text-gray-400"
-      }));
-    })));
+      }, new Date(exam.date).toLocaleDateString('es-PE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }))), exam.seen === false && /*#__PURE__*/React.createElement("span", {
+        className: "bg-red-500 text-white text-xs px-2 py-0.5 rounded-full font-bold"
+      }, "NUEVO"), /*#__PURE__*/React.createElement("div", {
+        className: "w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-eye text-purple-600 text-sm"
+      }))));
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "hidden lg:flex flex-col",
+      style: {
+        height: 'calc(100vh - 70px)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "p-4 border-b border-gray-200"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-4"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setSelectedPet(null);
+      },
+      className: "w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-arrow-left"
+    })), /*#__PURE__*/React.createElement("span", {
+      className: "text-4xl"
+    }, currentPet.photo), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("h1", {
+      className: "text-xl font-bold text-gray-800"
+    }, currentPet.name), /*#__PURE__*/React.createElement("span", {
+      className: "bg-emerald-500 text-white text-xs px-2 py-0.5 rounded-full font-medium"
+    }, (currentPet.exams || []).length, " ex\xE1menes")), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-4 mt-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-sm text-gray-600"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-dog text-cyan-500 mr-1"
+    }), currentPet.breed), /*#__PURE__*/React.createElement("span", {
+      className: "text-sm text-gray-600"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-birthday-cake text-cyan-500 mr-1"
+    }), formatAge(currentPet)), /*#__PURE__*/React.createElement("span", {
+      className: "text-sm text-gray-600"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-venus-mars text-cyan-500 mr-1"
+    }), currentPet.sex))))), /*#__PURE__*/React.createElement("div", {
+      className: "p-4 flex items-center gap-3"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "relative flex-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: examSearchTerm,
+      onChange: function onChange(e) {
+        return setExamSearchTerm(e.target.value);
+      },
+      placeholder: "Buscar examen...",
+      className: "w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm"
+    }), examSearchTerm && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setExamSearchTerm('');
+      },
+      className: "absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-gray-500"
+    }, "Filtrar por:"), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: examFilterDay,
+      onChange: function onChange(e) {
+        return setExamFilterDay(e.target.value);
+      },
+      className: "h-10 w-20 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "D\xEDa"), _toConsumableArray(Array(31)).map(function (_, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i + 1,
+        value: String(i + 1).padStart(2, '0')
+      }, i + 1);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: examFilterMonth,
+      onChange: function onChange(e) {
+        return setExamFilterMonth(e.target.value);
+      },
+      className: "h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Mes"), ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map(function (m, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i,
+        value: String(i + 1).padStart(2, '0')
+      }, m);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: examFilterYear,
+      onChange: function onChange(e) {
+        return setExamFilterYear(e.target.value);
+      },
+      className: "h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "A\xF1o"), ['2026', '2025', '2024', '2023'].map(function (y) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: y,
+        value: y
+      }, y);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    })), (examFilterDay || examFilterMonth || examFilterYear) && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        setExamFilterDay('');
+        setExamFilterMonth('');
+        setExamFilterYear('');
+      },
+      className: "h-10 px-3 rounded-full bg-red-100 text-red-600 text-xs hover:bg-red-200"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times mr-1"
+    }), "Limpiar")))), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 overflow-y-auto p-6"
+    }, (currentPet.exams || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "bg-white rounded-xl p-8 text-center shadow"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-folder-open text-4xl text-gray-300 mb-2"
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-500"
+    }, "No hay resultados disponibles")) : /*#__PURE__*/React.createElement("div", {
+      className: "space-y-3 pb-6"
+    }, (currentPet.exams || []).filter(function (exam) {
+      if (examSearchTerm && !exam.type.toLowerCase().includes(examSearchTerm.toLowerCase())) return false;
+      if (examFilterDay || examFilterMonth || examFilterYear) {
+        var d = new Date(exam.date);
+        if (examFilterDay && String(d.getDate()).padStart(2, '0') !== examFilterDay) return false;
+        if (examFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== examFilterMonth) return false;
+        if (examFilterYear && String(d.getFullYear()) !== examFilterYear) return false;
+      }
+      return true;
+    }).sort(function (a, b) {
+      return new Date(b.date) - new Date(a.date);
+    }).map(function (exam) {
+      return /*#__PURE__*/React.createElement("div", {
+        key: exam.id,
+        onClick: function onClick() {
+          return markExamAsSeen(exam, currentPet);
+        },
+        className: "bg-white rounded-xl p-4 shadow hover:shadow-lg cursor-pointer transition-all ".concat(exam.seen === false ? 'border-l-4 border-red-500' : '')
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "w-12 h-12 rounded-xl flex items-center justify-center ".concat(exam.seen === false ? 'bg-red-100' : 'bg-purple-100')
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-file-pdf text-xl ".concat(exam.seen === false ? 'text-red-600' : 'text-purple-600')
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "font-semibold text-gray-800"
+      }, exam.type), /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-gray-500"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-calendar mr-1"
+      }), new Date(exam.date).toLocaleDateString('es-ES', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }))), exam.seen === false && /*#__PURE__*/React.createElement("span", {
+        className: "bg-red-500 text-white text-xs px-3 py-1 rounded-full font-bold"
+      }, "NUEVO"), /*#__PURE__*/React.createElement("div", {
+        className: "w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-eye text-purple-600"
+      }))));
+    })))));
   }(), !viewingOrderTracking && !selectedPet && currentExamForPet && function () {
-    var userAddresses = freshUser.addresses || [];
+    var userAddresses = database.addresses || [];
     var backHandler = function backHandler() {
       if (showTomaMuestraStep) {
         setShowTomaMuestraStep(false);
@@ -9816,7 +11806,9 @@ var App = function App() {
         removeFromPending(currentExamForPet.id);
       }
     };
-    return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("button", {
+    return /*#__PURE__*/React.createElement("div", {
+      className: "dueno-normal-content"
+    }, /*#__PURE__*/React.createElement("button", {
       onClick: backHandler,
       className: "flex items-center gap-2 text-gray-600 hover:text-gray-800 mb-4"
     }, /*#__PURE__*/React.createElement("i", {
@@ -9872,7 +11864,7 @@ var App = function App() {
         className: "flex items-center gap-4"
       }, /*#__PURE__*/React.createElement("div", {
         className: "text-4xl"
-      }, pet.photo), /*#__PURE__*/React.createElement("div", {
+      }, pet === null || pet === void 0 ? void 0 : pet.photo), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("h3", {
         className: "font-bold text-gray-800"
@@ -10086,29 +12078,29 @@ var App = function App() {
       className: "space-y-3"
     }, /*#__PURE__*/React.createElement("p", {
       className: "text-sm text-gray-600 mb-2"
-    }, "Selecciona d\xF3nde recogeremos la muestra:"), userAddresses.map(function (addr, idx) {
+    }, "Selecciona d\xF3nde recogeremos la muestra:"), (database.addresses || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "p-6 text-center text-gray-400 text-sm"
+    }, "No tienes direcciones guardadas") : (database.addresses || []).map(function (addr) {
       return /*#__PURE__*/React.createElement("div", {
-        key: idx,
+        key: addr.id,
         onClick: function onClick() {
           return handleDuenoAddressSelect(addr);
         },
-        className: "bg-white rounded-2xl p-4 shadow cursor-pointer hover:shadow-lg hover:border-cyan-500 border-2 border-transparent transition-all"
+        className: "bg-white rounded-xl p-4 shadow cursor-pointer hover:shadow-lg hover:border-cyan-500 border-2 border-transparent transition-all"
       }, /*#__PURE__*/React.createElement("div", {
         className: "flex items-center gap-3"
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center"
+        className: "w-10 h-10 bg-cyan-100 rounded-xl flex items-center justify-center flex-shrink-0"
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas fa-map-marker-alt text-cyan-600"
       })), /*#__PURE__*/React.createElement("div", {
         className: "flex-1"
       }, /*#__PURE__*/React.createElement("p", {
-        className: "font-bold text-gray-800"
+        className: "font-semibold text-gray-800"
       }, addr.name), /*#__PURE__*/React.createElement("p", {
-        className: "text-gray-500 text-sm"
-      }, addr.address), /*#__PURE__*/React.createElement("p", {
-        className: "text-gray-400 text-xs"
-      }, addr.district, " \u2022 Ref: ", addr.reference)), /*#__PURE__*/React.createElement("i", {
-        className: "fas fa-chevron-right text-gray-400"
+        className: "text-xs text-gray-500"
+      }, addr.street, " \u2022 ", addr.district)), /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-chevron-right text-gray-300"
       })));
     }), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick() {
@@ -10198,7 +12190,69 @@ var App = function App() {
       onClick: addNewAddress,
       className: "flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold"
     }, "Guardar y usar"))))));
-  }(), !viewingOrderTracking && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && /*#__PURE__*/React.createElement(React.Fragment, null, activeTab === 'pedidos' && /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+  }(), !viewingOrderTracking && !selectedExam && !viewingInvoice && !(selectedPet && activeTab === 'resultados') && !currentExamForPet && !facturacionInvoice && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
+    className: "dueno-normal-content h-full flex flex-col",
+    style: {
+      padding: 0,
+      maxWidth: 'none'
+    }
+  }, activeTab === 'pedidos' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      display: 'flex',
+      flexDirection: 'column',
+      flex: 1,
+      height: '100%',
+      marginLeft: '-24px',
+      marginRight: '-24px',
+      marginTop: '-20px',
+      background: '#f3f4f6',
+      overflow: 'hidden'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: {
+      flexShrink: 0,
+      background: 'white',
+      padding: '28px 32px',
+      borderBottom: '1px solid #e5e7eb',
+      boxShadow: '0 2px 6px rgba(0,0,0,0.05)',
+      width: '100%'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 min-w-max"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-clipboard-list text-cyan-500 text-lg"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-cyan-600 font-semibold text-base"
+  }, "Pedidos")), /*#__PURE__*/React.createElement("div", {
+    className: "relative flex-1"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: pedidosSearchTerm,
+    onChange: function onChange(e) {
+      return setPedidosSearchTerm(e.target.value);
+    },
+    placeholder: "Buscar examen o servicio...",
+    className: "w-full py-2.5 pl-11 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none shadow-sm"
+  }), pedidosSearchTerm && /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setPedidosSearchTerm('');
+    },
+    className: "absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-times text-sm"
+  }))))), /*#__PURE__*/React.createElement("div", {
+    style: {
+      flex: 1,
+      overflowY: 'auto',
+      padding: '20px 10% 24px 10%',
+      background: '#f9fafb',
+      height: '0'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
     className: "mb-6"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "text-xl font-bold text-gray-800 mb-1"
@@ -10214,7 +12268,7 @@ var App = function App() {
     className: "text-gray-400"
   }, "\u2022 Toca para deseleccionar")), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 lg:grid-cols-2 gap-4"
-  }, paquetesDuenos.map(function (paquete) {
+  }, paquetesFiltrados.map(function (paquete) {
     var isInCart = cart.find(function (c) {
       return c.exam.id === paquete.id;
     });
@@ -10240,7 +12294,7 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("h3", {
       className: "text-gray-800 font-bold text-base mb-1"
     }, paquete.name), /*#__PURE__*/React.createElement("p", {
-      className: "text-gray-500 text-sm leading-snug mb-2"
+      className: "text-gray-500 text-xs leading-snug mb-1"
     }, paquete.description), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-3"
     }, /*#__PURE__*/React.createElement("span", {
@@ -10249,8 +12303,10 @@ var App = function App() {
       className: "fas fa-clock"
     }), " ", paquete.tiempo), /*#__PURE__*/React.createElement("button", {
       onClick: function onClick(e) {
+        var _document$querySelect;
         e.stopPropagation();
         setSelectedPaqueteDetail(paquete);
+        (_document$querySelect = document.querySelector('.app-content-dueno')) === null || _document$querySelect === void 0 || _document$querySelect.scrollTo(0, 0);
       },
       className: "text-xs text-cyan-600 font-medium flex items-center gap-1 hover:text-cyan-700"
     }, /*#__PURE__*/React.createElement("i", {
@@ -10307,7 +12363,7 @@ var App = function App() {
       },
       className: "bg-white rounded-2xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
     }, /*#__PURE__*/React.createElement("div", {
-      className: "w-11 h-11 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+      className: "w-11 h-11 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-lg")
     })), /*#__PURE__*/React.createElement("div", {
@@ -10346,7 +12402,7 @@ var App = function App() {
         },
         className: "bg-white rounded-2xl p-3 cursor-pointer hover:shadow-lg transition-all shadow border-2 ".concat(isInCart ? 'border-emerald-500 bg-emerald-50' : isPending ? 'border-amber-400 bg-amber-50' : 'border-transparent hover:border-cyan-300', " flex items-center gap-3")
       }, /*#__PURE__*/React.createElement("div", {
-        className: "w-10 h-10 ".concat(exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
+        className: "w-10 h-10 ".concat(exam === null || exam === void 0 ? void 0 : exam.bg, " rounded-xl flex items-center justify-center flex-shrink-0")
       }, /*#__PURE__*/React.createElement("i", {
         className: "fas ".concat(exam.icon, " ").concat(exam.color, " text-base")
       })), /*#__PURE__*/React.createElement("div", {
@@ -10456,7 +12512,7 @@ var App = function App() {
     className: "w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white py-3.5 rounded-xl font-semibold flex items-center justify-center gap-2"
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-plus-circle"
-  }), " Agregar al pedido")))), cart.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }), " Agregar al pedido")))), (cart || []).length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-5 right-4 bg-slate-800 text-white pl-4 pr-3 py-3 rounded-2xl shadow-2xl"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-4"
@@ -10475,7 +12531,7 @@ var App = function App() {
       return setShowOrderSummary(true);
     },
     className: "bg-cyan-500 hover:bg-cyan-600 px-4 py-2.5 rounded-xl font-semibold text-sm whitespace-nowrap flex-shrink-0 ml-2"
-  }, "Solicitar"))), showOrderSummary && /*#__PURE__*/React.createElement("div", {
+  }, "Solicitar")))), showOrderSummary && /*#__PURE__*/React.createElement("div", {
     className: "modal-overlay flex items-center justify-center p-4",
     onClick: function onClick(e) {
       if (e.target === e.currentTarget) setShowOrderSummary(false);
@@ -10509,7 +12565,7 @@ var App = function App() {
   }), "Ex\xE1menes (", cart.length, ")"), /*#__PURE__*/React.createElement("div", {
     className: "space-y-3"
   }, cart.map(function (item) {
-    var _item$address5, _item$address6, _item$address7;
+    var _item$exam25, _item$exam26, _item$exam27, _item$exam28, _item$exam29, _item$pet17, _item$pet18, _item$address4, _item$address5, _item$address6;
     return /*#__PURE__*/React.createElement("div", {
       key: item.exam.id,
       className: "bg-gray-50 rounded-xl p-4"
@@ -10518,14 +12574,14 @@ var App = function App() {
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-3 flex-1 min-w-0"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "w-10 h-10 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center flex-shrink-0")
+      className: "w-10 h-10 ".concat((item === null || item === void 0 || (_item$exam25 = item.exam) === null || _item$exam25 === void 0 ? void 0 : _item$exam25.bg) || 'bg-cyan-100', " rounded-lg flex items-center justify-center flex-shrink-0")
     }, /*#__PURE__*/React.createElement("i", {
-      className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color)
+      className: "fas ".concat((item === null || item === void 0 || (_item$exam26 = item.exam) === null || _item$exam26 === void 0 ? void 0 : _item$exam26.icon) || 'fa-vial', " ").concat((item === null || item === void 0 || (_item$exam27 = item.exam) === null || _item$exam27 === void 0 ? void 0 : _item$exam27.color) || 'text-cyan-600')
     })), /*#__PURE__*/React.createElement("div", {
       className: "min-w-0"
     }, /*#__PURE__*/React.createElement("span", {
       className: "font-medium text-gray-800 text-sm"
-    }, item.exam.name), item.exam.subtitle && /*#__PURE__*/React.createElement("p", {
+    }, (item === null || item === void 0 || (_item$exam28 = item.exam) === null || _item$exam28 === void 0 ? void 0 : _item$exam28.name) || (item === null || item === void 0 ? void 0 : item.examName) || 'Examen'), (item === null || item === void 0 || (_item$exam29 = item.exam) === null || _item$exam29 === void 0 ? void 0 : _item$exam29.subtitle) && /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-gray-500 truncate"
     }, item.exam.subtitle))), /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-3 flex-shrink-0 ml-3"
@@ -10544,20 +12600,20 @@ var App = function App() {
       className: "flex items-center gap-2"
     }, /*#__PURE__*/React.createElement("span", {
       className: "text-lg"
-    }, item.pet.photo), /*#__PURE__*/React.createElement("span", {
+    }, item === null || item === void 0 || (_item$pet17 = item.pet) === null || _item$pet17 === void 0 ? void 0 : _item$pet17.photo), /*#__PURE__*/React.createElement("span", {
       className: "text-sm text-gray-600"
-    }, getPetFullName(item.pet))), /*#__PURE__*/React.createElement("div", {
+    }, (item === null || item === void 0 || (_item$pet18 = item.pet) === null || _item$pet18 === void 0 ? void 0 : _item$pet18.name) || '')), /*#__PURE__*/React.createElement("div", {
       className: "flex items-start gap-2 text-xs text-gray-500"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-map-marker-alt mt-0.5 text-cyan-500"
-    }), /*#__PURE__*/React.createElement("span", null, (_item$address5 = item.address) === null || _item$address5 === void 0 ? void 0 : _item$address5.name, ": ", (_item$address6 = item.address) === null || _item$address6 === void 0 ? void 0 : _item$address6.address, ", ", (_item$address7 = item.address) === null || _item$address7 === void 0 ? void 0 : _item$address7.district)), item.tomaMuestra && /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("span", null, (_item$address4 = item.address) === null || _item$address4 === void 0 ? void 0 : _item$address4.name, ": ", (_item$address5 = item.address) === null || _item$address5 === void 0 ? void 0 : _item$address5.address, ", ", safeText(item === null || item === void 0 || (_item$address6 = item.address) === null || _item$address6 === void 0 ? void 0 : _item$address6.district))), item.tomaMuestra && /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2 text-xs"
     }, /*#__PURE__*/React.createElement("i", {
       className: "fas fa-syringe text-emerald-500"
     }), /*#__PURE__*/React.createElement("span", {
       className: "text-emerald-600 font-medium"
-    }, "Toma de muestra a domicilio ", function (_item$address8) {
-      var p = getTomaMuestraPrice((_item$address8 = item.address) === null || _item$address8 === void 0 ? void 0 : _item$address8.district, examTotal);
+    }, "Toma de muestra a domicilio ", function (_item$address7) {
+      var p = getTomaMuestraPrice((_item$address7 = item.address) === null || _item$address7 === void 0 ? void 0 : _item$address7.district, examTotal);
       return p !== null ? "(+S/ ".concat(p, ")") : '';
     }()))));
   }))), /*#__PURE__*/React.createElement("div", {
@@ -10611,11 +12667,124 @@ var App = function App() {
     className: "w-full py-3.5 rounded-xl font-semibold transition-all ".concat(termsAccepted ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white" : "bg-gray-200 text-gray-400 cursor-not-allowed")
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-paper-plane mr-2"
-  }), "Solicitar Pedido")))))), activeTab === 'resultados' && /*#__PURE__*/React.createElement("div", null, function () {
+  }), "Solicitar Pedido")))))), activeTab === 'resultados' && /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '0 10%'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-shrink-0 bg-white border-b border-gray-200 p-4 mb-4",
+    style: {
+      marginLeft: '-14%',
+      marginRight: '-14%',
+      paddingLeft: '32px',
+      paddingRight: '32px',
+      marginTop: '-5px'
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hidden lg:flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 px-2 flex-shrink-0"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-medical text-purple-500 text-lg"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-purple-600 font-semibold"
+  }, "Resultados")), /*#__PURE__*/React.createElement("div", {
+    className: "relative",
+    style: {
+      flex: 8
+    }
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+  }), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: resSearchTerm,
+    onChange: function onChange(e) {
+      return setResSearchTerm(e.target.value);
+    },
+    placeholder: "Buscar mascota...",
+    className: "w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm"
+  }), resSearchTerm && /*#__PURE__*/React.createElement("button", {
+    onClick: function onClick() {
+      return setResSearchTerm('');
+    },
+    className: "absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-times text-sm"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 flex-shrink-0"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs text-gray-500"
+  }, "Filtrar por:"), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: resFilterDay,
+    onChange: function onChange(e) {
+      return setResFilterDay(e.target.value);
+    },
+    className: "h-10 w-24 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "D\xEDa"), _toConsumableArray(Array(31)).map(function (_, i) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: i + 1,
+      value: String(i + 1).padStart(2, '0')
+    }, i + 1);
+  })), /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: resFilterMonth,
+    onChange: function onChange(e) {
+      return setResFilterMonth(e.target.value);
+    },
+    className: "h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "Mes"), ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map(function (m, i) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: i,
+      value: String(i + 1).padStart(2, '0')
+    }, m);
+  })), /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: resFilterYear,
+    onChange: function onChange(e) {
+      return setResFilterYear(e.target.value);
+    },
+    className: "h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"
+  }, /*#__PURE__*/React.createElement("option", {
+    value: ""
+  }, "A\xF1o"), ['2026', '2025', '2024', '2023'].map(function (y) {
+    return /*#__PURE__*/React.createElement("option", {
+      key: y,
+      value: y
+    }, y);
+  })), /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "lg:hidden"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-gradient-to-r from-purple-500 to-purple-700 rounded-xl px-3 py-1.5 flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-medical text-white text-sm"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-white font-semibold text-sm flex-1"
+  }, "Resultados"), /*#__PURE__*/React.createElement("span", {
+    className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full"
+  }, (database.pets || []).length)))), function () {
     var userOrders = (database.orders || []).filter(function (o) {
-      return o.userId === freshUser.id && o.status !== 'completed';
+      return o.status !== 'completed' && o.status !== 9 && Number(o.status) !== 9;
+    }).filter(function (o) {
+      return !resSearchTerm || (o.items || []).some(function (i) {
+        var _i$pet;
+        return (i.examName || '').toLowerCase().includes(resSearchTerm.toLowerCase()) || (((_i$pet = i.pet) === null || _i$pet === void 0 ? void 0 : _i$pet.name) || '').toLowerCase().includes(resSearchTerm.toLowerCase());
+      });
     });
-    if (userOrders.length > 0) {
+    if ((userOrders || []).length > 0) {
       return /*#__PURE__*/React.createElement("div", {
         className: "mb-6"
       }, /*#__PURE__*/React.createElement("h2", {
@@ -10624,8 +12793,7 @@ var App = function App() {
         className: "fas fa-clock text-amber-500"
       }), "Pendientes"), /*#__PURE__*/React.createElement("div", {
         className: "grid grid-cols-1 lg:grid-cols-2 gap-4"
-      }, userOrders.map(function (order) {
-        var statusInfo = getStatusInfo(order.status);
+      }, (userOrders || []).map(function (order) {
         return /*#__PURE__*/React.createElement("div", {
           key: order.id,
           className: "bg-white rounded-2xl shadow p-4"
@@ -10633,11 +12801,9 @@ var App = function App() {
           className: "flex items-center justify-between mb-3"
         }, /*#__PURE__*/React.createElement("p", {
           className: "text-xs text-gray-500"
-        }, new Date(order.date).toLocaleDateString('es-ES', {
+        }, new Date(order.createdAt || order.date).toLocaleDateString('es-ES', {
           day: 'numeric',
-          month: 'short',
-          hour: '2-digit',
-          minute: '2-digit'
+          month: 'short'
         })), /*#__PURE__*/React.createElement("button", {
           onClick: function onClick() {
             return setViewingOrderTracking(order);
@@ -10645,40 +12811,37 @@ var App = function App() {
           className: "bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5"
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas fa-route"
-        }), "Ver estado")), /*#__PURE__*/React.createElement("div", {
+        }), " Ver estado")), /*#__PURE__*/React.createElement("div", {
           className: "space-y-2"
-        }, order.items.map(function (item, idx) {
+        }, (order.items || []).map(function (item, idx) {
+          var _item$exam30, _item$pet19;
           return /*#__PURE__*/React.createElement("div", {
             key: idx,
             className: "flex items-center gap-3 p-2 bg-gray-50 rounded-xl"
           }, /*#__PURE__*/React.createElement("div", {
-            className: "w-9 h-9 ".concat(item.exam.bg, " rounded-lg flex items-center justify-center")
+            className: "w-9 h-9 bg-cyan-100 rounded-lg flex items-center justify-center"
           }, /*#__PURE__*/React.createElement("i", {
-            className: "fas ".concat(item.exam.icon, " ").concat(item.exam.color, " text-sm")
+            className: "fas fa-vial text-cyan-600 text-sm"
           })), /*#__PURE__*/React.createElement("div", {
             className: "flex-1 min-w-0"
           }, /*#__PURE__*/React.createElement("p", {
             className: "text-gray-800 font-medium text-sm truncate"
-          }, item.exam.name), /*#__PURE__*/React.createElement("p", {
+          }, (item === null || item === void 0 ? void 0 : item.examName) || (item === null || item === void 0 || (_item$exam30 = item.exam) === null || _item$exam30 === void 0 ? void 0 : _item$exam30.name) || 'Examen'), /*#__PURE__*/React.createElement("p", {
             className: "text-gray-500 text-xs"
-          }, item.pet.photo, " ", getPetFullName(item.pet))));
+          }, (item === null || item === void 0 || (_item$pet19 = item.pet) === null || _item$pet19 === void 0 ? void 0 : _item$pet19.name) || (item === null || item === void 0 ? void 0 : item.petName) || '')));
         })), order.status === 'moto_arrived' && /*#__PURE__*/React.createElement("div", {
           className: "mt-3 bg-red-50 border border-red-200 rounded-xl p-3 flex items-center gap-3 animate-pulse"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 bg-red-100 rounded-full flex items-center justify-center"
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas fa-map-marker-alt text-red-600"
-        })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+        }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
           className: "text-red-800 font-medium text-sm"
         }, "\uD83D\uDCCD \xA1El motorizado lleg\xF3!"), /*#__PURE__*/React.createElement("p", {
           className: "text-red-600 text-xs"
         }, "Por favor entrega la muestra"))), order.status === 'results_uploaded' && /*#__PURE__*/React.createElement("div", {
           className: "mt-3 bg-red-50 border border-red-200 rounded-xl p-3 flex items-center gap-3 animate-pulse"
-        }, /*#__PURE__*/React.createElement("div", {
-          className: "w-10 h-10 bg-red-100 rounded-full flex items-center justify-center"
         }, /*#__PURE__*/React.createElement("i", {
           className: "fas fa-file-medical text-red-600"
-        })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+        }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
           className: "text-red-800 font-medium text-sm"
         }, "\uD83D\uDCB3 \xA1Resultados listos!"), /*#__PURE__*/React.createElement("p", {
           className: "text-red-600 text-xs"
@@ -10688,7 +12851,9 @@ var App = function App() {
     return null;
   }(), /*#__PURE__*/React.createElement("h2", {
     className: "text-lg font-bold text-gray-800 mb-4"
-  }, "Selecciona tu mascota"), petsOrPatients.length === 0 ? /*#__PURE__*/React.createElement("div", {
+  }, "Selecciona tu mascota"), (database.pets || []).filter(function (p) {
+    return !resSearchTerm || (p.name || '').toLowerCase().includes(resSearchTerm.toLowerCase());
+  }).length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl p-10 text-center shadow"
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-paw text-4xl text-gray-300 mb-2"
@@ -10696,13 +12861,15 @@ var App = function App() {
     className: "text-gray-500"
   }, "No tienes mascotas registradas")) : /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 gap-4"
-  }, petsOrPatients.map(function (pet) {
+  }, (database.pets || []).filter(function (p) {
+    return !resSearchTerm || (p.name || '').toLowerCase().includes(resSearchTerm.toLowerCase());
+  }).map(function (pet) {
     return /*#__PURE__*/React.createElement("div", {
       key: pet.id,
       onClick: function onClick() {
         return setSelectedPet(pet);
       },
-      className: "bg-white rounded-2xl p-5 shadow cursor-pointer hover:shadow-lg hover:border-cyan-500 border-2 border-transparent transition-all relative"
+      className: "bg-white rounded-2xl p-5 shadow cursor-pointer hover:shadow-lg hover:border-purple-400 border-2 border-transparent transition-all"
     }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-4"
     }, /*#__PURE__*/React.createElement("div", {
@@ -10711,16 +12878,385 @@ var App = function App() {
       className: "flex-1"
     }, /*#__PURE__*/React.createElement("h3", {
       className: "text-lg font-bold text-gray-800"
-    }, getPetFullName(pet)), /*#__PURE__*/React.createElement("p", {
+    }, pet.name), /*#__PURE__*/React.createElement("p", {
       className: "text-gray-500 text-sm"
     }, pet.breed)), /*#__PURE__*/React.createElement("div", {
+      className: "bg-purple-100 text-purple-700 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm"
+    }, (pet.exams || []).length)));
+  }))), medicoView === 'facturacion' && function () {
+    var userInvoices = (database.orders || []).filter(function (o) {
+      return o.userId === freshUser.id && o.invoicePdf && !o.resultPdf;
+    });
+    var facInvoice = medicoFacInvoice;
+    var setFacInvoice = setMedicoFacInvoice;
+    if (facInvoice) {
+      return /*#__PURE__*/React.createElement("div", {
+        className: "flex flex-col",
+        style: {
+          height: 'calc(100vh - 70px)'
+        }
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-3"
+      }, /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          return setFacInvoice(null);
+        },
+        className: "w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-arrow-left"
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 px-2"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas ".concat(facInvoice.documentType === 'boleta' ? 'fa-receipt text-cyan-500' : 'fa-file-invoice-dollar text-amber-500', " text-lg")
+      }), /*#__PURE__*/React.createElement("span", {
+        className: "font-semibold ".concat(facInvoice.documentType === 'boleta' ? 'text-cyan-600' : 'text-amber-600')
+      }, facInvoice.documentType === 'boleta' ? 'Boleta' : 'Factura')), /*#__PURE__*/React.createElement("span", {
+        className: "text-gray-500 text-sm"
+      }, new Date(facInvoice.createdAt || facInvoice.date).toLocaleDateString('es-PE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      })))), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 overflow-hidden p-6 flex flex-col min-h-0"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "max-w-4xl mx-auto w-full h-full flex flex-col"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "bg-white rounded-2xl shadow-lg p-5 flex-1 flex flex-col min-h-0"
+      }, facInvoice.invoicePdf ? /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 flex flex-col min-h-0"
+      }, /*#__PURE__*/React.createElement(PdfViewer, {
+        url: facInvoice.invoicePdf,
+        className: "flex-1 w-full rounded-xl border border-gray-200 min-h-0",
+        style: {
+          minHeight: '400px'
+        }
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "mt-3 flex justify-center flex-shrink-0"
+      }, /*#__PURE__*/React.createElement("button", {
+        onClick: function onClick() {
+          var a = document.createElement('a');
+          a.href = facInvoice.invoicePdf;
+          a.download = "comprobante-".concat(facInvoice.id, ".pdf");
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        },
+        className: "flex items-center gap-2 px-6 py-2.5 ".concat(facInvoice.documentType === 'boleta' ? 'bg-gradient-to-r from-cyan-500 to-blue-600' : 'bg-gradient-to-r from-amber-500 to-orange-600', " text-white rounded-xl font-semibold transition-colors shadow-lg text-sm")
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-download"
+      }), " Descargar PDF"))) : /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 bg-gray-100 rounded-xl flex flex-col items-center justify-center"
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-file-invoice text-4xl text-gray-400 mb-3"
+      }), /*#__PURE__*/React.createElement("p", {
+        className: "text-gray-500"
+      }, "Comprobante no disponible"))))));
+    }
+    return /*#__PURE__*/React.createElement("div", {
+      className: "pt-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3 mb-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice-dollar text-amber-600"
+    })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h1", {
+      className: "text-xl font-bold text-gray-800"
+    }, "Facturaci\xF3n"), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-500 text-sm"
+    }, "Tus boletas y facturas"))), (userInvoices || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "bg-white rounded-2xl p-12 text-center shadow-sm"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice text-5xl text-gray-300 mb-4 block"
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-500 font-medium"
+    }, "No tienes comprobantes a\xFAn"), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-400 text-sm mt-1"
+    }, "Tus boletas y facturas aparecer\xE1n aqu\xED")) : /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-1 lg:grid-cols-2 gap-4"
+    }, (userInvoices || []).map(function (inv) {
+      var _inv$items;
+      return /*#__PURE__*/React.createElement("div", {
+        key: inv.id,
+        onClick: function onClick() {
+          return setFacInvoice(inv);
+        },
+        className: "bg-white rounded-2xl p-5 shadow-sm hover:shadow-md cursor-pointer transition-all border border-transparent hover:border-amber-200"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(inv.documentType === 'boleta' ? 'bg-cyan-100' : 'bg-amber-100')
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas ".concat(inv.documentType === 'boleta' ? 'fa-receipt text-cyan-600' : 'fa-file-invoice-dollar text-amber-600', " text-xl")
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "font-semibold text-gray-800"
+      }, inv.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-gray-500"
+      }, (_inv$items = inv.items) === null || _inv$items === void 0 ? void 0 : _inv$items.map(function (it) {
+        var _it$pet;
+        return (_it$pet = it.pet) === null || _it$pet === void 0 ? void 0 : _it$pet.name;
+      }).filter(Boolean).join(', ')), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-gray-400 mt-1"
+      }, new Date(inv.createdAt || inv.date).toLocaleDateString('es-PE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }))), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs px-2 py-1 rounded-full font-medium ".concat(inv.documentType === 'boleta' ? 'bg-cyan-100 text-cyan-700' : 'bg-amber-100 text-amber-700')
+      }, inv.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-chevron-right text-gray-400 text-sm"
+      }))));
+    })));
+  }()), activeTab === 'facturacion' && !facturacionInvoice && function () {
+    var userInvoices = facturas;
+    return /*#__PURE__*/React.createElement("div", {
+      className: "dueno-normal-content pb-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "hidden lg:block flex-shrink-0 bg-white border-b border-gray-200 px-6 py-3 -mx-6 -mt-6 mb-6"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-4"
+    }, /*#__PURE__*/React.createElement("div", {
       className: "flex items-center gap-2"
-    }, countUnseenExamsForPet(pet) > 0 && /*#__PURE__*/React.createElement("div", {
-      className: "w-6 h-6 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold"
-    }, countUnseenExamsForPet(pet)), /*#__PURE__*/React.createElement("div", {
-      className: "bg-cyan-100 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold"
-    }, pet.exams.length))));
-  })))))), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice-dollar text-amber-500 text-lg"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-amber-600 font-semibold text-lg"
+    }, "Facturaci\xF3n"), /*#__PURE__*/React.createElement("span", {
+      className: "bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full"
+    }, (facturas || []).length)), /*#__PURE__*/React.createElement("div", {
+      className: "relative flex-1"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: facDuenoSearchTerm,
+      onChange: function onChange(e) {
+        return setFacDuenoSearchTerm(e.target.value);
+      },
+      placeholder: "Buscar comprobante...",
+      className: "w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm"
+    }), facDuenoSearchTerm && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setFacDuenoSearchTerm('');
+      },
+      className: "absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times text-sm"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs text-gray-500"
+    }, "Filtrar por:"), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterDay,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterDay(e.target.value);
+      },
+      className: "h-10 w-20 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "D\xEDa"), _toConsumableArray(Array(31)).map(function (_, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i + 1,
+        value: String(i + 1).padStart(2, '0')
+      }, i + 1);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterMonth,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterMonth(e.target.value);
+      },
+      className: "h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Mes"), ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map(function (m, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i,
+        value: String(i + 1).padStart(2, '0')
+      }, m);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterYear,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterYear(e.target.value);
+      },
+      className: "h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "A\xF1o"), ['2026', '2025', '2024', '2023'].map(function (y) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: y,
+        value: y
+      }, y);
+    })), /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"
+    }))))), /*#__PURE__*/React.createElement("div", {
+      className: "lg:hidden",
+      style: {
+        position: 'fixed',
+        top: 'calc(56px + env(safe-area-inset-top, 0px))',
+        left: 0,
+        right: 0,
+        zIndex: 500,
+        background: '#ffffff',
+        boxShadow: '0 4px 14px -2px rgba(0,0,0,0.1)'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        padding: '10px 16px'
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-1.5 flex items-center gap-2"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice-dollar text-white text-sm"
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-white font-semibold text-sm"
+    }, "Facturaci\xF3n"), /*#__PURE__*/React.createElement("span", {
+      className: "bg-white/20 text-white text-xs px-2 py-0.5 rounded-full ml-auto"
+    }, (facturas || []).length), /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setShowFacMobileSearch(function (prev) {
+          return !prev;
+        });
+      },
+      className: "w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search text-xs"
+    })))), showFacMobileSearch && /*#__PURE__*/React.createElement("div", {
+      className: "px-4 pb-3 flex flex-col gap-2"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "relative"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs"
+    }), /*#__PURE__*/React.createElement("input", {
+      type: "text",
+      value: facDuenoSearchTerm,
+      onChange: function onChange(e) {
+        return setFacDuenoSearchTerm(e.target.value);
+      },
+      placeholder: "Buscar comprobante...",
+      className: "w-full h-9 pl-9 pr-8 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm"
+    }), facDuenoSearchTerm && /*#__PURE__*/React.createElement("button", {
+      onClick: function onClick() {
+        return setFacDuenoSearchTerm('');
+      },
+      className: "absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-times text-xs"
+    }))), /*#__PURE__*/React.createElement("div", {
+      className: "flex gap-2"
+    }, /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterDay,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterDay(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "D\xEDa"), _toConsumableArray(Array(31)).map(function (_, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i + 1,
+        value: String(i + 1).padStart(2, '0')
+      }, i + 1);
+    })), /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterMonth,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterMonth(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "Mes"), ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map(function (m, i) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: i,
+        value: String(i + 1).padStart(2, '0')
+      }, m);
+    })), /*#__PURE__*/React.createElement("select", {
+      value: facDuenoFilterYear,
+      onChange: function onChange(e) {
+        return setFacDuenoFilterYear(e.target.value);
+      },
+      className: "flex-1 h-8 rounded-full border border-gray-300 text-xs px-3 focus:outline-none bg-white"
+    }, /*#__PURE__*/React.createElement("option", {
+      value: ""
+    }, "A\xF1o"), ['2026', '2025', '2024', '2023'].map(function (y) {
+      return /*#__PURE__*/React.createElement("option", {
+        key: y,
+        value: y
+      }, y);
+    }))))), /*#__PURE__*/React.createElement("div", {
+      className: "lg:hidden",
+      style: {
+        height: '70px'
+      }
+    }), (userInvoices || []).length === 0 ? /*#__PURE__*/React.createElement("div", {
+      className: "bg-white rounded-2xl p-12 text-center shadow-sm"
+    }, /*#__PURE__*/React.createElement("i", {
+      className: "fas fa-file-invoice text-5xl text-gray-300 mb-4 block"
+    }), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-500 font-medium"
+    }, "No tienes comprobantes a\xFAn"), /*#__PURE__*/React.createElement("p", {
+      className: "text-gray-400 text-sm mt-1"
+    }, "Tus boletas y facturas aparecer\xE1n aqu\xED")) : /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-1 lg:grid-cols-2 gap-4"
+    }, (userInvoices || []).filter(function (inv) {
+      if (facDuenoSearchTerm && !(inv.documentType || '').toLowerCase().includes(facDuenoSearchTerm.toLowerCase())) return false;
+      var d = new Date(inv.fecha || inv.createdAt || inv.date);
+      if (facDuenoFilterDay && String(d.getDate()).padStart(2, '0') !== facDuenoFilterDay) return false;
+      if (facDuenoFilterMonth && String(d.getMonth() + 1).padStart(2, '0') !== facDuenoFilterMonth) return false;
+      if (facDuenoFilterYear && String(d.getFullYear()) !== facDuenoFilterYear) return false;
+      return true;
+    }).map(function (inv) {
+      var _inv$items2;
+      return /*#__PURE__*/React.createElement("div", {
+        key: inv.id,
+        onClick: function onClick() {
+          return setFacturacionInvoice(inv);
+        },
+        className: "bg-white rounded-2xl p-5 shadow-sm hover:shadow-md cursor-pointer transition-all border border-transparent hover:border-amber-200"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-4"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 ".concat(inv.documentType === 'boleta' ? 'bg-cyan-100' : 'bg-amber-100')
+      }, /*#__PURE__*/React.createElement("i", {
+        className: "fas ".concat(inv.documentType === 'boleta' ? 'fa-receipt text-cyan-600' : 'fa-file-invoice-dollar text-amber-600', " text-xl")
+      })), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0"
+      }, /*#__PURE__*/React.createElement("p", {
+        className: "font-semibold text-gray-800"
+      }, inv.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("p", {
+        className: "text-sm text-gray-500"
+      }, (_inv$items2 = inv.items) === null || _inv$items2 === void 0 ? void 0 : _inv$items2.map(function (it) {
+        var _it$pet2;
+        return (_it$pet2 = it.pet) === null || _it$pet2 === void 0 ? void 0 : _it$pet2.name;
+      }).filter(Boolean).join(', ')), /*#__PURE__*/React.createElement("p", {
+        className: "text-xs text-gray-400 mt-1"
+      }, new Date(inv.fecha || inv.createdAt || inv.date).toLocaleDateString('es-PE', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      }))), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2 flex-shrink-0"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "text-xs px-2 py-1 rounded-full font-medium ".concat(inv.documentType === 'boleta' ? 'bg-cyan-100 text-cyan-700' : 'bg-amber-100 text-amber-700')
+      }, inv.documentType === 'boleta' ? 'Boleta' : 'Factura'), /*#__PURE__*/React.createElement("i", {
+        className: "fas fa-chevron-right text-gray-400 text-sm"
+      }))));
+    })));
+  }()))), /*#__PURE__*/React.createElement("div", {
     className: "mob-bottom-nav lg:hidden"
   }, /*#__PURE__*/React.createElement("div", {
     className: "mob-bottom-nav-inner"
@@ -10733,6 +13269,14 @@ var App = function App() {
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-clipboard-list"
   }), /*#__PURE__*/React.createElement("span", null, "Pedidos")), /*#__PURE__*/React.createElement("button", {
+    className: "mob-nav-btn ".concat(activeTab === 'facturacion' && duenoView !== 'config' ? 'active' : ''),
+    onClick: function onClick() {
+      resetDuenoState();
+      setActiveTab('facturacion');
+    }
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "fas fa-file-invoice-dollar"
+  }), /*#__PURE__*/React.createElement("span", null, "Facturas")), /*#__PURE__*/React.createElement("button", {
     className: "mob-nav-btn ".concat(activeTab === 'resultados' && duenoView !== 'config' ? 'active' : ''),
     onClick: function onClick() {
       resetDuenoState();
@@ -10746,34 +13290,3 @@ var App = function App() {
 };
 var root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(/*#__PURE__*/React.createElement(App, null));
-
-//Keyboard stability: prevent layout jump / zoom when keyboard opens on iOS/Android
-
-(function () {
-  if (!window.visualViewport) return;
-  var root = document.getElementById('root');
-  function onViewportChange() {
-    var vv = window.visualViewport;
-    var windowHeight = window.innerHeight;
-    var viewportHeight = vv.height;
-
-    // On iOS, when the keyboard opens the visualViewport shrinks.
-    // We pin #root to the visual viewport height so it doesn't scroll/reflow.
-    // The content inside stays put; only the keyboard overlays on top.
-    if (viewportHeight < windowHeight - 50) {
-      // Keyboard is open — lock root height to visual viewport
-      root.style.height = viewportHeight + 'px';
-      root.style.position = 'fixed';
-      root.style.top = vv.offsetTop + 'px';
-      root.style.width = vv.width + 'px';
-    } else {
-      // Keyboard closed — restore normal flow
-      root.style.height = '';
-      root.style.position = '';
-      root.style.top = '';
-      root.style.width = '';
-    }
-  }
-  window.visualViewport.addEventListener('resize', onViewportChange);
-  window.visualViewport.addEventListener('scroll', onViewportChange);
-})();
