@@ -669,10 +669,14 @@
         return await res.json();
         },
 
-        async getPets() {
-        const res = await fetch(`${API_BASE}/Pets`, {
-        headers: this._headers()
-        });
+            async getPets() {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000);
+                const res = await fetch(`${API_BASE}/Pets`, {
+                    headers: this._headers(),
+                    signal: controller.signal
+                });
+                clearTimeout(timeoutId);
 
         if (!res.ok) throw new Error('Error al obtener mascotas');
 

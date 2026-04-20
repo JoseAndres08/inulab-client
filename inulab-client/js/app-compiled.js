@@ -2146,16 +2146,22 @@ var api = {
   getPets: function getPets() {
     var _this4 = this;
     return _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5() {
-      var res;
+      var controller, timeoutId, res;
       return _regenerator().w(function (_context5) {
         while (1) switch (_context5.n) {
           case 0:
+            controller = new AbortController();
+            timeoutId = setTimeout(function () {
+              return controller.abort();
+            }, 5000);
             _context5.n = 1;
             return fetch("".concat(API_BASE, "/Pets"), {
-              headers: _this4._headers()
+              headers: _this4._headers(),
+              signal: controller.signal
             });
           case 1:
             res = _context5.v;
+            clearTimeout(timeoutId);
             if (res.ok) {
               _context5.n = 2;
               break;
