@@ -1440,6 +1440,7 @@ const PdfViewer = ({ url, style, className }) => {
                 console.log("INICIANDO LOAD DATABASE");
 
                 if (!silent) setLoading(true);
+                const loadingTimeout = setTimeout(() => { setLoading(false); }, 6000);
 
                 try {
 
@@ -1583,6 +1584,7 @@ const PdfViewer = ({ url, style, className }) => {
                     console.log("freshUser.id:", freshUser.id);
                     console.log("orders userId:", database.orders[0]?.userId);
                     console.log("primer order completo:", database.orders[0]);
+                    clearTimeout(loadingTimeout);
                     if (!silent) setLoading(false);
                 }
             };
