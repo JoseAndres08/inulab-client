@@ -4884,7 +4884,7 @@ var App = function App() {
       };
     }();
     return /*#__PURE__*/React.createElement("div", {
-      className: "min-h-screen flex items-start justify-center p-4 pt-8 login-wrapper",
+      className: "min-h-screen flex items-start justify-center p-4  login-wrapper",
       style: {
         overflowY: 'auto'
       }

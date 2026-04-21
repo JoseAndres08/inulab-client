@@ -2092,7 +2092,7 @@ const PdfViewer = ({ url, style, className }) => {
                 };
 
                 return (
-                    <div className="min-h-screen flex items-start justify-center p-4 pt-8 login-wrapper" style={{ overflowY: 'auto' }}>
+                    <div className="min-h-screen flex items-start justify-center p-4  login-wrapper" style={{ overflowY: 'auto' }}>
                         <div className="w-full max-w-md">
                             <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
                                 <div className="flex flex-col items-center justify-center mb-6">
