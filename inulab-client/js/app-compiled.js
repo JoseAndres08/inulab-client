@@ -3974,7 +3974,7 @@ var App = function App() {
             });
           case 6:
             _context12.p = 6;
-            console.log("FIN LOAD DATABASE");
+            console.log("FIN LOAD DATABASE v3");
             clearTimeout(loadingTimeout);
             if (!silent) setLoading(false);
             return _context12.f(6);

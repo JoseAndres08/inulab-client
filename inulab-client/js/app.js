@@ -1583,7 +1583,7 @@ const PdfViewer = ({ url, style, className }) => {
 
                 } finally {
 
-                    console.log("FIN LOAD DATABASE")
+                    console.log("FIN LOAD DATABASE v3")
                     clearTimeout(loadingTimeout);
                     if (!silent) setLoading(false);
                 }
