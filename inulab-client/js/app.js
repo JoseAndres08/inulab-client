@@ -669,14 +669,10 @@
         return await res.json();
         },
 
-            async getPets() {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 5000);
-                const res = await fetch(`${API_BASE}/Pets`, {
-                    headers: this._headers(),
-                    signal: controller.signal
-                });
-                clearTimeout(timeoutId);
+        async getPets() {
+        const res = await fetch(`${API_BASE}/Pets`, {
+        headers: this._headers()
+        });
 
         if (!res.ok) throw new Error('Error al obtener mascotas');
 
@@ -924,7 +920,7 @@ const PdfViewer = ({ url, style, className }) => {
             <p className="text-sm">Cargando PDF...</p>
         </div>
     );
-    return <iframe src={blobUrl} style={style} className={className} title="PDF" />;
+    return <iframe src={blobUrl + '#toolbar=0&navpanes=0'} style={style} className={className} title="PDF" />;
 };
 
         const App = () => {
@@ -1050,12 +1046,33 @@ const PdfViewer = ({ url, style, className }) => {
             const [showMobileSearch, setShowMobileSearch] = React.useState(false);
             const [showFacMobileSearch, setShowFacMobileSearch] = React.useState(false);
             const [showResMobileSearch, setShowResMobileSearch] = React.useState(false);
+            const [pedidosSearchOpen, setPedidosSearchOpen] = useState(false);
+            const [petResSearchOpen, setPetResSearchOpen] = useState(false);
+            const [facDuenoSearchOpen, setFacDuenoSearchOpen] = useState(false);
+            const [selSearchOpen, setSelSearchOpen] = useState(false);
+            const [isLandscapePhone, setIsLandscapePhone] = useState(false);
+            const [clinPedidosSearchOpen, setClinPedidosSearchOpen] = useState(false);
+            const [clinMascSearchOpen, setClinMascSearchOpen] = useState(false);
+            const [clinResSearchOpen, setClinResSearchOpen] = useState(false);
+            const [clinFacSearchOpen, setClinFacSearchOpen] = useState(false);
+            const [clinMascDetailSearchOpen, setClinMascDetailSearchOpen] = useState(false);
 
             useEffect(() => {
                 if (showAddressSelection) {
                     loadAddresses();
                 }
             }, [showAddressSelection]);
+
+            useEffect(() => {
+                const checkLandscape = () => {
+                    const isPhone = window.innerHeight <= 500 && window.innerWidth > window.innerHeight;
+                    setIsLandscapePhone(isPhone);
+                };
+                checkLandscape();
+                window.addEventListener('resize', checkLandscape);
+                window.addEventListener('orientationchange', checkLandscape);
+                return () => { window.removeEventListener('resize', checkLandscape); window.removeEventListener('orientationchange', checkLandscape); };
+            }, []);
 
             const examTotal = cart.reduce((sum, item) => sum + (item.exam.price || 0), 0);
             const tomaMuestraFees = (() => {
@@ -1444,7 +1461,6 @@ const PdfViewer = ({ url, style, className }) => {
                 console.log("INICIANDO LOAD DATABASE");
 
                 if (!silent) setLoading(true);
-                const loadingTimeout = setTimeout(() => { setLoading(false); }, 6000);
 
                 try {
 
@@ -1583,8 +1599,11 @@ const PdfViewer = ({ url, style, className }) => {
 
                 } finally {
 
-                    console.log("FIN LOAD DATABASE v3")
-                    clearTimeout(loadingTimeout);
+                    console.log("FIN LOAD DATABASE");
+                    console.log("orders en render:", database.orders, Array.isArray(database.orders)); // ← agrega esto
+                    console.log("freshUser.id:", freshUser.id);
+                    console.log("orders userId:", database.orders[0]?.userId);
+                    console.log("primer order completo:", database.orders[0]);
                     if (!silent) setLoading(false);
                 }
             };
@@ -2092,8 +2111,8 @@ const PdfViewer = ({ url, style, className }) => {
                 };
 
                 return (
-                    <div className="min-h-screen flex items-start justify-center p-4  login-wrapper" style={{ overflowY: 'auto' }}>
-                        <div className="w-full max-w-md">
+                    <div className="min-h-screen flex items-center justify-center p-4 login-wrapper" style={{ overflowY: 'auto' }}>
+                        <div className="w-full max-w-sm">
                             <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
                                 <div className="flex flex-col items-center justify-center mb-6">
                                     <img src="assets/logo_inulaboratorios.jpg" alt="INULABORATORIOS" className="h-14 mb-2"
@@ -2504,6 +2523,12 @@ const PdfViewer = ({ url, style, className }) => {
                             <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeTab === 'pedidos' && duenoView !== 'config' ? 'bg-white/20' : 'bg-cyan-100'}`}><i className={`fas fa-clipboard-list ${activeTab === 'pedidos' && duenoView !== 'config' ? 'text-white' : 'text-cyan-600'}`}></i></div>
                             <span className="font-medium">Pedidos</span>
                         </button>
+                        <button onClick={() => { resetDuenoState(); setActiveTab('resultados'); }}
+                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700'}`}>
+                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-white/20' : 'bg-purple-100'}`}><i className={`fas fa-file-medical ${activeTab === 'resultados' && duenoView !== 'config' ? 'text-white' : 'text-purple-600'}`}></i></div>
+                            <span className="font-medium">Resultados</span>
+                            {(countUnseenExams(petsOrPatients) + countPendingPayments()) > 0 && <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-white/20' : 'bg-red-100 text-red-600'}`}>{countUnseenExams(petsOrPatients) + countPendingPayments()}</span>}
+                        </button>
                         <button onClick={() => { resetDuenoState(); setActiveTab('facturacion'); }}
                             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'facturacion' ? 'bg-amber-500 text-white shadow-md' : 'text-gray-600 hover:bg-gray-50'}`}
                         >
@@ -2511,12 +2536,6 @@ const PdfViewer = ({ url, style, className }) => {
                                 <i className={`fas fa-file-invoice-dollar text-sm ${activeTab === 'facturacion' ? 'text-white' : 'text-amber-600'}`}></i>
                             </div>
                             <span className="font-medium">Facturación</span>
-                        </button>
-                        <button onClick={() => { resetDuenoState(); setActiveTab('resultados'); }}
-                            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg' : 'bg-gray-50 hover:bg-gray-100 text-gray-700'}`}>
-                            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-white/20' : 'bg-purple-100'}`}><i className={`fas fa-file-medical ${activeTab === 'resultados' && duenoView !== 'config' ? 'text-white' : 'text-purple-600'}`}></i></div>
-                            <span className="font-medium">Resultados</span>
-                            {(countUnseenExams(petsOrPatients) + countPendingPayments()) > 0 && <span className={`ml-auto text-xs px-2 py-0.5 rounded-full ${activeTab === 'resultados' && duenoView !== 'config' ? 'bg-white/20' : 'bg-red-100 text-red-600'}`}>{countUnseenExams(petsOrPatients) + countPendingPayments()}</span>}
                         </button>
                     </nav>
                     <div className="mx-4 border-t border-gray-200"></div>
@@ -4049,23 +4068,27 @@ const PdfViewer = ({ url, style, className }) => {
                             
                             {/* ==================== PEDIDOS ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'pedidos' && (
-                                <div>
-                                            <div className="flex items-center bg-gradient-to-r from-cyan-400 to-blue-500 rounded-2xl px-4 py-3 mb-3">
-                                                <i className="fas fa-clipboard-list text-white text-base mr-2"></i>
-                                                <span className="text-white font-semibold text-sm flex-1">Pedidos</span>
-                                                <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center text-white">
-                                                    <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-sm`}></i>
+                                <div style={{position:'relative', minHeight: clinPedidosSearchOpen ? '60vh' : 'auto'}}>
+                                    <div style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: clinPedidosSearchOpen ? '14px' : '0', borderBottomRightRadius: clinPedidosSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                        <div style={{padding:'10px 16px'}}>
+                                            <div className="bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                <i className="fas fa-clipboard-list text-white text-sm"></i>
+                                                <span className="text-white font-semibold text-sm">Pedidos</span>
+                                                <button onClick={() => { setClinPedidosSearchOpen(!clinPedidosSearchOpen); if (clinPedidosSearchOpen) setSearchTerm(''); }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                    <i className={`fas ${clinPedidosSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
                                                 </button>
                                             </div>
-                                            {showMobileSearch && (
-                                                <div className="relative mb-3">
-                                                    <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                    <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}
-                                                        placeholder="Buscar examen o perfil..."
-                                                        className="w-full pl-11 pr-10 py-3 rounded-2xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white text-sm" />
-                                                    {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
-                                                </div>
-                                            )}
+                                        </div>
+                                        <div className={`dueno-search-slide ${clinPedidosSearchOpen ? 'open' : ''}`}>
+                                            <div className="relative">
+                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Buscar examen o perfil..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-cyan-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                {searchTerm && <button onClick={() => setSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{height: clinPedidosSearchOpen ? '110px' : '70px', transition:'height 0.2s ease-out'}}></div>
+                                    {clinPedidosSearchOpen && (<div className="dueno-search-overlay" onClick={() => { setClinPedidosSearchOpen(false); setSearchTerm(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5}}></div>)}
                                     
                                     {(cart.length > 0 || pendingExams.length > 0) && (
                                         <div className="flex items-center gap-4 mb-4 text-xs text-gray-500">
@@ -4143,40 +4166,28 @@ const PdfViewer = ({ url, style, className }) => {
                             
                             {/* ==================== MASCOTAS/PACIENTES ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'mascotas' && !selectedMascota && (
-                                <>
-                                            {/* Header fijo */}
-                                            <div className="filters-panel">
-                                                <div className="filters-panel-inner">
-                                                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2">
-                                                        <i className="fas fa-paw text-white text-sm"></i>
-                                                        <span className="text-white font-semibold text-sm flex-1">Pacientes</span>
-                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{petsOrPatients.length}</span>
-                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
-                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
-                                                        </button>
-                                                    </div>
-                                                    {showMobileSearch && (
-                                                        <div className="relative mt-2">
-                                                            <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                            <input
-                                                                type="text"
-                                                                value={mascotaSearchTerm}
-                                                                onChange={(e) => setMascotaSearchTerm(e.target.value)}
-                                                                placeholder="Buscar mascota o dueño..."
-                                                                className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm"
-                                                            />
-                                                            {mascotaSearchTerm && (
-                                                                <button onClick={() => setMascotaSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
-                                                                    <i className="fas fa-times text-xs"></i>
-                                                                </button>
-                                                            )}
-                                                        </div>
-                                                    )}
-                                                </div>
+                                <div style={{position:'relative', minHeight: clinMascSearchOpen ? '60vh' : 'auto'}}>
+                                    <div style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: clinMascSearchOpen ? '14px' : '0', borderBottomRightRadius: clinMascSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                        <div style={{padding:'10px 16px'}}>
+                                            <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                <i className="fas fa-paw text-white text-sm"></i>
+                                                <span className="text-white font-semibold text-sm">Pacientes</span>
+                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{petsOrPatients.length}</span>
+                                                <button onClick={() => { setClinMascSearchOpen(!clinMascSearchOpen); if (clinMascSearchOpen) setMascotaSearchTerm(''); }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                    <i className={`fas ${clinMascSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                </button>
                                             </div>
-
-                                            {/* Espaciador */}
-                                            <div className="list-spacer-small"></div>
+                                        </div>
+                                        <div className={`dueno-search-slide ${clinMascSearchOpen ? 'open' : ''}`}>
+                                            <div className="relative">
+                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <input type="text" value={mascotaSearchTerm} onChange={(e) => setMascotaSearchTerm(e.target.value)} placeholder="Buscar mascota o dueño..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                {mascotaSearchTerm && <button onClick={() => setMascotaSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{height: clinMascSearchOpen ? '110px' : '70px', transition:'height 0.2s ease-out'}}></div>
+                                    {clinMascSearchOpen && (<div className="dueno-search-overlay" onClick={() => { setClinMascSearchOpen(false); setMascotaSearchTerm(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5}}></div>)}
                                     
                                     {/* Lista */}
                                     {(filteredMascotas || []).length === 0 ? (
@@ -4211,60 +4222,44 @@ const PdfViewer = ({ url, style, className }) => {
                                             ))}
                                         </div>
                                     )}
-                                </>
+                                </div>
                             )}
                             
                             {/* Detalle de mascota */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'mascotas' && selectedMascota && (
-                                <>
-                                    {/* Panel fijo con info + filtros */}
-                                    <div className="filters-panel">
-                                        <div className="filters-panel-inner">
-                                            {/* Info compacta de la mascota con color */}
-                                                    <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-2 flex items-center gap-2">
-                                                        <button onClick={() => setSelectedMascota(null)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                                            <i className="fas fa-arrow-left text-xs"></i>
-                                                        </button>
-                                                        <span className="text-xl">{selectedMascota.photo}</span>
-                                                        <div className="flex-1 min-w-0">
-                                                            <span className="text-white font-semibold text-sm">{getPetFullName(selectedMascota)}</span>
-                                                            <span className="text-white/70 text-xs ml-2">{selectedMascota.breed}</span>
-                                                        </div>
-                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{selectedMascota.exams.length} exám.</span>
-                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
-                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
-                                                        </button>
-                                                    </div>
-                                                    {showMobileSearch && (
-                                                        <>
-                                                            <div className="relative mt-2 mb-2">
-                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                                <input type="text" value={examSearchTerm} onChange={(e) => setExamSearchTerm(e.target.value)}
-                                                                    placeholder="Buscar examen..."
-                                                                    className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-sm" />
-                                                                {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                                            </div>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                                    <option value="">Día</option>
-                                                                    {Array.from({ length: 31 }, (_, i) => String(i + 1).padStart(2, '0')).map(d => <option key={d} value={d}>{d}</option>)}
-                                                                </select>
-                                                                <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                                    <option value="">Mes</option>
-                                                                    {['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                                </select>
-                                                                <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs">
-                                                                    <option value="">Año</option>
-                                                                    {Array.from({ length: 5 }, (_, i) => String(new Date().getFullYear() - i)).map(y => <option key={y} value={y}>{y}</option>)}
-                                                                </select>
-                                                            </div>
-                                                        </>
-                                                    )}
+                                <div style={{position:'relative', minHeight: clinMascDetailSearchOpen ? '60vh' : 'auto'}}>
+                                    <div style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: clinMascDetailSearchOpen ? '14px' : '0', borderBottomRightRadius: clinMascDetailSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                        <div style={{padding:'10px 16px'}}>
+                                            <div className="bg-gradient-to-r from-emerald-500 to-green-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                <button onClick={() => setSelectedMascota(null)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white flex-shrink-0">
+                                                    <i className="fas fa-arrow-left text-xs"></i>
+                                                </button>
+                                                <span className="text-xl">{selectedMascota.photo}</span>
+                                                <div className="flex-1 min-w-0">
+                                                    <span className="text-white font-semibold text-sm">{getPetFullName(selectedMascota)}</span>
+                                                    <span className="text-white/70 text-xs ml-2">{selectedMascota.breed}</span>
+                                                </div>
+                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{selectedMascota.exams.length} exám.</span>
+                                                <button onClick={() => { setClinMascDetailSearchOpen(!clinMascDetailSearchOpen); if (clinMascDetailSearchOpen) { setExamSearchTerm(''); setExamFilterDay(''); setExamFilterMonth(''); setExamFilterYear(''); } }} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
+                                                    <i className={`fas ${clinMascDetailSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div className={`dueno-search-slide-filters ${clinMascDetailSearchOpen ? 'open' : ''}`}>
+                                            <div className="relative mb-2">
+                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <input type="text" value={examSearchTerm} onChange={(e) => setExamSearchTerm(e.target.value)} placeholder="Buscar examen..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-emerald-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                {examSearchTerm && <button onClick={() => setExamSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <select value={examFilterDay} onChange={(e) => setExamFilterDay(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-emerald-500 focus:outline-none appearance-none"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}</select>
+                                                <select value={examFilterMonth} onChange={(e) => setExamFilterMonth(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-emerald-500 focus:outline-none appearance-none"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}</select>
+                                                <select value={examFilterYear} onChange={(e) => setExamFilterYear(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-emerald-500 focus:outline-none appearance-none"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
+                                            </div>
                                         </div>
                                     </div>
-                                    
-                                    {/* Espaciador */}
-                                    <div className="list-spacer-medium"></div>
+                                    <div style={{height: clinMascDetailSearchOpen ? '140px' : '70px', transition:'height 0.2s ease-out'}}></div>
+                                    {clinMascDetailSearchOpen && (<div className="dueno-search-overlay" onClick={() => { setClinMascDetailSearchOpen(false); setExamSearchTerm(''); setExamFilterDay(''); setExamFilterMonth(''); setExamFilterYear(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5}}></div>)}
                                     
                                     {/* Lista de exámenes */}
                                     <div className="flex items-center justify-between mb-3">
@@ -4306,42 +4301,38 @@ const PdfViewer = ({ url, style, className }) => {
                                             ))}
                                         </div>
                                     )}
-                                </>
+                                </div>
                             )}
                             
                             {/* ==================== RESULTADOS (Historial de pedidos) ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'resultados' && (
-                                <>
-                                            {/* Panel de filtros fijo */}
-                                            <div className="filters-panel">
-                                                <div className="filters-panel-inner">
-                                                    <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-2 flex items-center gap-2">
-                                                        <i className="fas fa-file-medical text-white text-sm"></i>
-                                                        <span className="text-white font-semibold text-sm flex-1">Resultados</span>
-                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.length}</span>
-                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
-                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
-                                                        </button>
-                                                    </div>
-                                                    {showMobileSearch && (
-                                                        <>
-                                                            <div className="relative mt-2 mb-2">
-                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                                <input type="text" value={resultadosSearch} onChange={(e) => setResultadosSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-sm" />
-                                                                {resultadosSearch && <button onClick={() => setResultadosSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                                            </div>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                <select value={resultadosFilterDay} onChange={(e) => setResultadosFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
-                                                                <select value={resultadosFilterMonth} onChange={(e) => setResultadosFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
-                                                                <select value={resultadosFilterYear} onChange={(e) => setResultadosFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </div>
+                                <div style={{position:'relative', minHeight: clinResSearchOpen ? '60vh' : 'auto'}}>
+                                    <div style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: clinResSearchOpen ? '14px' : '0', borderBottomRightRadius: clinResSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                        <div style={{padding:'10px 16px'}}>
+                                            <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                <i className="fas fa-file-medical text-white text-sm"></i>
+                                                <span className="text-white font-semibold text-sm">Resultados</span>
+                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.length}</span>
+                                                <button onClick={() => { setClinResSearchOpen(!clinResSearchOpen); if (clinResSearchOpen) { setResultadosSearch(''); setResultadosFilterDay(''); setResultadosFilterMonth(''); setResultadosFilterYear(''); } }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                    <i className={`fas ${clinResSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                </button>
                                             </div>
-
-                                            {/* Espaciador */}
-                                            <div className="list-spacer-small"></div>
+                                        </div>
+                                        <div className={`dueno-search-slide-filters ${clinResSearchOpen ? 'open' : ''}`}>
+                                            <div className="relative mb-2">
+                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <input type="text" value={resultadosSearch} onChange={(e) => setResultadosSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-purple-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                {resultadosSearch && <button onClick={() => setResultadosSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <select value={resultadosFilterDay} onChange={(e) => setResultadosFilterDay(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-purple-500 focus:outline-none appearance-none"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}</select>
+                                                <select value={resultadosFilterMonth} onChange={(e) => setResultadosFilterMonth(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-purple-500 focus:outline-none appearance-none"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}</select>
+                                                <select value={resultadosFilterYear} onChange={(e) => setResultadosFilterYear(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-purple-500 focus:outline-none appearance-none"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{height: clinResSearchOpen ? '140px' : '70px', transition:'height 0.2s ease-out'}}></div>
+                                    {clinResSearchOpen && (<div className="dueno-search-overlay" onClick={() => { setClinResSearchOpen(false); setResultadosSearch(''); setResultadosFilterDay(''); setResultadosFilterMonth(''); setResultadosFilterYear(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5}}></div>)}
                                     
                                     {/* Lista */}
                                     {(() => {
@@ -4424,42 +4415,38 @@ const PdfViewer = ({ url, style, className }) => {
                                             </div>
                                         );
                                     })()}
-                                </>
+                                </div>
                             )}
                             
                             {/* ==================== FACTURACIÓN ==================== */}
                             {!showOrderSummary && !selectedExam && !viewingInvoice && !viewingOrderTracking && medicoView === 'facturacion' && (
-                                <>
-                                    {/* Panel de filtros fijo */}
-                                            <div className="filters-panel">
-                                                <div className="filters-panel-inner">
-                                                    <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-2 flex items-center gap-2">
-                                                        <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
-                                                        <span className="text-white font-semibold text-sm flex-1">Facturación</span>
-                                                        <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.filter(o => o.invoicePdf).length}</span>
-                                                        <button onClick={() => setShowMobileSearch(prev => !prev)} className="w-7 h-7 bg-white/20 rounded-full flex items-center justify-center text-white ml-1">
-                                                            <i className={`fas ${showMobileSearch ? 'fa-times' : 'fa-search'} text-xs`}></i>
-                                                        </button>
-                                                    </div>
-                                                    {showMobileSearch && (
-                                                        <>
-                                                            <div className="relative mt-2 mb-2">
-                                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                                <input type="text" value={facturacionSearch} onChange={(e) => setFacturacionSearch(e.target.value)} placeholder="Buscar mascota..." className="w-full pl-9 pr-8 py-2 rounded-lg border border-gray-200 focus:border-amber-500 focus:outline-none bg-gray-50 text-sm" />
-                                                                {facturacionSearch && <button onClick={() => setFacturacionSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-xs"></i></button>}
-                                                            </div>
-                                                            <div className="grid grid-cols-3 gap-2">
-                                                                <select value={facturacionFilterDay} onChange={(e) => setFacturacionFilterDay(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}</select>
-                                                                <select value={facturacionFilterMonth} onChange={(e) => setFacturacionFilterMonth(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}</select>
-                                                                <select value={facturacionFilterYear} onChange={(e) => setFacturacionFilterYear(e.target.value)} className="p-1.5 rounded-lg bg-gray-50 border border-gray-200 text-xs"><option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
-                                                            </div>
-                                                        </>
-                                                    )}
-                                                </div>
+                                <div style={{position:'relative', minHeight: clinFacSearchOpen ? '60vh' : 'auto'}}>
+                                    <div style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: clinFacSearchOpen ? '14px' : '0', borderBottomRightRadius: clinFacSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                        <div style={{padding:'10px 16px'}}>
+                                            <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
+                                                <span className="text-white font-semibold text-sm">Facturación</span>
+                                                <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{completedOrders.filter(o => o.invoicePdf).length}</span>
+                                                <button onClick={() => { setClinFacSearchOpen(!clinFacSearchOpen); if (clinFacSearchOpen) { setFacturacionSearch(''); setFacturacionFilterDay(''); setFacturacionFilterMonth(''); setFacturacionFilterYear(''); } }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                    <i className={`fas ${clinFacSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                </button>
                                             </div>
-
-                                            {/* Espaciador */}
-                                            <div className="list-spacer-small"></div>
+                                        </div>
+                                        <div className={`dueno-search-slide-filters ${clinFacSearchOpen ? 'open' : ''}`}>
+                                            <div className="relative mb-2">
+                                                <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                <input type="text" value={facturacionSearch} onChange={(e) => setFacturacionSearch(e.target.value)} placeholder="Buscar comprobante..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-amber-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                {facturacionSearch && <button onClick={() => setFacturacionSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                            </div>
+                                            <div className="flex gap-2">
+                                                <select value={facturacionFilterDay} onChange={(e) => setFacturacionFilterDay(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}</select>
+                                                <select value={facturacionFilterMonth} onChange={(e) => setFacturacionFilterMonth(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}</select>
+                                                <select value={facturacionFilterYear} onChange={(e) => setFacturacionFilterYear(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style={{height: clinFacSearchOpen ? '140px' : '70px', transition:'height 0.2s ease-out'}}></div>
+                                    {clinFacSearchOpen && (<div className="dueno-search-overlay" onClick={() => { setClinFacSearchOpen(false); setFacturacionSearch(''); setFacturacionFilterDay(''); setFacturacionFilterMonth(''); setFacturacionFilterYear(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5}}></div>)}
                                     
                                     {/* Comprobantes Pendientes */}
                                     {(() => {
@@ -4591,7 +4578,7 @@ const PdfViewer = ({ url, style, className }) => {
                                             </div>
                                         );
                                     })()}
-                                </>
+                                </div>
                             )}
                             </div>
                         </div>
@@ -4630,7 +4617,7 @@ const PdfViewer = ({ url, style, className }) => {
                         {/* Fin versión móvil */}
                         
                         {/* ========== VERSIÓN DESKTOP CON SIDEBAR ========== */}
-                        <div className="hidden md:block min-h-screen">
+                        <div className="hidden md:block h-screen overflow-hidden">
                             {/* Header completo horizontal */}
                             <div className="bg-white border-b border-gray-200 px-6 py-3 fixed top-0 left-0 right-0 z-50">
                                 <div className="flex items-center justify-between">
@@ -4657,7 +4644,7 @@ const PdfViewer = ({ url, style, className }) => {
                             </div>
                             
                             {/* Contenedor principal debajo del header */}
-                            <div className="pt-16 flex">
+                            <div className="pt-16 flex h-full">
                                 {/* Sidebar izquierdo */}
                                 <div className="w-56 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 flex flex-col">
                                     {/* Navegación con cuadros de colores */}
@@ -4734,7 +4721,7 @@ const PdfViewer = ({ url, style, className }) => {
                                 </div>
                                 
                                 {/* Área de contenido principal */}
-                                <div className="ml-56 flex-1 p-6 bg-gray-100 h-[calc(100vh-64px)] overflow-hidden">
+                                <div className="ml-56 flex-1 bg-gray-100 min-h-0 overflow-hidden">
                                     
                                     {/* Mensaje de éxito */}
                                     {successMessage && (
@@ -4767,7 +4754,7 @@ const PdfViewer = ({ url, style, className }) => {
                                         const trackingCurrentIndex = trackingStatusOrder.indexOf(trackingOrder.status === 'pending' ? 'confirmed' : trackingOrder.status);
                                         
                                         return (
-                                            <div className="flex flex-col h-full -mx-6 -mt-6">
+                                            <div className="flex flex-col h-full">
                                                 <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                     <div className="flex items-center gap-3">
                                                         <button onClick={() => setViewingOrderTracking(null)} className="w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm">
@@ -4869,7 +4856,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Vista PDF de Resultado - Desktop */}
                                     {selectedExam && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
                                                     <button onClick={() => setSelectedExam(null)} className="w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm">
@@ -4920,7 +4907,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Vista Comprobante - Desktop */}
                                     {!selectedExam && viewingInvoice && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
                                                     <button onClick={() => setViewingInvoice(null)} className="w-10 h-10 bg-white hover:bg-gray-100 rounded-full flex items-center justify-center text-gray-600 shadow-sm">
@@ -4980,7 +4967,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Checkout - Selección de Mascota y Dirección - Desktop */}
                                     {!selectedExam && !viewingInvoice && currentExamForPet && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Barra superior - ancho completo */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
@@ -5000,8 +4987,8 @@ const PdfViewer = ({ url, style, className }) => {
                                             </div>
                                             
                                                 {/* Contenido scrolleable */}
-                                                <div className="flex-1 overflow-y-auto p-6">
-                                                    <div className="max-w-lg mx-auto">
+                                                <div className="flex-1 overflow-y-auto" style={{padding:'1.75rem 5rem 1.5rem'}}>
+                                                    <div>
                                                 <div className="bg-white rounded-2xl shadow p-4 mb-4 flex items-center gap-4">
                                                     <div className={`w-12 h-12 ${currentExamForPet.bg} rounded-xl flex items-center justify-center`}>
                                                         <i className={`fas ${currentExamForPet.icon} ${currentExamForPet.color} text-xl`}></i>
@@ -5042,8 +5029,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                                         placeholder={`Buscar ${entityName}...`} 
                                                                         className="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-gray-200 focus:border-cyan-500 focus:outline-none bg-white" />
                                                                 </div>
-                                                                <div className="bg-white rounded-2xl shadow overflow-hidden mb-4">
-                                                                    <div className="max-h-64 overflow-y-auto hide-scrollbar">
+                                                                <div className="bg-white rounded-2xl shadow overflow-hidden mb-4 relative">
+                                                                    <div className="max-h-72 overflow-y-auto hide-scrollbar">
                                                                         {(filteredPets || []).length === 0 ? (
                                                                             <div className="p-8 text-center text-gray-500">
                                                                                 <i className="fas fa-search text-3xl mb-2 text-gray-300"></i>
@@ -5062,6 +5049,7 @@ const PdfViewer = ({ url, style, className }) => {
                                                                             </div>
                                                                         ))}
                                                                     </div>
+                                                                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent rounded-b-2xl"></div>
                                                                 </div>
                                                                 <button onClick={() => setShowNewPetForm(true)} 
                                                                     className="w-full py-4 rounded-2xl border-2 border-dashed border-cyan-300 text-cyan-600 font-semibold hover:bg-cyan-50">
@@ -5101,7 +5089,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                                         <p className="text-xs text-emerald-600">{selectedPetForOrder?.breed}</p>
                                                                     </div>
                                                                 </div>
-                                                                <div className="bg-white rounded-2xl shadow overflow-hidden mb-4">
+                                                                <div className="bg-white rounded-2xl shadow overflow-hidden mb-4 relative">
+                                                                    <div className="max-h-96 overflow-y-auto hide-scrollbar">
                                                                     {(database.addresses || []).length === 0 ? (
                                                                         <div className="p-8 text-center text-gray-500">
                                                                             <i className="fas fa-map-marker-alt text-3xl mb-2 text-gray-300"></i>
@@ -5121,6 +5110,8 @@ const PdfViewer = ({ url, style, className }) => {
                                                                             <i className="fas fa-chevron-right text-gray-300"></i>
                                                                         </div>
                                                                     ))}
+                                                                    </div>
+                                                                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent rounded-b-2xl"></div>
                                                                 </div>
                                                                 <button onClick={() => setShowNewAddressForm(true)} 
                                                                     className="w-full py-4 rounded-2xl border-2 border-dashed border-cyan-300 text-cyan-600 font-semibold hover:bg-cyan-50">
@@ -5334,7 +5325,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Inicio Desktop - Resumen */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'inicio' && showAllPending && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             <div className="flex-shrink-0 bg-white shadow-md border-b border-gray-200 p-4">
                                                 <div className="flex items-center gap-3">
                                                     <button onClick={() => setShowAllPending(false)} className="w-10 h-10 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-600">
@@ -5388,7 +5379,7 @@ const PdfViewer = ({ url, style, className }) => {
 
 
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'inicio' && !showAllPending && (
-                                        <div className="h-full overflow-y-auto -mx-6 -mt-6 px-6 pt-6">
+                                        <div className="h-full overflow-y-auto px-20 pt-10">
                                             <h1 className="text-2xl font-bold text-gray-800 mb-1">¡Hola, {freshUser.name}!</h1>
                                             <p className="text-gray-500 mb-6">Resumen de tu actividad</p>
                                             
@@ -5509,7 +5500,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Pedidos Desktop - Contenido completo */}
                                     {!showOrderSummary && !selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'pedidos' && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Sección 1: Header fijo */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
@@ -5632,7 +5623,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Pacientes Desktop */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'mascotas' && !selectedMascota && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Sección 1: Header fijo */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
@@ -5684,7 +5675,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Detalle Paciente Desktop */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'mascotas' && selectedMascota && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Sección 1: Header fijo con info de mascota */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300">
                                                 {/* Fila 1: Info de la mascota */}
@@ -5795,7 +5786,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Resultados Desktop */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'resultados' && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Sección 1: Header fijo */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
@@ -5919,7 +5910,7 @@ const PdfViewer = ({ url, style, className }) => {
                                     
                                     {/* Facturación Desktop */}
                                     {!selectedExam && !viewingInvoice && !currentExamForPet && !viewingOrderTracking && medicoView === 'facturacion' && (
-                                        <div className="flex flex-col h-full -mx-6 -mt-6">
+                                        <div className="flex flex-col h-full">
                                             {/* Sección 1: Header fijo */}
                                             <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4">
                                                 <div className="flex items-center gap-3">
@@ -6091,6 +6082,15 @@ const PdfViewer = ({ url, style, className }) => {
             // =====================================================
             // VISTA PARA DUEÑOS - Mantener interfaz actual
             // =====================================================
+            if (isLandscapePhone) {
+                return (
+                    <div className="fixed inset-0 bg-gray-900 flex flex-col items-center justify-center z-[999999] text-white text-center p-6">
+                        <i className="fas fa-mobile-alt text-5xl mb-4 animate-pulse"></i>
+                        <p className="text-lg font-semibold mb-2">Gira tu dispositivo</p>
+                        <p className="text-sm text-gray-400">Esta app funciona mejor en vertical</p>
+                    </div>
+                );
+            }
             return (
                 <div className="min-h-screen bg-gray-100">
                     {renderTermsModal()}
@@ -6662,45 +6662,40 @@ const PdfViewer = ({ url, style, className }) => {
                                         {activeTab === 'pedidos' && (
                                             <div style={{ display: 'flex', flexDirection: 'column', flex: 1, height: '100%', marginLeft: '-24px', marginRight: '-24px', marginTop: '-20px', background: '#f3f4f6', overflow: 'hidden' }}>
 
-                                                {/* Header fijo */}
-                                                <div style={{ flexShrink: 0, background: 'white', padding: '28px 32px', borderBottom: '1px solid #e5e7eb', boxShadow: '0 2px 6px rgba(0,0,0,0.05)', width: '100%' }}>
-
-                                                    <div className="flex items-center gap-4">
-
-                                                        {/* Título */}
-                                                        <div className="flex items-center gap-2 min-w-max">
-                                                            <i className="fas fa-clipboard-list text-cyan-500 text-lg"></i>
-                                                            <span className="text-cyan-600 font-semibold text-base">
-                                                                Pedidos
-                                                            </span>
+                                                {/* Mobile: Animated search franja */}
+                                                <div className="lg:hidden" style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: pedidosSearchOpen ? '14px' : '0', borderBottomRightRadius: pedidosSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                                    <div style={{padding:'10px 16px'}}>
+                                                        <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                            <i className="fas fa-clipboard-list text-white text-sm"></i>
+                                                            <span className="text-white font-semibold text-sm">Pedidos</span>
+                                                            <button onClick={() => { setPedidosSearchOpen(!pedidosSearchOpen); if (pedidosSearchOpen) setPedidosSearchTerm(''); }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                                <i className={`fas ${pedidosSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                            </button>
                                                         </div>
-
-                                                        {/* Buscador */}
-                                                        <div className="relative flex-1">
-                                                            <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
-                                                            <input
-                                                                type="text"
-                                                                value={pedidosSearchTerm}
-                                                                onChange={(e) => setPedidosSearchTerm(e.target.value)}
-                                                                placeholder="Buscar examen o servicio..."
-                                                                className="w-full py-2.5 pl-11 pr-10 rounded-full border border-gray-200 bg-white text-sm focus:border-cyan-500 focus:outline-none shadow-sm"
-                                                            />
-                                                            {pedidosSearchTerm && (
-                                                                <button
-                                                                    onClick={() => setPedidosSearchTerm('')}
-                                                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                                                >
-                                                                    <i className="fas fa-times text-sm"></i>
-                                                                </button>
-                                                            )}
+                                                    </div>
+                                                    <div className={`dueno-search-slide ${pedidosSearchOpen ? 'open' : ''}`}>
+                                                        <div className="relative">
+                                                            <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                            <input type="text" value={pedidosSearchTerm} onChange={(e) => setPedidosSearchTerm(e.target.value)} placeholder="Buscar examen o servicio..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-cyan-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                            {pedidosSearchTerm && <button onClick={() => setPedidosSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
                                                         </div>
+                                                    </div>
+                                                </div>
 
+                                                {/* Desktop: Header fijo */}
+                                                <div className="hidden lg:block flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4" style={{ width: '100%' }}>
+
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="flex items-center gap-2 px-2"><i className="fas fa-clipboard-list text-cyan-500 text-lg"></i><span className="text-cyan-600 font-semibold">Pedidos</span></div>
+                                                        <div className="relative flex-1"><i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" value={pedidosSearchTerm} onChange={(e) => setPedidosSearchTerm(e.target.value)} placeholder="Buscar examen o servicio..." className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-cyan-500 focus:outline-none bg-white text-sm" />{pedidosSearchTerm && <button onClick={() => setPedidosSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times"></i></button>}</div>
                                                     </div>
 
                                                 </div>
 
                                                 {/* CONTENIDO */}
-                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 10% 24px 10%', background: '#f9fafb', height: '0' }}>
+                                                <div style={{ flex: 1, overflowY: 'auto', padding: '20px 10% 24px 10%', background: '#f9fafb', height: '0', position:'relative', minHeight: pedidosSearchOpen ? '60vh' : 'auto' }}>
+                                                <div className="lg:hidden" style={{height: pedidosSearchOpen ? '100px' : '56px', transition:'height 0.2s ease-out'}}></div>
+                                                {pedidosSearchOpen && (<div className="lg:hidden dueno-search-overlay" onClick={() => { setPedidosSearchOpen(false); setPedidosSearchTerm(''); }} style={{position:'absolute', top:0, left:0, right:0, bottom:0, background:'rgba(0,0,0,0.3)', zIndex:5, borderRadius:'0'}}></div>)}
 
                                                 {/* Vista para DUEÑOS - Paquetes amigables */}
                                                 <div className="mb-6">
@@ -6907,54 +6902,33 @@ const PdfViewer = ({ url, style, className }) => {
                                             {showOrderSummary && <div className="modal-overlay flex items-center justify-center p-4" onClick={(e) => { if (e.target === e.currentTarget) setShowOrderSummary(false); }}><div className="bg-white rounded-3xl w-full max-w-3xl shadow-2xl flex flex-col" style={{ height: '680px' }}><div className="px-6 py-4 border-b flex items-center justify-between flex-shrink-0"><h2 className="text-xl font-bold text-gray-800"><i className="fas fa-clipboard-list text-cyan-500 mr-2"></i>Resumen del Pedido</h2><button onClick={() => setShowOrderSummary(false)} className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center text-gray-500 transition-colors"><i className="fas fa-times"></i></button></div><div className="flex-1 flex flex-col lg:flex-row min-h-0"><div className="lg:w-1/2 p-6 lg:border-r overflow-y-auto"><p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3"><i className="fas fa-vials text-cyan-500 mr-2"></i>Exámenes ({cart.length})</p><div className="space-y-3">{cart.map(item => (<div key={item.exam.id} className="bg-gray-50 rounded-xl p-4"><div className="flex items-start justify-between mb-2"><div className="flex items-center gap-3 flex-1 min-w-0"><div className={`w-10 h-10 ${item?.exam?.bg || 'bg-cyan-100'} rounded-lg flex items-center justify-center flex-shrink-0`}><i className={`fas ${item?.exam?.icon || 'fa-vial'} ${item?.exam?.color || 'text-cyan-600'}`}></i></div><div className="min-w-0"><span className="font-medium text-gray-800 text-sm">{item?.exam?.name || item?.examName || 'Examen'}</span>{item?.exam?.subtitle && <p className="text-xs text-gray-500 truncate">{item.exam.subtitle}</p>}</div></div><div className="flex items-center gap-3 flex-shrink-0 ml-3">{item.exam.price && <span className="text-cyan-600 font-bold text-sm whitespace-nowrap">S/ {item.exam.price}</span>}<button onClick={() => removeFromCart(item.exam.id)} className="text-red-400 hover:text-red-600"><i className="fas fa-trash text-sm"></i></button></div></div><div className="border-t pt-2 mt-2 space-y-1.5"><div className="flex items-center gap-2"><span className="text-lg">{item?.pet?.photo}</span><span className="text-sm text-gray-600">{item?.pet?.name || ''}</span></div><div className="flex items-start gap-2 text-xs text-gray-500"><i className="fas fa-map-marker-alt mt-0.5 text-cyan-500"></i><span>{item.address?.name}: {item.address?.address}, {safeText(item?.address?.district)}</span></div>{item.tomaMuestra && <div className="flex items-center gap-2 text-xs"><i className="fas fa-syringe text-emerald-500"></i><span className="text-emerald-600 font-medium">Toma de muestra a domicilio {(() => { const p = getTomaMuestraPrice(item.address?.district, examTotal); return p !== null ? `(+S/ ${p})` : ''; })()}</span></div>}</div></div>))}</div></div><div className="lg:w-1/2 p-6"><p className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3"><i className="fas fa-cog text-gray-400 mr-2"></i>Detalles</p><div className="bg-gray-50 rounded-xl p-4 mb-4"><p className="text-sm font-medium text-gray-700 mb-3"><i className="fas fa-file-invoice-dollar text-amber-600 mr-2"></i>Tipo de comprobante</p><div className="grid grid-cols-2 gap-2"><button onClick={() => setInvoiceType('boleta')} className={`py-2.5 px-3 rounded-xl text-sm font-medium transition-all ${invoiceType === 'boleta' ? 'bg-cyan-500 text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:border-cyan-300'}`}><i className="fas fa-receipt mr-1.5"></i>Boleta</button><button onClick={() => setInvoiceType('factura')} className={`py-2.5 px-3 rounded-xl text-sm font-medium transition-all ${invoiceType === 'factura' ? 'bg-amber-500 text-white shadow-md' : 'bg-white text-gray-600 border border-gray-200 hover:border-amber-300'}`}><i className="fas fa-file-invoice mr-1.5"></i>Factura</button></div></div><div className="bg-gray-50 rounded-xl p-4 mb-4"><p className="text-sm font-medium text-gray-700 mb-3"><i className="fas fa-comment-alt text-cyan-500 mr-2"></i>Comentarios</p><textarea value={orderComment} onChange={(e) => setOrderComment(e.target.value)} placeholder="Ej: Recoger muestra después de las 10am, tocar timbre 2 veces..." className="w-full px-3 py-2.5 rounded-xl bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:border-cyan-500 focus:outline-none text-sm resize-none" rows="3" maxLength="500" /><p className="text-xs text-gray-400 mt-1 text-right">{orderComment.length}/500</p></div>{renderTermsCheckbox()}<button onClick={submitOrder} disabled={!termsAccepted} className={`w-full py-3.5 rounded-xl font-semibold transition-all ${termsAccepted ? "bg-gradient-to-r from-cyan-500 to-blue-600 text-white" : "bg-gray-200 text-gray-400 cursor-not-allowed"}`}><i className="fas fa-paper-plane mr-2"></i>Solicitar Pedido</button></div></div></div></div>}
                         </div>)}
                                         {activeTab === 'resultados' && (<div style={{ padding: '0 10%' }}>
-                                            {/* Header - Desktop: todo en una fila / Mobile: apilado */}
-                                            <div className="flex-shrink-0 bg-white border-b border-gray-200 p-4 mb-4" style={{ marginLeft: '-14%', marginRight: '-14%', paddingLeft: '32px', paddingRight: '32px', marginTop: '-5px' }}>
-
-                                                {/* DESKTOP: una sola fila */}
-                                                <div className="hidden lg:flex items-center gap-3">
-                                                    <div className="flex items-center gap-2 px-2 flex-shrink-0">
-                                                        <i className="fas fa-file-medical text-purple-500 text-lg"></i>
-                                                        <span className="text-purple-600 font-semibold">Resultados</span>
-                                                    </div>
-                                                    <div className="relative" style={{ flex: 8 }}>
-                                                        <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                        <input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)}
-                                                            placeholder="Buscar mascota..."
-                                                            className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />
-                                                        {resSearchTerm && <button onClick={() => setResSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
-                                                    </div>
-                                                    <div className="flex items-center gap-2 flex-shrink-0">
-                                                        <span className="text-xs text-gray-500">Filtrar por:</span>
-                                                        <div className="relative">
-                                                            <select value={resFilterDay} onChange={(e) => setResFilterDay(e.target.value)} className="h-10 w-24 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
-                                                        <div className="relative">
-                                                            <select value={resFilterMonth} onChange={(e) => setResFilterMonth(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
-                                                        <div className="relative">
-                                                            <select value={resFilterYear} onChange={(e) => setResFilterYear(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none">
-                                                                <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
-                                                            </select>
-                                                            <i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                {/* MOBILE: barra morada */}
-                                                <div className="lg:hidden">
-                                                    <div className="bg-gradient-to-r from-purple-500 to-purple-700 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                            {/* Mobile: Animated search franja Resultados */}
+                                            <div className="lg:hidden" style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)'}}>
+                                                <div style={{padding:'10px 16px'}}>
+                                                    <div className="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
                                                         <i className="fas fa-file-medical text-white text-sm"></i>
-                                                        <span className="text-white font-semibold text-sm flex-1">Resultados</span>
+                                                        <span className="text-white font-semibold text-sm">Resultados</span>
                                                         <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{(database.pets || []).length}</span>
+                                                        <div className="ml-auto w-7 h-7"></div>
                                                     </div>
                                                 </div>
                                             </div>
+                                            {/* Desktop: Header with search + filters */}
+                                            <div className="flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4 mb-4" style={{ marginLeft: '-14%', marginRight: '-14%', paddingLeft: '32px', paddingRight: '32px', marginTop: '-5px' }}>
+
+                                                {/* DESKTOP: una sola fila */}
+                                                <div className="hidden lg:flex items-center gap-3">
+                                                    <div className="flex items-center gap-2 px-2"><i className="fas fa-file-medical text-purple-500 text-lg"></i><span className="text-purple-600 font-semibold">Resultados</span><span className="bg-purple-500 text-white text-xs px-2 py-0.5 rounded-full">{(database.pets || []).reduce((sum, p) => sum + (p.exams?.length || 0), 0)}</span></div>
+                                                    <div className="relative flex-1"><i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" value={resSearchTerm} onChange={(e) => setResSearchTerm(e.target.value)} placeholder="Buscar mascota..." className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-purple-500 focus:outline-none bg-white text-sm" />{resSearchTerm && <button onClick={() => setResSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times"></i></button>}</div>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs text-gray-500">Filtrar por:</span>
+                                                        <div className="relative"><select value={resFilterDay} onChange={(e) => setResFilterDay(e.target.value)} className="h-10 w-24 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                        <div className="relative"><select value={resFilterMonth} onChange={(e) => setResFilterMonth(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                        <div className="relative"><select value={resFilterYear} onChange={(e) => setResFilterYear(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-purple-500 appearance-none cursor-pointer focus:outline-none"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="lg:hidden" style={{height:'56px'}}></div>
 
                                             {/* Pedidos en curso */}
                                             {(() => {
@@ -7145,38 +7119,50 @@ const PdfViewer = ({ url, style, className }) => {
                             const userInvoices = facturas;
                                 return (
                                                 <div className="dueno-normal-content pb-6">
+                                        {/* Mobile: Animated search franja Facturación */}
+                                        <div className="lg:hidden" style={{position:'fixed', top:'calc(56px + env(safe-area-inset-top, 0px))', left:0, right:0, zIndex:500, background:'#ffffff', boxShadow:'0 4px 14px -2px rgba(0,0,0,0.1)', borderBottomLeftRadius: facDuenoSearchOpen ? '14px' : '0', borderBottomRightRadius: facDuenoSearchOpen ? '14px' : '0', transition:'border-radius 0.2s ease-out', overflow:'hidden'}}>
+                                            <div style={{padding:'10px 16px'}}>
+                                                <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-xl px-3 py-1.5 flex items-center gap-2">
+                                                    <i className="fas fa-file-invoice-dollar text-white text-sm"></i>
+                                                    <span className="text-white font-semibold text-sm">Facturación</span>
+                                                    <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full">{(facturas || []).length}</span>
+                                                    <button onClick={() => { setFacDuenoSearchOpen(!facDuenoSearchOpen); if (facDuenoSearchOpen) { setFacDuenoSearchTerm(''); setFacDuenoFilterDay(''); setFacDuenoFilterMonth(''); setFacDuenoFilterYear(''); } }} className="ml-auto w-7 h-7 rounded-full flex items-center justify-center bg-white/20 active:bg-white/30">
+                                                        <i className={`fas ${facDuenoSearchOpen ? 'fa-times' : 'fa-search'} text-white text-xs`}></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div className={`dueno-search-slide-filters ${facDuenoSearchOpen ? 'open' : ''}`}>
+                                                <div className="relative mb-2">
+                                                    <i className="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                                                    <input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)} placeholder="Buscar comprobante..." className="w-full h-9 pl-9 pr-8 border border-gray-200 focus:border-amber-500 focus:outline-none bg-gray-50 text-xs dueno-search-pill" />
+                                                    {facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
+                                                </div>
+                                                <div className="flex gap-2">
+                                                    <select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none">
+                                                        <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}
+                                                    </select>
+                                                    <select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none">
+                                                        <option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}
+                                                    </select>
+                                                    <select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="flex-1 h-8 px-2 rounded-lg border border-gray-200 text-xs bg-gray-50 focus:border-amber-500 focus:outline-none appearance-none">
+                                                        <option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="lg:hidden" style={{height: facDuenoSearchOpen ? '120px' : '56px', transition:'height 0.2s ease-out'}}></div>
                                         {/* Header: Desktop */}
-                                        <div className="hidden lg:block flex-shrink-0 bg-white border-b border-gray-200 px-6 py-3 -mx-6 -mt-6 mb-6">
-                                            <div className="flex items-center gap-4">
-                                                <div className="flex items-center gap-2">
-                                                    <i className="fas fa-file-invoice-dollar text-amber-500 text-lg"></i>
-                                                    <span className="text-amber-600 font-semibold text-lg">Facturación</span>
-                                                    <span className="bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">{(facturas || []).length}</span>
-                                                </div>
-                                                <div className="relative flex-1">
-                                                    <i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                                                    <input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)}
-                                                        placeholder="Buscar comprobante..."
-                                                        className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm" />
-                                                    {facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times text-sm"></i></button>}
-                                                </div>
+                                        <div className="hidden lg:block flex-shrink-0 bg-gray-100 shadow-md border-b border-gray-300 p-4 mb-6" style={{marginLeft:'-5rem', marginRight:'-5rem', marginTop:'-1.75rem'}}>
+                                            <div className="flex items-center gap-3">
+                                                <div className="flex items-center gap-2 px-2"><i className="fas fa-file-invoice-dollar text-amber-500 text-lg"></i><span className="text-amber-600 font-semibold">Facturación</span><span className="bg-amber-500 text-white text-xs px-2 py-0.5 rounded-full">{(facturas || []).length}</span></div>
+                                                <div className="relative flex-1"><i className="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input type="text" value={facDuenoSearchTerm} onChange={(e) => setFacDuenoSearchTerm(e.target.value)} placeholder="Buscar comprobante..." className="w-full h-10 pl-11 pr-10 rounded-full border border-gray-300 focus:border-amber-500 focus:outline-none bg-white text-sm" />{facDuenoSearchTerm && <button onClick={() => setFacDuenoSearchTerm('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"><i className="fas fa-times"></i></button>}</div>
                                                 <div className="flex items-center gap-2">
                                                     <span className="text-xs text-gray-500">Filtrar por:</span>
-                                                    <div className="relative">
-                                                        <select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="h-10 w-20 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                            <option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i + 1} value={String(i + 1).padStart(2, '0')}>{i + 1}</option>)}
-                                                        </select>
-                                                        <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                    </div>
-                                                    <div className="relative">
-                                                        <select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                            <option value="">Mes</option>{['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'].map((m, i) => <option key={i} value={String(i + 1).padStart(2, '0')}>{m}</option>)}
-                                                        </select>
-                                                        <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
-                                                    </div>
-                                                    <div className="relative">
-                                                        <select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="h-10 w-24 pl-3 pr-7 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none">
-                                                            <option value="">Año</option>{['2026', '2025', '2024', '2023'].map(y => <option key={y} value={y}>{y}</option>)}
+                                                    <div className="relative"><select value={facDuenoFilterDay} onChange={(e) => setFacDuenoFilterDay(e.target.value)} className="h-10 w-24 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"><option value="">Día</option>{[...Array(31)].map((_, i) => <option key={i+1} value={String(i+1).padStart(2,'0')}>{i+1}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                    <div className="relative"><select value={facDuenoFilterMonth} onChange={(e) => setFacDuenoFilterMonth(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"><option value="">Mes</option>{['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'].map((m, i) => <option key={i} value={String(i+1).padStart(2,'0')}>{m}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                    <div className="relative"><select value={facDuenoFilterYear} onChange={(e) => setFacDuenoFilterYear(e.target.value)} className="h-10 w-28 pl-4 pr-8 rounded-full bg-white border border-gray-300 text-sm focus:border-amber-500 appearance-none cursor-pointer focus:outline-none"><option value="">Año</option>{['2026','2025','2024','2023'].map(y => <option key={y} value={y}>{y}</option>)}</select><i className="fas fa-chevron-down absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i></div>
+                                                </div>
+                                            </div>
                                                         </select>
                                                         <i className="fas fa-chevron-down absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 text-xs pointer-events-none"></i>
                                                     </div>
