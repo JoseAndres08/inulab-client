@@ -3800,7 +3800,6 @@ var App = function App() {
         addressesResponse,
         addresses,
         db,
-        _database$orders$,
         _args12 = arguments,
         _t3;
       return _regenerator().w(function (_context12) {
@@ -3976,10 +3975,6 @@ var App = function App() {
           case 6:
             _context12.p = 6;
             console.log("FIN LOAD DATABASE");
-            console.log("orders en render:", database.orders, Array.isArray(database.orders)); // ← agrega esto
-            console.log("freshUser.id:", freshUser.id);
-            console.log("orders userId:", (_database$orders$ = database.orders[0]) === null || _database$orders$ === void 0 ? void 0 : _database$orders$.userId);
-            console.log("primer order completo:", database.orders[0]);
             clearTimeout(loadingTimeout);
             if (!silent) setLoading(false);
             return _context12.f(6);

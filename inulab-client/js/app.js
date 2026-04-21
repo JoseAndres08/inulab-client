@@ -1583,11 +1583,7 @@ const PdfViewer = ({ url, style, className }) => {
 
                 } finally {
 
-                    console.log("FIN LOAD DATABASE");
-                    console.log("orders en render:", database.orders, Array.isArray(database.orders)); // ← agrega esto
-                    console.log("freshUser.id:", freshUser.id);
-                    console.log("orders userId:", database.orders[0]?.userId);
-                    console.log("primer order completo:", database.orders[0]);
+                    console.log("FIN LOAD DATABASE")
                     clearTimeout(loadingTimeout);
                     if (!silent) setLoading(false);
                 }
