@@ -12307,7 +12307,7 @@ var App = function App() {
   }, "Pedidos")), /*#__PURE__*/React.createElement("div", {
     className: "relative flex-1",
     style: {
-      maxWidth: "600px"
+        maxWidth: "none"
     }
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
