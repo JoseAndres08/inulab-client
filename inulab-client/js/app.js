@@ -12305,7 +12305,10 @@ var App = function App() {
   }), /*#__PURE__*/React.createElement("span", {
     className: "text-cyan-600 font-semibold"
   }, "Pedidos")), /*#__PURE__*/React.createElement("div", {
-    className: "relative flex-1"
+    className: "relative flex-1",
+    style: {
+      maxWidth: "600px"
+    }
   }, /*#__PURE__*/React.createElement("i", {
     className: "fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
   }), /*#__PURE__*/React.createElement("input", {
