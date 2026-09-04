@@ -225,11 +225,11 @@ function inulabShowUpdateBanner(worker) {
     // indeseados del primer install (cuando clients.claim() dispara controllerchange).
     navigator.serviceWorker.addEventListener(
       'controllerchange',
-      () => location.reload(),
+      () => location.replace(location.pathname + '?_inulab_upd=' + Date.now()),
       { once: true }
     );
     // Fallback: si controllerchange no dispara, recargar a los 3s
-    setTimeout(() => location.reload(), 3000);
+    setTimeout(() => location.replace(location.pathname + '?_inulab_upd=' + Date.now()), 3000);
     worker.postMessage({ type: 'SKIP_WAITING' });
   };
 
@@ -327,7 +327,7 @@ function inulabShowUpdateBanner(worker) {
 
       // Aviso por archivos (código nuevo) → sí conviene recargar todo.
       btn.textContent = 'Actualizando\u2026';
-      var done = function(){ try { location.reload(); } catch(e){ location.href = location.href; } };
+      var done = function(){ var _u = location.pathname + '?_inulab_upd=' + Date.now() + location.hash; try { location.replace(_u); } catch(e){ location.href = _u; } };
       try {
         if (window.caches && caches.keys) {
           caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(done, done);
